@@ -58,7 +58,7 @@ echo_nextstep_help() {
 
 #----------
 case "$FF_TARGET" in
-    "")
+    armv7a)
         echo_archs armv7a
         sh tools/do-compile-libsoxr.sh armv7a
     ;;

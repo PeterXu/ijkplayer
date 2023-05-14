@@ -77,6 +77,9 @@ case "$IJK_NDK_REL" in
                     exit 1
                 fi
             ;;
+            22*|23*|24*|25*|26*|27*|28*)
+                echo "NDKr$IJK_NDK_REL detected"
+            ;;
             *)
                 echo "You need the NDKr10e or later"
                 exit 1

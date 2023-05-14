@@ -25,10 +25,15 @@ IJK_FFMPEG_LOCAL_REPO=extra/ffmpeg
 set -e
 TOOLS=tools
 
-git --version
+FF_ALL_ARCHS="armv7a arm64 x86 x86_64"
+FF_TARGET=$1
 
-echo "== pull ffmpeg base =="
-sh $TOOLS/pull-repo-base.sh $IJK_FFMPEG_UPSTREAM $IJK_FFMPEG_LOCAL_REPO
+function pull_common()
+{
+    git --version
+    echo "== pull ffmpeg base =="
+    [ ! -e $IJK_FFMPEG_LOCAL_REPO ] && sh $TOOLS/pull-repo-base.sh $IJK_FFMPEG_UPSTREAM $IJK_FFMPEG_LOCAL_REPO || echo
+}
 
 function pull_fork()
 {
@@ -39,11 +44,26 @@ function pull_fork()
     cd -
 }
 
-# pull_fork "armv5"
-pull_fork "armv7a"
-pull_fork "arm64"
-pull_fork "x86"
-pull_fork "x86_64"
+if [ "#$FF_TARGET" = "#" ]; then
+    for ARCH in $FF_ALL_ARCHS
+    do
+        echo "$0 $ARCH"
+    done
+    echo "$0 clean|all"
+    exit 1
+elif [ "$FF_TARGET" = "clean" ]; then
+    echo
+    exit 0
+elif [ "$FF_TARGET" = "all" ]; then
+    pull_common
+    for ARCH in $FF_ALL_ARCHS
+    do
+        pull_fork "$ARCH"
+    done
+else
+    pull_common
+    pull_fork "$FF_TARGET"
+fi
 
 ./init-config.sh
 ./init/init-libyuv.sh

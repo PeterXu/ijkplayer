@@ -163,8 +163,10 @@ elif [ "$FF_TARGET" = "clean" ]; then
     echo "clean success"
 else
     echo "Usage:"
-    echo "  compile-ffmpeg.sh armv7|arm64|i386|x86_64"
-    echo "  compile-ffmpeg.sh armv7s (obselete)"
+    for ARCH in $FF_ALL_ARCHS
+    do
+        echo "  compile-ffmpeg.sh $ARCH"
+    done
     echo "  compile-ffmpeg.sh lipo"
     echo "  compile-ffmpeg.sh all"
     echo "  compile-ffmpeg.sh clean"

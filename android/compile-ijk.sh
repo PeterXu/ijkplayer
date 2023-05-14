@@ -89,7 +89,7 @@ do_ndk_build () {
 
 
 case "$REQUEST_TARGET" in
-    "")
+    armv7a)
         do_ndk_build armv7a;
     ;;
     armv5|armv7a|arm64|x86|x86_64)
@@ -115,10 +115,14 @@ case "$REQUEST_TARGET" in
     ;;
     *)
         echo "Usage:"
-        echo "  compile-ijk.sh armv5|armv7a|arm64|x86|x86_64"
-        echo "  compile-ijk.sh all|all32"
-        echo "  compile-ijk.sh all64"
+        SUB_CMDS="[prof|clean|rebuild]"
+        for ARCH in $ACT_ABI_ALL; do
+        echo "  compile-ijk.sh $ARCH $SUB_CMDS"
+        done
+        echo "  compile-ijk.sh all|all32 $SUB_CMDS"
+        echo "  compile-ijk.sh all64 $SUB_CMDS"
         echo "  compile-ijk.sh clean"
+        exit 1
     ;;
 esac
 

@@ -85,6 +85,8 @@ do_build_boringssl() {
     echo "BORINGSSL_SRC_PATH: $BORINGSSL_SRC_PATH"
     echo "FF_ARCH:${FF_ARCH}"
     echo "API_LEVEL:${API_LEVEL}"
+    ANDROID_NINJA=`find ${ANDROID_HOME}/ -name ninja | head -1`
+    echo "NINJA:${ANDROID_NINJA}"
     
     mkdir -p "build/boringssl-$ARCH"
     cmake \
@@ -92,7 +94,7 @@ do_build_boringssl() {
         -DANDROID_ABI=${FF_ARCH} \
         -DANDROID_NDK=${ANDROID_NDK} \
         -DANDROID_NATIVE_API_LEVEL=${API_LEVEL} \
-        -DCMAKE_MAKE_PROGRAM=${ANDROID_HOME}/cmake/3.10.2.4988404/bin/ninja \
+        -DCMAKE_MAKE_PROGRAM=${ANDROID_NINJA} \
         -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DANDROID_STL=c++_static \
@@ -111,7 +113,7 @@ do_build_boringssl() {
 
 #----------
 case "$FF_TARGET" in
-    "")
+    armeabi-v7a)
         echo_archs armeabi-v7a
         do_build_boringssl armeabi-v7a
     ;;

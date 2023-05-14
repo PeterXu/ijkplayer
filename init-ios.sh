@@ -58,10 +58,10 @@ function echo_ffmpeg_version() {
 function pull_common() {
     git --version
     echo "== pull gas-preprocessor base =="
-    sh $TOOLS/pull-repo-base.sh $IJK_GASP_UPSTREAM extra/gas-preprocessor
+    [ ! -e extra/gas-preprocessor ] && sh $TOOLS/pull-repo-base.sh $IJK_GASP_UPSTREAM extra/gas-preprocessor
 
     echo "== pull ffmpeg base =="
-    sh $TOOLS/pull-repo-base.sh $IJK_FFMPEG_UPSTREAM $IJK_FFMPEG_LOCAL_REPO
+    [ ! -e $IJK_FFMPEG_LOCAL_REPO ] && sh $TOOLS/pull-repo-base.sh $IJK_FFMPEG_UPSTREAM $IJK_FFMPEG_LOCAL_REPO || echo
 }
 
 function pull_fork() {
@@ -92,9 +92,21 @@ case "$FF_TARGET" in
         pull_common
         pull_fork $FF_TARGET
     ;;
-    all|*)
+    all)
         pull_common
         pull_fork_all
+    ;;
+    clean)
+        echo
+        exit 0
+    ;;
+    *)
+        for ARCH in $FF_ALL_ARCHS
+        do
+            echo "$0 $ARCH"
+        done
+        echo "$0 clean|all"
+        exit 1
     ;;
 esac
 

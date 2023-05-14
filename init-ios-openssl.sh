@@ -24,8 +24,15 @@ IJK_OPENSSL_LOCAL_REPO=extra/openssl
 set -e
 TOOLS=tools
 
-echo "== pull openssl base =="
-sh $TOOLS/pull-repo-base.sh $IJK_OPENSSL_UPSTREAM $IJK_OPENSSL_LOCAL_REPO
+FF_ALL_ARCHS_IOS12_SDK="arm64 x86_64"
+FF_ALL_ARCHS=$FF_ALL_ARCHS_IOS12_SDK
+FF_TARGET=$1
+
+function pull_common()
+{
+    echo "== pull openssl base =="
+    [ ! -e $IJK_OPENSSL_LOCAL_REPO ] && sh $TOOLS/pull-repo-base.sh $IJK_OPENSSL_UPSTREAM $IJK_OPENSSL_LOCAL_REPO || echo
+}
 
 function pull_fork()
 {
@@ -36,9 +43,24 @@ function pull_fork()
     cd -
 }
 
-# pull_fork "armv7"
-# pull_fork "armv7s"
-pull_fork "arm64"
-# pull_fork "i386"
-pull_fork "x86_64"
+
+if [ "#$FF_TARGET" = "#" ]; then
+    for ARCH in $FF_ALL_ARCHS
+    do
+        echo "$0 $ARCH"
+    done
+    echo "$0 clean|all"
+    exit 1
+elif [ "$FF_TARGET" = "clean" ]; then
+    echo
+elif [ "$FF_TARGET" = "all" ]; then
+    pull_common
+    for ARCH in $FF_ALL_ARCHS
+    do
+        pull_fork "$ARCH"
+    done
+else
+    pull_common
+    pull_fork "$FF_TARGET"
+fi
 

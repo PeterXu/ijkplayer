@@ -89,6 +89,8 @@ do_build_libsrt() {
     echo "LIBSRC_SRC_PATH: $LIBSRC_SRC_PATH"
     echo "FF_ARCH:${FF_ARCH}"
     echo "API_LEVEL:${API_LEVEL}"
+    ANDROID_NINJA=`find ${ANDROID_HOME}/ -name ninja | head -1`
+    echo "NINJA:${ANDROID_NINJA}"
     
     mkdir -p "build/libsrt-$ARCH"
     cd build/libsrt-$ARCH
@@ -97,7 +99,7 @@ do_build_libsrt() {
         -DANDROID_NDK=${ANDROID_NDK} \
         -DCMAKE_ANDROID_API=${API_LEVEL} \
         -DANDROID_NATIVE_API_LEVEL=${API_LEVEL} \
-        -DCMAKE_MAKE_PROGRAM=${ANDROID_HOME}/cmake/3.10.2.4988404/bin/ninja \
+        -DCMAKE_MAKE_PROGRAM=${ANDROID_NINJA} \
         -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=${FF_PREFIX} \
@@ -125,7 +127,7 @@ do_build_libsrt() {
 
 #----------
 case "$FF_TARGET" in
-    "")
+    armv7a)
         echo_archs armv7a
         do_build_libsrt armv7a
     ;;

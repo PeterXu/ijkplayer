@@ -234,6 +234,8 @@ if [ ! -f "$FF_TOOLCHAIN_TOUCH" ]; then
     touch $FF_TOOLCHAIN_TOUCH;
 fi
 
+FF_CLANG="${FF_TOOLCHAIN_PATH}/bin/${FF_CROSS_PREFIX}${FF_ANDROID_PLATFORM}-clang"
+[ -f "$FF_CLANG" ] && FF_CROSS_PREFIX="${FF_CROSS_PREFIX}${FF_ANDROID_PLATFORM}"
 
 #--------------------
 echo ""
@@ -247,10 +249,10 @@ export PATH=$FF_TOOLCHAIN_PATH/bin/:$PATH
 export AS=${FF_CROSS_PREFIX}-clang
 export CC=${FF_CROSS_PREFIX}-clang
 export CXX=${FF_CROSS_PREFIX}-clang++
-export LD=${FF_CROSS_PREFIX}-ld
-export AR=${FF_CROSS_PREFIX}-ar
-export RANLIB=${FF_CROSS_PREFIX}-ranlib
-export STRIP=${FF_CROSS_PREFIX}-strip
+#export LD=${FF_CROSS_PREFIX}-ld
+#export AR=${FF_CROSS_PREFIX}-ar
+#export RANLIB=${FF_CROSS_PREFIX}-ranlib
+#export STRIP=${FF_CROSS_PREFIX}-strip
 export SYSROOT=${FF_SYSROOT}
 export CROSS_PREFIX=${FF_CROSS_PREFIX}
 
@@ -265,6 +267,19 @@ FF_CFLAGS="-O3 -Wall -pipe \
 FF_CFG_FLAGS="$FF_CFG_FLAGS --as=${FF_CROSS_PREFIX}-clang"
 FF_CFG_FLAGS="$FF_CFG_FLAGS --cc=${FF_CROSS_PREFIX}-clang"
 FF_CFG_FLAGS="$FF_CFG_FLAGS --cxx=${FF_CROSS_PREFIX}-clang++"
+
+if [ -f "$FF_CLANG" ]; then
+    FF_CFG_FLAGS="$FF_CFG_FLAGS --ld=${FF_CROSS_PREFIX}-clang"
+    FF_CFG_FLAGS="$FF_CFG_FLAGS --nm=llvm-nm"
+    FF_CFG_FLAGS="$FF_CFG_FLAGS --ar=llvm-ar"
+    FF_CFG_FLAGS="$FF_CFG_FLAGS --ranlib=llvm-ranlib"
+else
+    FF_CFG_FLAGS="$FF_CFG_FLAGS --ld=${FF_CROSS_PREFIX}-clang"
+    FF_CFG_FLAGS="$FF_CFG_FLAGS --nm=${FF_CROSS_PREFIX}-nm"
+    FF_CFG_FLAGS="$FF_CFG_FLAGS --ar=${FF_CROSS_PREFIX}-ar"
+    FF_CFG_FLAGS="$FF_CFG_FLAGS --ranlib=${FF_CROSS_PREFIX}-ranlib"
+fi
+
 # FF_CFG_FLAGS="$FF_CFG_FLAGS --ld=${FF_CROSS_PREFIX}-ld"
 # FF_CFG_FLAGS="$FF_CFG_FLAGS --ar=${FF_CROSS_PREFIX}-ar"
 # FF_CFG_FLAGS="$FF_CFG_FLAGS --cxx=${FF_CROSS_PREFIX}-clang++"

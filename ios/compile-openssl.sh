@@ -100,8 +100,10 @@ elif [ "$FF_TARGET" = "clean" ]; then
     done
 else
     echo "Usage:"
-    echo "  compile-openssl.sh armv7|arm64|i386|x86_64"
-    echo "  compile-openssl.sh armv7s (obselete)"
+    for ARCH in $FF_ALL_ARCHS
+    do
+        echo "  compile-openssl.sh $ARCH"
+    done
     echo "  compile-openssl.sh lipo"
     echo "  compile-openssl.sh all"
     echo "  compile-openssl.sh clean"
