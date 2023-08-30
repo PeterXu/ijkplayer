@@ -2,23 +2,41 @@
 
 set -e
 
-ARCH="$1"
+PARAM="$1"
+ARCH_LIST="x86_64 arm64"
 
-echo "[*] init ffmpeg ..."
-sh init-ios.sh $ARCH
 
-echo
-echo "[*] init openssl ..."
-sh init-ios-openssl.sh  $ARCH
-
-cd ios/
-
-echo
-echo "[*] compile openssl ..."
-sh compile-openssl.sh $ARCH
-
-echo
-echo "[*] compile ffmpeg ..."
-sh compile-ffmpeg.sh $ARCH
+if [ "#$PARAM" = "#" ]; then
+    echo "usage: $0 init|native|framework|clean|distclean"
+    exit 1
+elif [ "$PARAM" = "init" ]; then
+    echo "[*] init ios ...: $ARCH_LIST"
+    for ARCH in $ARCH_LIST; do
+        sh init-ios.sh $ARCH
+        sh init-ios-openssl.sh  $ARCH
+    done
+elif [ "$PARAM" = "native" ]; then
+    echo "[*] compile  openssl/ffmpeg ...: $ARCH_LIST"
+    for ARCH in $ARCH_LIST; do
+        cd ios/
+        sh compile-openssl.sh $ARCH
+        sh compile-ffmpeg.sh $ARCH
+        cd ..
+    done
+elif [ "$PARAM" = "framework" ]; then
+    cd ios/
+    sh compile-framework.sh IJKMediaPlayer
+    cd ..
+elif [ "$PARAM" = "clean" ]; then
+    cd ios/
+    sh compile-framework.sh clean
+    cd ..
+elif [ "$PARAM" = "distclean" ]; then
+    cd ios/
+    sh compile-framework.sh clean
+    sh compile-openssl.sh clean
+    sh compile-ffmpeg.sh clean
+    cd ..
+fi
 
 exit 0

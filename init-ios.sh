@@ -96,16 +96,12 @@ case "$FF_TARGET" in
         pull_common
         pull_fork_all
     ;;
-    clean)
-        echo
-        exit 0
-    ;;
     *)
         for ARCH in $FF_ALL_ARCHS
         do
             echo "$0 $ARCH"
         done
-        echo "$0 clean|all"
+        echo "$0 all"
         exit 1
     ;;
 esac

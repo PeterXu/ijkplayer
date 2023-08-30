@@ -49,10 +49,8 @@ if [ "#$FF_TARGET" = "#" ]; then
     do
         echo "$0 $ARCH"
     done
-    echo "$0 clean|all"
+    echo "$0 all"
     exit 1
-elif [ "$FF_TARGET" = "clean" ]; then
-    echo
 elif [ "$FF_TARGET" = "all" ]; then
     pull_common
     for ARCH in $FF_ALL_ARCHS
