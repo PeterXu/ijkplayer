@@ -18,7 +18,7 @@ gradle.startParameter.taskNames.each { task ->
     def taskName = task.split(":").last()
     switch (taskName) {
         case "uploadArchives":
-            apply from: new File(rootProject.projectDir, 'tools/gradle-mvn-push.gradle')
+            //apply from: new File(rootProject.projectDir, 'tools/gradle-mvn-push.gradle')
             break;
         default:
             // do nothing

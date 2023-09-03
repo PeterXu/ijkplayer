@@ -13,6 +13,8 @@ def safePropGet = { prop, fallback ->
 }
 
 android {
+    namespace 'tv.danmaku.ijk.media.player'
+
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
@@ -23,7 +25,7 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion rootProject.ext.targetSdkVersion
 
         externalNativeBuild {
@@ -37,7 +39,8 @@ android {
         ndk {
             // Specifies the ABI configurations of your native
             // libraries Gradle should build and package with your APK.
-            abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86', 'x86_64'
+            //abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86', 'x86_64'
+            abiFilters 'arm64-v8a', 'x86_64'
         }
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

@@ -1,6 +1,8 @@
 apply plugin: 'com.android.library'
 
 android {
+    namespace 'tv.danmaku.ijk.media.exo'
+
     // http://tools.android.com/tech-docs/new-build-system/tips
     //noinspection GroovyAssignabilityCheck
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -11,7 +13,7 @@ android {
         abortOnError false
     }
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion rootProject.ext.targetSdkVersion
     }
     buildTypes {

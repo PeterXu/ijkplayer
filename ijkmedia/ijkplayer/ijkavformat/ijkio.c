@@ -110,7 +110,7 @@ static int ijkio_close(URLContext *h)
 #define D AV_OPT_FLAG_DECODING_PARAM
 
 static const AVOption options[] = {
-    { "ijkiomanager", "IjkIOManagerContext", OFFSET(io_manager_ctx), AV_OPT_TYPE_INT64, { .i64 = 0 }, INT64_MIN, INT64_MAX, .flags = D },
+    { "ijkiomanager", "IjkIOManagerContext", OFFSET(io_manager_ctx), AV_OPT_TYPE_INT64, { .i64 = 0 }, (double)INT64_MIN, (double)INT64_MAX, .flags = D },
 };
 
 #undef D

@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
+    namespace 'tv.danmaku.ijk.media.example'
+
     // http://tools.android.com/tech-docs/new-build-system/tips
     //noinspection GroovyAssignabilityCheck
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -15,12 +17,13 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
-        minSdkVersion 16
+        minSdkVersion 21
 
         ndk {
             // Specifies the ABI configurations of your native
             // libraries Gradle should build and package with your APK.
-            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+            //abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+            abiFilters 'arm64-v8a', 'x86_64'
         }
     }
 
@@ -33,6 +36,10 @@ android {
         }
     }
 
+    buildFeatures {
+        buildConfig true
+    }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -41,24 +48,6 @@ android {
         }
 
     }
-    flavorDimensions "ndkabi"
-
-    /*
-    productFlavors {
-        all32 {
-            dimension "ndkabi"
-            minSdkVersion 16
-        }
-        all64 {
-            dimension "ndkabi"
-            minSdkVersion 21
-        }
-        // armv5 {}
-        // armv7a {}
-        // arm64 { minSdkVersion 21 }
-        // x86 {}
-    }
-    */
 }
 
 dependencies {

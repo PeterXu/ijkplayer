@@ -54,8 +54,6 @@ echo_nextstep_help() {
     echo "--------------------"
     echo "# to continue to build ffmpeg, run script below,"
     echo "sh compile-ffmpeg.sh "
-    echo "# to continue to build ijkplayer, run script below,"
-    echo "sh compile-ijk.sh "
 }
 
 do_build_libsrt() {
