@@ -13,7 +13,6 @@ elif [ "$PARAM" = "init" ]; then
     echo "[*] init ios ...: $ARCH_LIST"
     for ARCH in $ARCH_LIST; do
         sh init-ios.sh $ARCH
-        sh init-ios-openssl.sh  $ARCH
     done
 elif [ "$PARAM" = "native" ]; then
     echo "[*] compile  openssl/ffmpeg ...: $ARCH_LIST"

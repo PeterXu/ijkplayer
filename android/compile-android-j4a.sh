@@ -16,13 +16,16 @@
 # limitations under the License.
 #
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BASEDIR=$(dirname "$DIR")
+
 set -e
 
-cd extra/jni4android-fork
+cd $BASEDIR/extra/jni4android-fork
 ./configure --incdir=../../ijkmedia/ijkj4a --bindir=../bin
 make install
 cd -
 
-cd ijkmedia/ijkj4a
+cd $BASEDIR/ijkmedia/ijkj4a
 make
 cd -

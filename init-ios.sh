@@ -106,5 +106,7 @@ case "$FF_TARGET" in
     ;;
 esac
 
+./init/init-ios-openssl.sh
+
 sync_ff_version
 

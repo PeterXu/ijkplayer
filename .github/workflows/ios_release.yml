@@ -14,7 +14,6 @@ jobs:
 
     - name: Init extra for iOS
       run: |
-        bash init-ios-openssl.sh
         bash init-ios.sh
 
     - name: Build ssl and ffmpeg
