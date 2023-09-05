@@ -19,7 +19,8 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BASEDIR=$(dirname "$DIR")
 
-IJK_OPENSSL_UPSTREAM=https://github.com/openssl/openssl
+#IJK_OPENSSL_UPSTREAM=https://github.com/openssl/openssl
+IJK_OPENSSL_UPSTREAM=https://github.com/Bilibili/openssl.git
 IJK_OPENSSL_FORK=https://github.com/Bilibili/openssl.git
 IJK_OPENSSL_COMMIT=b34cf4eb61  #tag: OpenSSL_1_0_2r
 IJK_OPENSSL_LOCAL_REPO=$BASEDIR/extra/openssl

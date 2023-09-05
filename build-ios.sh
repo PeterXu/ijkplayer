@@ -22,6 +22,10 @@ elif [ "$PARAM" = "native" ]; then
         sh compile-ffmpeg.sh $ARCH
         cd ..
     done
+    cd ios/
+    sh compile-openssl.sh lipo
+    sh compile-ffmpeg.sh lipo
+    cd ..
 elif [ "$PARAM" = "framework" ]; then
     cd ios/
     sh compile-framework.sh IJKMediaPlayer

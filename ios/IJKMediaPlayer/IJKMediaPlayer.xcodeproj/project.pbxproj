@@ -439,8 +439,8 @@
 		5407EC281DF7F93B00457BFE /* IJKVideoToolBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IJKVideoToolBox.m; path = ijkmedia/ijkplayer/ios/pipeline/IJKVideoToolBox.m; sourceTree = "<group>"; };
 		5407EC2B1DF81D2600457BFE /* IJKVideoToolBoxSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IJKVideoToolBoxSync.h; path = ijkmedia/ijkplayer/ios/pipeline/IJKVideoToolBoxSync.h; sourceTree = "<group>"; };
 		5407EC2C1DF81D2600457BFE /* IJKVideoToolBoxSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IJKVideoToolBoxSync.m; path = ijkmedia/ijkplayer/ios/pipeline/IJKVideoToolBoxSync.m; sourceTree = "<group>"; };
-		5450AF8B1E63E59300568494 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../build/universal/lib/libcrypto.a"; sourceTree = "<group>"; };
-		5450AF8C1E63E59300568494 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../build/universal/lib/libssl.a"; sourceTree = "<group>"; };
+		5450AF8B1E63E59300568494 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../contrib/build/universal/lib/libcrypto.a"; sourceTree = "<group>"; };
+		5450AF8C1E63E59300568494 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../contrib/build/universal/lib/libssl.a"; sourceTree = "<group>"; };
 		5450AF8F1E63E59800568494 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		5450AF9B1E63E65700568494 /* IJKMediaFrameworkWithSSL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IJKMediaFrameworkWithSSL.h; sourceTree = "<group>"; };
 		5450B0431E63EA4300568494 /* IJKMediaFrameworkWithSSL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = IJKMediaFrameworkWithSSL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -877,7 +877,7 @@
 				E6903FC117EAFC2C00CFD954 /* lib */,
 			);
 			name = ffmpeg;
-			path = ../../build/universal;
+			path = ../../contrib/build/universal;
 			sourceTree = "<group>";
 		};
 		E6903FC117EAFC2C00CFD954 /* lib */ = {
@@ -1797,7 +1797,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					../build/universal/include,
+					../contrib/build/universal/include,
 					IJKMediaPlayer/ijkmedia,
 					../../ijkmedia,
 				);
@@ -1807,7 +1807,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../build/universal/lib\"",
+					"\"$(SRCROOT)/../contrib/build/universal/lib\"",
 				);
 				MACH_O_TYPE = staticlib;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1857,7 +1857,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					../build/universal/include,
+					../contrib/build/universal/include,
 					IJKMediaPlayer/ijkmedia,
 					../../ijkmedia,
 				);
@@ -1867,7 +1867,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../build/universal/lib\"",
+					"\"$(SRCROOT)/../contrib/build/universal/lib\"",
 				);
 				MACH_O_TYPE = staticlib;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -1917,7 +1917,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					../build/universal/include,
+					../contrib/build/universal/include,
 					IJKMediaPlayer/ijkmedia,
 					../../ijkmedia,
 				);
@@ -1927,7 +1927,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../build/universal/lib\"",
+					"\"$(SRCROOT)/../contrib/build/universal/lib\"",
 				);
 				MACH_O_TYPE = staticlib;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1970,7 +1970,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					../build/universal/include,
+					../contrib/build/universal/include,
 					IJKMediaPlayer/ijkmedia,
 					../../ijkmedia,
 				);
@@ -1980,7 +1980,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../build/universal/lib\"",
+					"\"$(SRCROOT)/../contrib/build/universal/lib\"",
 				);
 				MACH_O_TYPE = staticlib;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -2030,7 +2030,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					../build/universal/include,
+					../contrib/build/universal/include,
 					IJKMediaPlayer/ijkmedia,
 					../../ijkmedia,
 				);
@@ -2040,7 +2040,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../build/universal/lib\"",
+					"\"$(SRCROOT)/../contrib/build/universal/lib\"",
 				);
 				MACH_O_TYPE = mh_dylib;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -2088,7 +2088,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					../build/universal/include,
+					../contrib/build/universal/include,
 					IJKMediaPlayer/ijkmedia,
 					../../ijkmedia,
 				);
@@ -2098,7 +2098,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../build/universal/lib\"",
+					"\"$(SRCROOT)/../contrib/build/universal/lib\"",
 				);
 				MACH_O_TYPE = mh_dylib;
 				MTL_ENABLE_DEBUG_INFO = NO;

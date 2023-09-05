@@ -22,16 +22,6 @@ BASEDIR=$(dirname "$DIR")
 GLFW_UPSTREAM=https://github.com/glfw/glfw.git
 GLFW_FORK=https://github.com/glfw/glfw.git
 GLFW_COMMIT=ecda86fa
-GLFW_LOCAL_REPO=$BASEDIR/extra/glfw
 
-set -e
-TOOLS=$BASEDIR/tools
+$BASEDIR/init/init-repo.sh $GLFW_UPSTREAM $GLFW_FORK $GLFW_COMMIT "any" "common" "desktop/glfw"
 
-echo "== pull GLFW base =="
-sh $TOOLS/pull-repo-base.sh $GLFW_UPSTREAM $GLFW_LOCAL_REPO
-
-echo "== pull GLFW fork =="
-sh $TOOLS/pull-repo-ref.sh $GLFW_FORK $BASEDIR/desktop/glfw ${GLFW_LOCAL_REPO}
-cd $BASEDIR/desktop/glfw
-git checkout ${GLFW_COMMIT} -B ijkplayer
-cd -

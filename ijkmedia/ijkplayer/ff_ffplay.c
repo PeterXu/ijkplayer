@@ -3947,7 +3947,7 @@ void ffp_global_init()
     if (g_ffmpeg_global_inited)
         return;
 
-    ALOGD("ijkmediaplayer version : %s", ijkmp_version());
+    ALOGD("ijkmediaplayer version : %s\n", ijkmp_version());
     /* register all codecs, demux and protocols */
     avcodec_register_all();
 #if CONFIG_AVDEVICE

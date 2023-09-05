@@ -62,7 +62,7 @@ else
     pull_fork "$FF_TARGET"
 fi
 
-./init-config.sh
+./init-config.sh android lite
 ./init/init-libyuv.sh
 ./init/init-android-soundtouch.sh
 ./init/init-android-boringssl.sh

@@ -131,6 +131,11 @@ if (WIN32)
     target_include_directories(${IJKPLAYER_LIB_NAME} PRIVATE "${IJK_DESKTOP_PTHREAD_BUILD_DIR}/../../include")
 endif()
 
+if (IJK_DESKTOP_UNI)
+    find_package(SDL2 REQUIRED)
+    target_include_directories(${IJKPLAYER_LIB_NAME} PRIVATE ${SDL2_INCLUDE_DIRS})
+endif()
+
 if (NOT IJK_DESKTOP_UNI)
     target_link_libraries(${IJKPLAYER_LIB_NAME} ijksdl)
 endif()

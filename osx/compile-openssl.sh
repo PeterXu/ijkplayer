@@ -20,7 +20,7 @@ set -e
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BASEDIR=$(dirname "$DIR")
-PLATFORM="ios"
+PLATFORM="osx"
 
 FF_TARGET=$1
 FF_ALL_ARCHS="x86_64 arm64"

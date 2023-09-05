@@ -1,10 +1,13 @@
 # -----
+config/
 build/
 ffmpeg-temp/
 android/ffmpeg-*
 android/openssl-*
 ios/ffmpeg-*
 ios/openssl-*
+ios/contrib
+osx/contrib
 extra
 .DS_Store
 ijkmedia/ijkyuv/

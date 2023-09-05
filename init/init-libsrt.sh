@@ -16,11 +16,17 @@
 # limitations under the License.
 #
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BASEDIR=$(dirname "$DIR")
+
 if [ $# -ne 2 ]; then
-    echo "Usage: $0 ios|osx|android full|lite"
+    echo "Usage: $0 ios|android|osx x86_64|arm64|all"
     exit 1
 fi
 
-if [ ! -f 'config/module.sh' ]; then
-    cd config && ln -sf module-$2.sh module-$1.sh
-fi
+IJK_LIBSRT_UPSTREAM=https://github.com/PeterXu/libsrt.git
+IJK_LIBSRT_FORK=https://github.com/PeterXu/libsrt.git
+IJK_LIBSRT_COMMIT=7bf96c716d1ab8e75422b9cb7118fc82f497a5b3
+
+$BASEDIR/init/init-repo.sh $IJK_LIBSRT_UPSTREAM $IJK_LIBSRT_FORK $IJK_LIBSRT_COMMIT $1 $2
+

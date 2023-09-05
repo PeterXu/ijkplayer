@@ -52,9 +52,6 @@ static const char *kIJKFFRequiredFFmpegVersion = "ff4.0--ijk0.8.8--20211030--926
 @implementation IJKWeakHolder
 @end
 
-@interface IJKFFMoviePlayerController()
-
-@end
 
 @implementation IJKFFMoviePlayerController {
     IjkMediaPlayer *_mediaPlayer;

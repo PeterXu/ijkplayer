@@ -16,11 +16,12 @@
 # limitations under the License.
 #
 
-if [ $# -ne 2 ]; then
-    echo "Usage: $0 ios|osx|android full|lite"
-    exit 1
-fi
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BASEDIR=$(dirname "$DIR")
 
-if [ ! -f 'config/module.sh' ]; then
-    cd config && ln -sf module-$2.sh module-$1.sh
-fi
+IJK_GAS_UPSTREAM=https://github.com/Bilibili/gas-preprocessor.git
+IJK_GAS_FORK=https://github.com/Bilibili/gas-preprocessor.git
+IJK_GAS_COMMIT=dd811e7a8403e
+
+$BASEDIR/init/init-repo.sh $IJK_GAS_UPSTREAM $IJK_GAS_FORK $IJK_GAS_COMMIT "any" "none"
+

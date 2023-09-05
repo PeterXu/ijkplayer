@@ -31,9 +31,11 @@ message(STATUS "PROJECT_SOURCE_DIR ${PROJECT_SOURCE_DIR}")
 set(IJKROOT_PATH "${PROJECT_SOURCE_DIR}/..")
 get_filename_component(IJKROOT_PATH ${IJKROOT_PATH} ABSOLUTE)
 message(STATUS "IJKROOT_PATH ${IJKROOT_PATH}")
+include(CMakePrintHelpers)
 
 
 option(IJK_GLFW "use glfw render" OFF)
+cmake_print_variables(IJK_GLFW)
 
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
@@ -44,43 +46,20 @@ elseif (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
     add_definitions(-DDEBUG=1)
 endif ()
 
-if (CMAKE_SIZEOF_VOID_P EQUAL 8)
-    # 64 bits
-    message(STATUS "CMAKE SIZEOF POIONT 8")
-    set(IJK_X64 on)
-    set(IJK_X86 off)
-elseif (CMAKE_SIZEOF_VOID_P EQUAL 4)
-    # 32 bits
-    message(STATUS "cmake sizeof point 4")
-    set(IJK_X64 off)
-    set(IJK_X86 on)
-endif ()
 
-
+# check depends: $CMAKE_SYSTEM_NAME
 set(IJK_DESKTOP_CONTRIB_PATH ${IJKROOT_PATH}/desktop/contrib)
 
-if (IJK_X64)
-    if (APPLE) 
-        set(IJK_FFMPAG_BUILD_DIR ${IJKROOT_PATH}/osx/contrib/build/)
-    else()
-        set(IJK_FFMPAG_BUILD_DIR ${IJK_DESKTOP_CONTRIB_PATH}/ffmpeg/x64)
-    endif()
-elseif (IJK_X86)
-    set(IJK_FFMPAG_BUILD_DIR ${IJK_DESKTOP_CONTRIB_PATH}/ffmpeg/x86)
+if (APPLE)
+    set(IJK_FFMPAG_BUILD_DIR ${IJKROOT_PATH}/osx/contrib/build/ffmpeg-${CMAKE_HOST_SYSTEM_PROCESSOR}/output/)
+    set(IJK_OPENSSL_BUILD_DIR ${IJKROOT_PATH}/osx/contrib/build/openssl-${CMAKE_HOST_SYSTEM_PROCESSOR}/output/)
 endif ()
-
-include(CMakePrintHelpers)
-cmake_print_variables(IJK_FFMPAG_BUILD_DIR)
-
 if (WIN32)
-    if (IJK_X64)
-        set(IJK_DESKTOP_PTHREAD_BUILD_DIR ${IJK_DESKTOP_CONTRIB_PATH}/pthreads-w32-2-9-1-release/Pre-built.2/lib/x64)
-    elseif (IJK_X86)
-        set(IJK_DESKTOP_PTHREAD_BUILD_DIR ${IJK_DESKTOP_CONTRIB_PATH}/pthreads-w32-2-9-1-release/Pre-built.2/lib/x86)
-    endif ()
-
+    set(IJK_FFMPAG_BUILD_DIR ${IJK_DESKTOP_CONTRIB_PATH}/ffmpeg/${CMAKE_HOST_SYSTEM_PROCESSOR})
+    set(IJK_DESKTOP_PTHREAD_BUILD_DIR ${IJK_DESKTOP_CONTRIB_PATH}/pthreads/lib/${CMAKE_HOST_SYSTEM_PROCESSOR})
     add_definitions(-DHAVE_STRUCT_TIMESPEC)
 endif ()
+cmake_print_variables(IJK_FFMPAG_BUILD_DIR)
 
 if (NOT DEFINED IJK_FFMPAG_BUILD_DIR)
     message(FATAL_ERROR "Can not find ffmpeg build output: ${IJK_FFMPAG_BUILD_DIR}")
@@ -89,9 +68,9 @@ else ()
 endif ()
 
 find_package(SDL2 REQUIRED)
-
 add_definitions(-DUSE_SDL2=1)
-include_directories(${SDL2_INCLUDE_DIRS})
+#should not add here
+#include_directories(${SDL2_INCLUDE_DIRS})
 
 add_definitions(-DIJK_DESKTOP_UNI=1)
 set(IJK_DESKTOP_UNI ON)
@@ -128,7 +107,7 @@ endif ()
 
 if (APPLE)
     find_package(PkgConfig REQUIRED QUIET)
-    set(ENV{PKG_CONFIG_PATH} "${IJKROOT_PATH}/osx/contrib/build/lib/pkgconfig:$ENV{PKG_CONFIG_PATH}")
+    set(ENV{PKG_CONFIG_PATH} "${IJK_FFMPAG_BUILD_DIR}/lib/pkgconfig:$ENV{PKG_CONFIG_PATH}")
     pkg_check_modules(FFMPEG_STATIC REQUIRED libavcodec libavformat libavutil libswresample libswscale)
 
     cmake_print_variables(FFMPEG_STATIC_INCLUDE_DIRS)
@@ -168,8 +147,7 @@ target_compile_definitions(IjkPlayer PRIVATE -DBUILDING_IJK=1)
 if (WIN32)
     target_link_libraries(IjkPlayer ws2_32 secur32 avrt shlwapi advapi32 shell32 kernel32 user32)
 elseif (APPLE)
-    # brew install openssl
-    set(OPENSSL_ROOT_DIR /usr/local/opt/openssl)
+    set(OPENSSL_ROOT_DIR ${IJK_OPENSSL_BUILD_DIR})
     find_package(OpenSSL REQUIRED)
     target_link_libraries(IjkPlayer ${OPENSSL_LIBRARIES})
     target_link_libraries(IjkPlayer z)
@@ -196,6 +174,7 @@ elseif (APPLE)
 endif ()
 
 if (IJK_GLFW)
+    MESSAGE(STATUS "Set GLFW build ...")
     set(GLFW_BUILD_EXAMPLES OFF)
     set(GLFW_BUILD_TESTS OFF)
     set(GLFW_INSTALL OFF)

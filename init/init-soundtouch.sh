@@ -16,11 +16,12 @@
 # limitations under the License.
 #
 
-if [ $# -ne 2 ]; then
-    echo "Usage: $0 ios|osx|android full|lite"
-    exit 1
-fi
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BASEDIR=$(dirname "$DIR")
 
-if [ ! -f 'config/module.sh' ]; then
-    cd config && ln -sf module-$2.sh module-$1.sh
-fi
+IJK_ST_UPSTREAM=https://github.com/Bilibili/soundtouch.git
+IJK_ST_FORK=https://github.com/Bilibili/soundtouch.git
+IJK_ST_COMMIT=ijk-r0.1.2-dev
+
+$BASEDIR/init/init-repo.sh $IJK_ST_UPSTREAM $IJK_ST_FORK $IJK_ST_COMMIT "any" "common" "ijkmedia/ijksoundtouch"
+

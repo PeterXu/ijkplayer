@@ -22,16 +22,6 @@ BASEDIR=$(dirname "$DIR")
 PORTAUDIO_UPSTREAM=https://git.assembla.com/portaudio.git
 PORTAUDIO_FORK=https://git.assembla.com/portaudio.git
 PORTAUDIO_COMMIT=396fe4b6699ae929d3a685b3ef8a7e97396139a4
-PORTAUDIO_LOCAL_REPO=$BASEDIR/extra/portaudio
 
-set -e
-TOOLS=$BASEDIR/tools
+$BASEDIR/init/init-repo.sh $PORTAUDIO_UPSTREAM $PORTAUDIO_FORK $PORTAUDIO_COMMIT "any" "common" "ijkmedia/portaudio"
 
-echo "== pull portaudio base =="
-sh $TOOLS/pull-repo-base.sh $PORTAUDIO_UPSTREAM $PORTAUDIO_LOCAL_REPO
-
-echo "== pull portaudio fork =="
-sh $TOOLS/pull-repo-ref.sh $PORTAUDIO_FORK $BASEDIR/ijkmedia/portaudio ${PORTAUDIO_LOCAL_REPO}
-cd $BASEDIR/ijkmedia/portaudio
-git checkout ${PORTAUDIO_COMMIT} -B ijkplayer
-cd -

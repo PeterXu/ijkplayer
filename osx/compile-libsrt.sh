@@ -15,79 +15,46 @@
 # limitations under the License.
 #
 
-#----------
-UNI_BUILD_ROOT=`pwd`
-FF_TARGET=$1
 set -e
-set +x
 
-FF_ACT_ARCHS_64="x86_64"
-FF_ACT_ARCHS_ALL=$FF_ACT_ARCHS_64
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BASEDIR=$(dirname "$DIR")
 
-echo_archs() {
-    echo "===================="
-    echo "[*] check archs"
-    echo "===================="
-    echo "FF_ALL_ARCHS = $FF_ACT_ARCHS_ALL"
-    echo "FF_ACT_ARCHS = $*"
-    echo ""
-}
-
-echo_usage() {
-    echo "Usage:"
-    echo "  compile-libsrt.sh x86_64"
-    echo "  compile-libsrt.sh all"
-    echo "  compile-libsrt.sh clean"
-    echo "  compile-libsrt.sh check"
-    exit 1
-}
-
-echo_nextstep_help() {
-    #----------
-    echo ""
-    echo "--------------------"
-    echo "[*] Finished"
-    echo "--------------------"
-    echo "# to continue to build ffmpeg, run script below,"
-    echo "sh compile-ffmpeg.sh "
-    echo "# to continue to build ijkplayer, run script below,"
-    echo "sh compile-ijk.sh "
-}
+FF_TARGET=$1
+FF_TARGET_EXTRA=$2
+FF_ALL_ARCHS="x86_64 arm64"
+FF_TOOLS=${BASEDIR}/tools
+UNI_BUILD_ROOT=${BASEDIR}/osx/contrib
 
 #----------
+
 case "$FF_TARGET" in
-    "")
-        echo_archs x86_64
-        sh tools/do-compile-libsrt.sh x86_64
-    ;;
-    x86_64)
-        echo_archs $FF_TARGET
-        sh tools/do-compile-libsrt.sh $FF_TARGET
-        echo_nextstep_help
+    x86_64|arm64)
+        sh $FF_TOOLS/do-compile-libsrt.sh osx $FF_TARGET
     ;;
     all)
-        echo_archs $FF_ACT_ARCHS_64
-        for ARCH in $FF_ACT_ARCHS_64
+        for ARCH in $FF_ALL_ARCHS
         do
-            sh tools/do-compile-libsrt.sh $ARCH
+            sh $FF_TOOLS/do-compile-libsrt.sh osx $ARCH
         done
-        echo_nextstep_help
     ;;
     clean)
-        echo_archs FF_ACT_ARCHS_64
-        for ARCH in $FF_ACT_ARCHS_ALL
+        for ARCH in $FF_ALL_ARCHS
         do
-            if [ -d libsrt-$ARCH ]; then
-                cd libsrt-$ARCH && git clean -xdf && cd -
+            if [ -d $UNI_BUILD_ROOT/libsrt-$ARCH ]; then
+                cd $UNI_BUILD_ROOT/libsrt-$ARCH && git clean -xdf && cd -
             fi
         done
-        rm -rf ./build/libsrt-*
-    ;;
-    check)
-        echo_archs FF_ACT_ARCHS_ALL
+        rm -rf $UNI_BUILD_ROOT/build/libsrt-*
     ;;
     *)
-        echo_usage
+        echo "Usage:"
+        for ARCH in $FF_ALL_ARCHS
+        do
+            echo "  $0 $ARCH"
+        done
+        echo "  $0 lipo|all|clean"
         exit 1
     ;;
 esac
+

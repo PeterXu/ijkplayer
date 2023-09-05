@@ -16,11 +16,17 @@
 # limitations under the License.
 #
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BASEDIR=$(dirname "$DIR")
+
 if [ $# -ne 2 ]; then
-    echo "Usage: $0 ios|osx|android full|lite"
+    echo "usage: $0 ios|android|osx x86_64|arm64|all|universe"
     exit 1
 fi
 
-if [ ! -f 'config/module.sh' ]; then
-    cd config && ln -sf module-$2.sh module-$1.sh
-fi
+IJK_SDL_UPSTREAM=https://github.com/libsdl-org/SDL.git
+IJK_SDL_FORK=https://github.com/libsdl-org/SDL.git
+IJK_SDL_COMMIT=ac13ca9ab6  #tag: release-2.26.5
+
+$BASEDIR/init/init-repo.sh $IJK_SDL_UPSTREAM $IJK_SDL_FORK $IJK_SDL_COMMIT $1 $2
+

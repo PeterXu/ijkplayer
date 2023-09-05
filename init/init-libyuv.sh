@@ -19,19 +19,14 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BASEDIR=$(dirname "$DIR")
 
-IJK_LIBYUV_UPSTREAM=https://github.com/Bilibili/libyuv.git
-IJK_LIBYUV_FORK=https://github.com/Bilibili/libyuv.git
-IJK_LIBYUV_COMMIT=ijk-r0.2.1-dev
-IJK_LIBYUV_LOCAL_REPO=$BASEDIR/extra/libyuv
+#IJK_LIBYUV_UPSTREAM=https://github.com/Bilibili/libyuv.git
+#IJK_LIBYUV_FORK=https://github.com/Bilibili/libyuv.git
+#IJK_LIBYUV_COMMIT=ijk-r0.2.1-dev
 
-set -e
-TOOLS=$BASEDIR/tools
+#https://chromium.googlesource.com/libyuv/libyuv,main
+IJK_LIBYUV_UPSTREAM=https://github.com/PeterXu/libyuv.git
+IJK_LIBYUV_FORK=https://github.com/PeterXu/libyuv.git
+IJK_LIBYUV_COMMIT=58a4a8014
 
-echo "== pull libyuv base =="
-sh $TOOLS/pull-repo-base.sh $IJK_LIBYUV_UPSTREAM $IJK_LIBYUV_LOCAL_REPO
+$BASEDIR/init/init-repo.sh $IJK_LIBYUV_UPSTREAM $IJK_LIBYUV_FORK $IJK_LIBYUV_COMMIT "any" "common" "ijkmedia/ijkyuv"
 
-echo "== pull libyuv fork =="
-sh $TOOLS/pull-repo-ref.sh $IJK_LIBYUV_FORK $BASEDIR/ijkmedia/ijkyuv ${IJK_LIBYUV_LOCAL_REPO}
-cd $BASEDIR/ijkmedia/ijkyuv
-git checkout ${IJK_LIBYUV_COMMIT}
-cd -
