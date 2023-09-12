@@ -173,7 +173,7 @@ static const AVOption ffp_context_options[] = {
     { "pos-update-interval",             "pos update interval in milliseconds, max 1000, min 10",
         OPTION_OFFSET(pos_update_interval), OPTION_INT(NOTIFY_KEY_MSG_PER_MILLISECONDS, 10, 1000) },
 
-        // iOS only options
+    // iOS only options
     { "videotoolbox",                       "VideoToolbox: enable",
         OPTION_OFFSET(videotoolbox),        OPTION_INT(0, 0, 1) },
     { "videotoolbox-max-frame-width",       "VideoToolbox: max width of output frame",

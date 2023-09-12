@@ -20,8 +20,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#import "IJKMediaFramework.h"
 #import "IJKFFMediaPlayer.h"
+#import "IJKMediaFramework.h"
 
 #import "IJKFFMoviePlayerDef.h"
 #import "IJKAudioKit.h"
@@ -104,6 +104,7 @@ int ff_media_player_msg_loop(void* arg)
 
 - (IJKFFMediaPlayer *)init
 {
+    NSLog(@"init player with gl view");
     self = [super init];
     if (self) {
         _renderType = IJKSDLFFPlayrRenderTypeGlView;
@@ -114,6 +115,7 @@ int ff_media_player_msg_loop(void* arg)
 
 - (instancetype)initWithFbo
 {
+    NSLog(@"init player with fbo view");
     self = [super init];
     if (self) {
         _renderType = IJKSDLFFPlayrRenderTypeFboView;
@@ -343,10 +345,12 @@ int ff_media_player_msg_loop(void* arg)
 #else
             kCVPixelBufferOpenGLCompatibilityKey,
 #endif
+			kCVPixelBufferMetalCompatibilityKey,
             kCVPixelBufferIOSurfacePropertiesKey,
         };
         const void *values[] = {
             (__bridge const void *) (@YES),
+			(__bridge const void *) (@YES),
             (__bridge const void *) ([NSDictionary dictionary]),
         };
         

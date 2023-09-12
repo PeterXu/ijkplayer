@@ -45,6 +45,10 @@ IJKFF_Pipenode *ffpipenode_alloc(size_t opaque_size)
         return NULL;
     }
 
+    node->func_destroy = NULL;
+    node->func_run_sync = NULL;
+    node->func_flush = NULL;
+
     return node;
 }
 

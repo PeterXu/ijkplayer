@@ -118,64 +118,44 @@ inline static void msg_init_msg(AVMessage *msg)
     memset(msg, 0, sizeof(AVMessage));
 }
 
-inline static void msg_queue_put_simple1(MessageQueue *q, int what)
-{
-    AVMessage msg;
-    msg_init_msg(&msg);
-    msg.what = what;
-    msg_queue_put(q, &msg);
-}
-
-inline static void msg_queue_put_simple2(MessageQueue *q, int what, int arg1)
-{
-    AVMessage msg;
-    msg_init_msg(&msg);
-    msg.what = what;
-    msg.arg1 = arg1;
-    msg_queue_put(q, &msg);
-}
-
-inline static void msg_queue_put_simple3(MessageQueue *q, int what, int arg1, int arg2)
-{
-    AVMessage msg;
-    msg_init_msg(&msg);
-    msg.what = what;
-    msg.arg1 = arg1;
-    msg.arg2 = arg2;
-    msg_queue_put(q, &msg);
-}
-
 inline static void msg_obj_free_l(void *obj)
 {
     av_free(obj);
 }
 
-inline static void msg_queue_put_simple4(MessageQueue *q, int what, int arg1, int arg2, void *obj, int obj_len)
+inline static void msg_queue_put_simple(MessageQueue *q, int what, int arg1, int arg2, void *obj, size_t len, void (*free_l)(void *))
 {
     AVMessage msg;
     msg_init_msg(&msg);
     msg.what = what;
     msg.arg1 = arg1;
     msg.arg2 = arg2;
-    msg.len = (size_t)obj_len;
-    msg.obj = av_malloc(msg.len);
-    memcpy(msg.obj, obj, msg.len);
-    msg.free_l = msg_obj_free_l;
+    if (obj) {
+        if (free_l) {
+            msg.obj = obj;
+            msg.len = len;
+            msg.free_l = free_l;
+        } else {
+            msg.obj = av_malloc(len);
+            msg.len = len;
+            memcpy(msg.obj, obj, len);
+            msg.free_l = msg_obj_free_l;
+        }
+    }
     msg_queue_put(q, &msg);
 }
 
-inline static void msg_queue_put_simple5(MessageQueue *q, int what, int arg1, int arg2, void *obj, size_t len, void (*free_l)(void *obj))
-{
-    AVMessage msg;
-    msg_init_msg(&msg);
-    msg.what = what;
-    msg.arg1 = arg1;
-    msg.arg2 = arg2;
-    msg.obj = obj;
-    msg.len = len;
-    msg.free_l = free_l;
-    msg_queue_put(q, &msg);
-}
+#define msg_queue_put_simple5(q, what, arg1, arg2, obj, len, free_l) \
+    msg_queue_put_simple(q, what, arg1, arg2, obj, len, free_l)
+#define msg_queue_put_simple4(q, what, arg1, arg2, obj, len) \
+    msg_queue_put_simple(q, what, arg1, arg2, obj, len, NULL)
+#define msg_queue_put_simple3(q, what, arg1, arg2) \
+    msg_queue_put_simple(q, what, arg1, arg2, NULL, 0, NULL)
+#define msg_queue_put_simple2(q, what, arg1) \
+    msg_queue_put_simple(q, what, arg1, 0, NULL, 0, NULL)
+#define msg_queue_put_simple1(q, what) \
+    msg_queue_put_simple(q, what, 0, 0, NULL, 0, NULL)
+
 
 inline static void msg_queue_init(MessageQueue *q)
 {
