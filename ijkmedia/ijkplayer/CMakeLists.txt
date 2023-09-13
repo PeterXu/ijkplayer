@@ -32,6 +32,8 @@ set(BUILD_SOURCES
 
     ff_cmdutils.c
     ff_cmdutils.h
+    ff_ffplay_impl.c
+    ff_ffplay_impl.h
     ff_ffplay.c
     ff_ffplay.h
     ff_ffplay_debug.h

@@ -274,6 +274,7 @@ typedef struct Decoder {
     SDL_Profiler decode_profiler;
     Uint64 first_frame_decoded_time;
     int    first_frame_decoded;
+    void *userdata;
 } Decoder;
 
 
