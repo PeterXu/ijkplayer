@@ -119,7 +119,7 @@ done
 # ./configure --list-parsers
 export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-parsers"
 parsers="aac aac_latm ac3 cook dca dirac dvaudio dvbsub dvdsub flac gsm"
-parsers="$parsers h261 h263 h264 hevc mpeg4 mpeg4video mpegvideo png rv30 rv40"
+parsers="$parsers h261 h263 h264 hevc mpeg4video mpegvideo png rv30 rv40"
 for i in $parsers; do
   export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-parser=$i"
 done
@@ -127,7 +127,8 @@ done
 # ./configure --list-protocols
 export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-protocols"
 protocols="async concat crypto data ffrtmphttp file ftp hls http httpproxy https"
-protocols="$protocols ijk* pipe rtmp rtmpt rtp tcp udp"
+protocols="$protocols ijkfilehook ijkhttphook ijkio ijklongurl ijkmediadatasource ijksegment ijktcphook"
+protocols="$protocols pipe rtmp rtmpt rtp tcp udp"
 for i in $protocols; do
   export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-protocol=$i"
 done

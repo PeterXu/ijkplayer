@@ -21,7 +21,7 @@ BASEDIR=$(dirname "$DIR")
 
 IJK_GAS_UPSTREAM=https://github.com/Bilibili/gas-preprocessor.git
 IJK_GAS_FORK=https://github.com/Bilibili/gas-preprocessor.git
-IJK_GAS_COMMIT=dd811e7a8403e
+IJK_GAS_COMMIT=dd811e7a8403e #master
 
 $BASEDIR/init/init-repo.sh $IJK_GAS_UPSTREAM $IJK_GAS_FORK $IJK_GAS_COMMIT "any" "none"
 

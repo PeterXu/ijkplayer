@@ -3,18 +3,20 @@
 
 set -e
 
-if [ -z "$ANDROID_NDK" -o -z "$ANDROID_NDK" ]; then
-    echo "You must define ANDROID_NDK, ANDROID_SDK before starting."
-    echo "They must point to your NDK and SDK directories.\n"
-    exit 1
-fi
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BASEDIR=$(dirname "$DIR")
+PLATFORM="android"
 
+FF_TARGET=$1
+FF_TARGET_EXTRA=$2
+FF_TOOLS=${BASEDIR}/tools
+UNI_BUILD_ROOT=${BASEDIR}/$PLATFORM
 
-REQUEST_TARGET=$1
+#----------
 
 do_build_output() {
     INPUT="$1"
-    OUTPUT="build/fplayer-core"
+    OUTPUT="$UNI_BUILD_ROOT/build/fplayer-core"
     mkdir -p "$OUTPUT"
     echo "Output: $INPUT -> $OUTPUT"
     [ -d "$INPUT/aar" ] && cp -rf "$INPUT/aar" "$OUTPUT"
@@ -22,26 +24,25 @@ do_build_output() {
     return 0
 }
 
-
 # usage: $0 java/exo/example [build|clean]
 do_build_aar() {
     TARGET="$1"
     ACTION="$2"
     [ "#$ACTION" = "#" ] && ACTION="build"
-    cd ijkplayer
+    cd $UNI_BUILD_ROOT/ijkplayer
     ./gradlew :ijkplayer-$TARGET:$ACTION
-    cd ..
-    do_build_output "ijkplayer/ijkplayer-$TARGET/build/outputs"
+    cd -
+    do_build_output "$UNI_BUILD_ROOT/ijkplayer/ijkplayer-$TARGET/build/outputs"
 }
 
 # usage: $0 [build|clean]
 do_build_full() {
     ACTION="$1"
     [ "#$ACTION" = "#" ] && ACTION="build"
-    cd ijkplayer
+    cd $UNI_BUILD_ROOT/ijkplayer
     ./gradlew :fijkplayer-full:$ACTION
-    cd ..
-    do_build_output "ijkplayer/fijkplayer-full/build/outputs"
+    cd -
+    do_build_output "$UNI_BUILD_ROOT/ijkplayer/fijkplayer-full/build/outputs"
 }
 
 
@@ -53,10 +54,11 @@ do_build_all() {
     do_build_aar example $ACTION
 }
 
+#----------
 
-case "$REQUEST_TARGET" in
+case "$FF_TARGET" in
     java|exo|example)
-        do_build_aar $REQUEST_TARGET build
+        do_build_aar $FF_TARGET build
     ;;
     full)
         do_build_full
@@ -69,8 +71,8 @@ case "$REQUEST_TARGET" in
     ;;
     *)
         echo "Usage:"
-        echo "  $0 java|exo|example"
         echo "  $0 full"
+        echo "  $0 java|exo|example"
         echo "  $0 all|clean"
         exit 1
     ;;

@@ -16,56 +16,31 @@
 # limitations under the License.
 #
 
-# IJK_FFMPEG_UPSTREAM=git://git.videolan.org/ffmpeg.git
-IJK_FFMPEG_UPSTREAM=https://github.com/Bilibili/FFmpeg.git
-IJK_FFMPEG_FORK=https://github.com/befovy/FFmpeg.git
-IJK_FFMPEG_COMMIT=ff4.0--ijk0.8.8--20211030--926
-IJK_FFMPEG_LOCAL_REPO=extra/ffmpeg
-
 set -e
-TOOLS=tools
 
-FF_ALL_ARCHS="armv7a arm64 x86 x86_64"
+PLATFORM="android"
+
+FF_ALL_ARCHS="x86_64 armv7 arm64"
 FF_TARGET=$1
 
-function pull_common()
-{
-    git --version
-    echo "== pull ffmpeg base =="
-    [ ! -e $IJK_FFMPEG_LOCAL_REPO ] && sh $TOOLS/pull-repo-base.sh $IJK_FFMPEG_UPSTREAM $IJK_FFMPEG_LOCAL_REPO || echo
-}
+case "$FF_TARGET" in
+    x86_64|armv7|arm64|all)
+        ./init/init-ffmpeg.sh $PLATFORM $FF_TARGET
+        ./init/init-boringssl.sh $PLATFORM "universe"
+    ;;
+    *)
+        for ARCH in $FF_ALL_ARCHS
+        do
+            echo "$0 $ARCH"
+        done
+        echo "$0 all"
+        exit 1
+    ;;
+esac
 
-function pull_fork()
-{
-    echo "== pull ffmpeg fork $1 =="
-    sh $TOOLS/pull-repo-ref.sh $IJK_FFMPEG_FORK android/contrib/ffmpeg-$1 ${IJK_FFMPEG_LOCAL_REPO}
-    cd android/contrib/ffmpeg-$1
-    git checkout ${IJK_FFMPEG_COMMIT} -B ijkplayer
-    cd -
-}
-
-if [ "#$FF_TARGET" = "#" ]; then
-    for ARCH in $FF_ALL_ARCHS
-    do
-        echo "$0 $ARCH"
-    done
-    echo "$0 all"
-    exit 1
-elif [ "$FF_TARGET" = "all" ]; then
-    pull_common
-    for ARCH in $FF_ALL_ARCHS
-    do
-        pull_fork "$ARCH"
-    done
-else
-    pull_common
-    pull_fork "$FF_TARGET"
-fi
-
-./init-config.sh android lite
+./init-config.sh $PLATFORM lite
 ./init/init-libyuv.sh
-./init/init-android-soundtouch.sh
-./init/init-android-boringssl.sh
+./init/init-soundtouch.sh
 
-cp extra/CMakeLists.txt.yuv ijkmedia/ijkyuv/CMakeLists.txt
+#cp extra/CMakeLists.txt.yuv ijkmedia/ijkyuv/CMakeLists.txt
 cp extra/CMakeLists.txt.soundtouch ijkmedia/ijksoundtouch/CMakeLists.txt

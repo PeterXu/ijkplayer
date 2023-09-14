@@ -20,7 +20,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BASEDIR=$(dirname "$DIR")
 
 if [ $# -ne 2 ]; then
-    echo "usage: $0 ios|android|osx x86_64|arm64|all"
+    echo "usage: $0 ios|android|osx universe"
     exit 1
 fi
 
@@ -32,9 +32,10 @@ $BASEDIR/init/init-repo.sh $IJK_LIBSOXR_UPSTREAM $IJK_LIBSOXR_FORK $IJK_LIBSOXR_
 
 
 if test x"$1" = x"android"; then
-    ANDROID_CMAKE_UPSTREAM=https://github.com/PeterXu/android-cmake.git
-    ANDROID_CMAKE_COMMIT=master
-    $BASEDIR/init/init-repo.sh $ANDROID_CMAKE_UPSTREAM $ANDROID_CMAKE_UPSTREAM $ANDROID_CMAKE_COMMIT "any" "none"
+    #ANDROID_CMAKE_UPSTREAM=https://github.com/PeterXu/android-cmake.git
+    #ANDROID_CMAKE_COMMIT=master
+    #$BASEDIR/init/init-repo.sh $ANDROID_CMAKE_UPSTREAM $ANDROID_CMAKE_UPSTREAM $ANDROID_CMAKE_COMMIT "any" "none"
     #cp $BASEDIR/extra/android-cmake/android.toolchain.cmake $BASEDIR/android/contrib/libsoxr-$2
+    echo
 fi
 

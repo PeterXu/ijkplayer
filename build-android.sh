@@ -3,7 +3,7 @@
 set -e
 
 PARAM="$1"
-ARCH_LIST="x86_64 arm64"
+ARCH_LIST="x86_64 armv7 arm64"
 
 
 if [ "#$PARAM" = "#" ]; then

@@ -19,7 +19,7 @@ set -e
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BASEDIR=$(dirname "$DIR")
-PLATFORM="osx"
+PLATFORM="android"
 
 FF_TARGET=$1
 FF_TARGET_EXTRA=$2

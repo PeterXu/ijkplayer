@@ -20,7 +20,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BASEDIR=$(dirname "$DIR")
 
 if [ $# -lt 5 ]; then
-    echo "Usage: $0 repo fork commit ios|android|osx x86_64|arm64|all|universe"
+    echo "Usage: $0 repo fork commit ios|android|osx x86_64|armv7|arm64|all"
+    echo "Usage: $0 repo fork commit ios|android|osx universe"
     echo "Usage: $0 repo fork commit any none"
     echo "Usage: $0 repo fork commit any common dest"
     exit 1
@@ -47,8 +48,7 @@ elif [ "$FF_PLATFORM" = "ios" ]; then
     FF_ALL_ARCHS=$FF_ALL_ARCHS_IOS12_SDK
     FF_DEST=ios/contrib/$FF_NAME
 elif [ "$FF_PLATFORM" = "android" ]; then
-    #FF_ALL_ARCHS_ANDROID_SDK="x86 armv7a x86_64 arm64"
-    FF_ALL_ARCHS_ANDROID_SDK="x86_64 arm64"
+    FF_ALL_ARCHS_ANDROID_SDK="x86_64 armv7 arm64"
     FF_ALL_ARCHS=$FF_ALL_ARCHS_ANDROID_SDK
     FF_DEST=android/contrib/$FF_NAME
 elif [ "$FF_PLATFORM" = "any" ]; then

@@ -35,13 +35,14 @@ echo "build_arch: $FF_PLATFORM/$FF_ARCH"
 echo "build_opt:  $FF_BUILD_OPT"
 
 
-FF_BUILD_ROOT=$BASEDIR/contrib
+FF_BUILD_ROOT=$BASEDIR/$FF_PLATFORM/contrib
 FF_BUILD_SOURCE="$FF_BUILD_ROOT/libsrt-$FF_ARCH"
-FF_BUILD_PREFIX="$FF_BUILD_ROOT/build/libsrt-$FF_ARCH/output"
-mkdir -p $FF_BUILD_PREFIX
+FF_BUILD_WSPACE="$FF_BUILD_ROOT/build/libsrt-$FF_ARCH"
+FF_BUILD_OUTPUT="$FF_BUILD_ROOT/build/libsrt-$FF_ARCH/output"
+mkdir -p $FF_BUILD_OUTPUT
 echo "build_root: $FF_BUILD_ROOT"
 echo "build_source: $FF_BUILD_SOURCE"
-echo "build_prefix: $FF_BUILD_PREFIX"
+echo "build_output: $FF_BUILD_OUTPUT"
 
 
 #--------------------
@@ -54,9 +55,8 @@ echo "PKG_CONFIG_PATH: ${PKG_CONFIG_PATH}"
 
 # detect env
 source $DIR/do-arch.sh $FF_PLATFORM $FF_ARCH
-FF_CROSS_PREFIX="$IJK_CROSS_PREFIX"
 
-
+# set cfg
 FF_CFG_FLAGS=
 if [ "$FF_PLATFORM" = "ios" -o "$FF_PLATFORM" = "osx" ]; then
     echo
@@ -65,11 +65,11 @@ if [ "$FF_PLATFORM" = "ios" -o "$FF_PLATFORM" = "osx" ]; then
 elif [ "$FF_PLATFORM" = "android" ]; then
     FF_CFG_FLAGS="$FF_CFG_FLAGS --cmake-system-name=Android"
     FF_CFG_FLAGS="$FF_CFG_FLAGS --android-toolchain=gcc"
-    FF_CFG_FLAGS="$FF_CFG_FLAGS --with-compiler-prefix=${FF_CROSS_PREFIX}-"
+    FF_CFG_FLAGS="$FF_CFG_FLAGS --with-compiler-prefix=${IJK_CROSS_PREFIX}-"
     FF_CFG_FLAGS="$FF_CFG_FLAGS --with-target-path=$FF_TOOLCHAIN_PATH"
 
-    FF_CFG_FLAGS="$FF_CFG_FLAGS --android-abi=$ANDROID_ABI"
-    FF_CFG_FLAGS="$FF_CFG_FLAGS --cmake-android-arch-abi=$CMAKE_ANDROID_ARCH_ABI"
+    FF_CFG_FLAGS="$FF_CFG_FLAGS --android-abi=$IJK_NDK_ABI"
+    FF_CFG_FLAGS="$FF_CFG_FLAGS --cmake-android-arch-abi=$IJK_NDK_ABI"
     FF_CFG_FLAGS="$FF_CFG_FLAGS --android-stl=c++_static"
     FF_CFG_FLAGS="$FF_CFG_FLAGS --cmake-android-api=$CMAKE_ANDROID_API"
 
@@ -81,12 +81,12 @@ elif [ "$FF_PLATFORM" = "android" ]; then
     export LDFLAGS="$LDFLAGS -pie"
 fi
 
-FF_CFG_FLAGS="$FF_CFG_FLAGS --cmake-prefix-path=${FF_BUILD_PREFIX}"
-FF_CFG_FLAGS="$FF_CFG_FLAGS --cmake-install-prefix=${FF_BUILD_PREFIX}"
+FF_CFG_FLAGS="$FF_CFG_FLAGS --cmake-prefix-path=$FF_BUILD_OUTPUT"
+FF_CFG_FLAGS="$FF_CFG_FLAGS --cmake-install-prefix=$FF_BUILD_OUTPUT"
 
-FF_CFG_FLAGS="$FF_CFG_FLAGS --openssl-include-dir=${FF_BUILD_PREFIX}/include"
-FF_CFG_FLAGS="$FF_CFG_FLAGS --openssl-ssl-library=${FF_BUILD_PREFIX}/lib/libssl.a"
-FF_CFG_FLAGS="$FF_CFG_FLAGS --openssl-crypto-library=${FF_BUILD_PREFIX}/lib/libcrypto.a"
+FF_CFG_FLAGS="$FF_CFG_FLAGS --openssl-include-dir=$FF_BUILD_OUTPUT/include"
+FF_CFG_FLAGS="$FF_CFG_FLAGS --openssl-ssl-library=$FF_BUILD_OUTPUT/lib/libssl.a"
+FF_CFG_FLAGS="$FF_CFG_FLAGS --openssl-crypto-library=$FF_BUILD_OUTPUT/lib/libcrypto.a"
 
 FF_CFG_FLAGS="$FF_CFG_FLAGS --enable-shared=off --enable-c++11=off"
 FF_CFG_FLAGS="$FF_CFG_FLAGS --enable-static=on"
@@ -114,5 +114,5 @@ make install
 
 
 if [ "$FF_PLATFORM" = "android" ]; then
-    sed -i '' 's|-lsrt   |-lsrt -lc -lm -ldl -lcrypto -lssl -lstdc++|g' ${FF_BUILD_PREFIX}/lib/pkgconfig/srt.pc
+    sed -i '' 's|-lsrt   |-lsrt -lc -lm -ldl -lcrypto -lssl -lstdc++|g' $FF_BUILD_OUTPUT/lib/pkgconfig/srt.pc
 fi

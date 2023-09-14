@@ -21,7 +21,7 @@ BASEDIR=$(dirname "$DIR")
 
 GLFW_UPSTREAM=https://github.com/glfw/glfw.git
 GLFW_FORK=https://github.com/glfw/glfw.git
-GLFW_COMMIT=ecda86fa
+GLFW_COMMIT=ecda86fa4f89e #3.3.1
 
 $BASEDIR/init/init-repo.sh $GLFW_UPSTREAM $GLFW_FORK $GLFW_COMMIT "any" "common" "desktop/glfw"
 

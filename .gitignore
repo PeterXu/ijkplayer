@@ -1,14 +1,9 @@
 # -----
 config/
-build/
-ffmpeg-temp/
-android/ffmpeg-*
-android/openssl-*
-ios/ffmpeg-*
-ios/openssl-*
-ios/contrib
-osx/contrib
-extra
+extra/
+ios/contrib/
+osx/contrib/
+android/contrib/
 .DS_Store
 ijkmedia/ijkyuv/
 ijkmedia/ijksoundtouch/
@@ -31,6 +26,7 @@ bin/
 gen/
 libs/
 obj/
+build/
 ijkmedia/ijkplayer/ijkversion.h
 
 # Local configuration file (sdk path, etc)
@@ -47,7 +43,6 @@ xcshareddata
 
 
 # osx
-# osx/
 cmake-build-debug/
 cmake-build-release/
 

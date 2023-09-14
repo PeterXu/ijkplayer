@@ -1,7 +1,6 @@
 #! /usr/bin/env bash
 #
-# Copyright (C) 2016 Bilibili
-# Copyright (C) 2016 Zhang Rui <bbcallen@gmail.com>
+# Copyright (C) 2013-2014 Zhang Rui <bbcallen@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,16 +15,10 @@
 # limitations under the License.
 #
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-BASEDIR=$(dirname "$DIR")
-
 set -e
 
-cd $BASEDIR/extra/jni4android-fork
-./configure --incdir=../../ijkmedia/ijkj4a --bindir=../bin
-make install
-cd -
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BASEDIR=$(dirname "$DIR")
+FF_TOOLS=${BASEDIR}/tools
+sh $FF_TOOLS/compile-library.sh "ffmpeg" "android" $1 $2
 
-cd $BASEDIR/ijkmedia/ijkj4a
-make
-cd -

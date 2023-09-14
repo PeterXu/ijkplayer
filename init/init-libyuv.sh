@@ -26,7 +26,7 @@ BASEDIR=$(dirname "$DIR")
 #https://chromium.googlesource.com/libyuv/libyuv,main
 IJK_LIBYUV_UPSTREAM=https://github.com/PeterXu/libyuv.git
 IJK_LIBYUV_FORK=https://github.com/PeterXu/libyuv.git
-IJK_LIBYUV_COMMIT=58a4a8014
+IJK_LIBYUV_COMMIT=58a4a8014 #dev
 
 $BASEDIR/init/init-repo.sh $IJK_LIBYUV_UPSTREAM $IJK_LIBYUV_FORK $IJK_LIBYUV_COMMIT "any" "common" "ijkmedia/ijkyuv"
 

@@ -20,7 +20,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BASEDIR=$(dirname "$DIR")
 
 if [ $# -ne 2 ]; then
-    echo "Usage: $0 ios|android|osx x86_64|arm64|all"
+    echo "Usage: $0 ios|android|osx x86_64|armv7|arm64|all"
     exit 1
 fi
 

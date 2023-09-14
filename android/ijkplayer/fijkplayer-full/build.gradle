@@ -1,11 +1,6 @@
 apply plugin: 'com.android.library'
 
 // this module equals to the combination of the following module
-// include ':ijkplayer-armv5'
-// include ':ijkplayer-x86_64'
-// include ':ijkplayer-armv7a'
-// include ':ijkplayer-arm64'
-// include ':ijkplayer-x86'
 // include ':ijkplayer-java'
 
 def safePropGet = { prop, fallback ->
@@ -39,8 +34,7 @@ android {
         ndk {
             // Specifies the ABI configurations of your native
             // libraries Gradle should build and package with your APK.
-            //abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86', 'x86_64'
-            abiFilters 'arm64-v8a', 'x86_64'
+            abiFilters 'armeabi-v7a', 'x86_64', 'arm64-v8a'
         }
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

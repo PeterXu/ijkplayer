@@ -1,6 +1,8 @@
 #! /usr/bin/env bash
 #
+# Copyright (C) 2013-2014 Bilibili
 # Copyright (C) 2013-2014 Zhang Rui <bbcallen@gmail.com>
+# Copyright (C) 2018-2019 Befovy <befovy@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +21,7 @@ set -e
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BASEDIR=$(dirname "$DIR")
-PLATFORM="osx"
+PLATFORM="android"
 
 FF_TARGET=$1
 FF_TARGET_EXTRA=$2
@@ -29,24 +31,39 @@ UNI_BUILD_ROOT=${BASEDIR}/$PLATFORM/contrib
 
 #----------
 
-case "$FF_TARGET" in
+do_lipo_all() {
+    echo
+}
+
+#----------
+
+case $FF_TARGET in
     x86_64|arm64)
-        sh $FF_TOOLS/do-compile-libsrt.sh $PLATFORM $FF_TARGET
+        sh $FF_TOOLS/do-compile-lobsoxr.sh $PLATFORM $FF_TARGET $FF_TARGET_EXTRA
     ;;
     all)
         for ARCH in $FF_ALL_ARCHS
         do
-            sh $FF_TOOLS/do-compile-libsrt.sh $PLATFORM $ARCH
+            sh $FF_TOOLS/do-compile-libsoxr.sh $PLATFORM $ARCH $FF_TARGET_EXTRA
         done
+        do_lipo_all
+    ;;
+    lipo)
+        do_lipo_all
     ;;
     clean)
         for ARCH in $FF_ALL_ARCHS
         do
-            if [ -d $UNI_BUILD_ROOT/libsrt-$ARCH ]; then
-                cd $UNI_BUILD_ROOT/libsrt-$ARCH && git clean -xdf && cd -
+            echo "clean libsoxr"
+            echo "=================="
+            if [ -d "$UNI_BUILD_ROOT/libsoxr" ]; then
+                cd $UNI_BUILD_ROOT/libsoxr && git clean -xdf && cd -
             fi
         done
-        rm -rf $UNI_BUILD_ROOT/build/libsrt-*
+        echo "clean build cache"
+        echo "================="
+        rm -rf $UNI_BUILD_ROOT/build/libsoxr-*
+        rm -rf $UNI_BUILD_ROOT/build/universal
     ;;
     *)
         echo "Usage:"
