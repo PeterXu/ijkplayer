@@ -76,7 +76,7 @@ do_lipo_all() {
         LIPO_FLAGS=
         for ARCH in $FF_ALL_ARCHS; do
             ONELIB="$UNI_BUILD_ROOT/build/$FF_NAME-$ARCH/output/lib/$LIBNAME"
-            LIPO_FLAGS="$LIPO_FLAGS $ONELIB"
+            [ -f "$ONELIB" ] && LIPO_FLAGS="$LIPO_FLAGS $ONELIB"
         done
 
         #merge lib
@@ -86,7 +86,7 @@ do_lipo_all() {
 
         #copy headers
         mkdir -p $BUILD_UNIVERSAL/include
-        cp -af  "$BUILD_INC/*" $BUILD_UNIVERSAL/include/
+        cp -af  $BUILD_INC/* $BUILD_UNIVERSAL/include/
     done
 }
 
