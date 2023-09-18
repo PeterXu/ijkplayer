@@ -21,7 +21,9 @@
  */
 
 #import "IJKFFMediaPlayer.h"
+#if IJK_IOS
 #import "IJKMediaFramework.h"
+#endif
 
 #import "IJKFFMoviePlayerDef.h"
 #import "IJKAudioKit.h"
@@ -345,12 +347,12 @@ int ff_media_player_msg_loop(void* arg)
 #else
             kCVPixelBufferOpenGLCompatibilityKey,
 #endif
-			kCVPixelBufferMetalCompatibilityKey,
+            kCVPixelBufferMetalCompatibilityKey,
             kCVPixelBufferIOSurfacePropertiesKey,
         };
         const void *values[] = {
             (__bridge const void *) (@YES),
-			(__bridge const void *) (@YES),
+            (__bridge const void *) (@YES),
             (__bridge const void *) ([NSDictionary dictionary]),
         };
         
@@ -442,16 +444,20 @@ int ff_media_player_msg_loop(void* arg)
         if (snapshot != nil) {
             CIImage *ciImage = [CIImage imageWithCVPixelBuffer:snapshot];
 
-               CIContext *context = [CIContext contextWithOptions:nil];
-               CGImageRef imageRef = [context createCGImage:ciImage
-                        fromRect:CGRectMake(0, 0,
-                                            CVPixelBufferGetWidth(snapshot),
-                                            CVPixelBufferGetHeight(snapshot))];
+            CIContext *context = [CIContext contextWithOptions:nil];
+            CGImageRef imageRef = [context createCGImage:ciImage
+                                                fromRect:CGRectMake(0, 0,
+                                                        CVPixelBufferGetWidth(snapshot),
+                                                        CVPixelBufferGetHeight(snapshot))];
 
-               UIImage *uiImage = [UIImage imageWithCGImage:imageRef];
-               CGImageRelease(imageRef);
+#if IJK_IOS
+            UIImage *uiImage = [UIImage imageWithCGImage:imageRef];
+#else
+            CIImage *uiImage = [CIImage imageWithCGImage:imageRef];
+#endif
+            CGImageRelease(imageRef);
 
-               block(uiImage, nil);
+            block(uiImage, nil);
         } else {
             block(nil, [[NSError alloc] initWithDomain:@"no snapshot" code:IJKMPEC_SNAPSHOT userInfo:nil]);
         }

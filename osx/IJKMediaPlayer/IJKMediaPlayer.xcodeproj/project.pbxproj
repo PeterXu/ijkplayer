@@ -175,6 +175,10 @@
 		21C849E623619BF30028AC95 /* IJKSDLHudViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 21C849D123619BF30028AC95 /* IJKSDLHudViewController.h */; };
 		21C849E723619BF30028AC95 /* IJKSDLAudioUnitController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21C849D223619BF30028AC95 /* IJKSDLAudioUnitController.m */; };
 		21C849E823619BF30028AC95 /* ijksdl_vout_ios_gles2.m in Sources */ = {isa = PBXBuildFile; fileRef = 21C849D323619BF30028AC95 /* ijksdl_vout_ios_gles2.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		D0C458C42AB8562800B8A133 /* ff_ffplay_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = D0C458C22AB8562800B8A133 /* ff_ffplay_impl.h */; };
+		D0C458C52AB8562800B8A133 /* ff_ffplay_impl.c in Sources */ = {isa = PBXBuildFile; fileRef = D0C458C32AB8562800B8A133 /* ff_ffplay_impl.c */; };
+		D0C458C72AB8569000B8A133 /* libyuv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D0C458C62AB8569000B8A133 /* libyuv.a */; };
+		D0C458C92AB8570B00B8A133 /* ijksdl_log.c in Sources */ = {isa = PBXBuildFile; fileRef = D0C458C82AB8570B00B8A133 /* ijksdl_log.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -293,12 +297,12 @@
 		21414EE4236B32E400F60AE3 /* IJKVideoToolBoxAsync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IJKVideoToolBoxAsync.m; path = ../../ios/IJKMediaPlayer/IJKMediaPlayer/ijkmedia/ijkplayer/ios/pipeline/IJKVideoToolBoxAsync.m; sourceTree = "<group>"; };
 		21414EF0236B331300F60AE3 /* IJKSDLGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IJKSDLGLView.h; path = ../../ios/IJKMediaPlayer/IJKMediaPlayer/ijkmedia/ijksdl/ios/IJKSDLGLView.h; sourceTree = "<group>"; };
 		21414EF2236B331A00F60AE3 /* IJKSDLGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IJKSDLGLView.m; path = ../../ios/IJKMediaPlayer/IJKMediaPlayer/ijkmedia/ijksdl/ios/IJKSDLGLView.m; sourceTree = "<group>"; };
-		21414EF7236B35BA00F60AE3 /* libavfilter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavfilter.a; path = "../contrib/build/ffmpeg-x86_64/output/lib/libavfilter.a"; sourceTree = "<group>"; };
-		21414EF8236B35BA00F60AE3 /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswresample.a; path = "../contrib/build/ffmpeg-x86_64/output/lib/libswresample.a"; sourceTree = "<group>"; };
-		21414EF9236B35BA00F60AE3 /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavformat.a; path = "../contrib/build/ffmpeg-x86_64/output/lib/libavformat.a"; sourceTree = "<group>"; };
-		21414EFA236B35BA00F60AE3 /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = "../contrib/build/ffmpeg-x86_64/output/lib/libavcodec.a"; sourceTree = "<group>"; };
-		21414EFB236B35BA00F60AE3 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = "../contrib/build/ffmpeg-x86_64/output/lib/libavutil.a"; sourceTree = "<group>"; };
-		21414EFC236B35BA00F60AE3 /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswscale.a; path = "../contrib/build/ffmpeg-x86_64/output/lib/libswscale.a"; sourceTree = "<group>"; };
+		21414EF7236B35BA00F60AE3 /* libavfilter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavfilter.a; path = ../contrib/build/universal/lib/libavfilter.a; sourceTree = "<group>"; };
+		21414EF8236B35BA00F60AE3 /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswresample.a; path = ../contrib/build/universal/lib/libswresample.a; sourceTree = "<group>"; };
+		21414EF9236B35BA00F60AE3 /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavformat.a; path = ../contrib/build/universal/lib/libavformat.a; sourceTree = "<group>"; };
+		21414EFA236B35BA00F60AE3 /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = ../contrib/build/universal/lib/libavcodec.a; sourceTree = "<group>"; };
+		21414EFB236B35BA00F60AE3 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = ../contrib/build/universal/lib/libavutil.a; sourceTree = "<group>"; };
+		21414EFC236B35BA00F60AE3 /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswscale.a; path = ../contrib/build/universal/lib/libswscale.a; sourceTree = "<group>"; };
 		21414F56236B3CCF00F60AE3 /* IJKFFMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IJKFFMediaPlayer.h; path = ../../../ios/IJKMediaPlayer/IJKMediaPlayer/IJKFFMediaPlayer.h; sourceTree = "<group>"; };
 		21414F57236B3CCF00F60AE3 /* IJKFFMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IJKFFMediaPlayer.m; path = ../../../ios/IJKMediaPlayer/IJKMediaPlayer/IJKFFMediaPlayer.m; sourceTree = "<group>"; };
 		21414F5E236BE0C400F60AE3 /* IJKFFCMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IJKFFCMediaPlayer.h; sourceTree = "<group>"; };
@@ -360,6 +364,10 @@
 		21C849D123619BF30028AC95 /* IJKSDLHudViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IJKSDLHudViewController.h; path = ../../ios/IJKMediaPlayer/IJKMediaPlayer/ijkmedia/ijksdl/ios/IJKSDLHudViewController.h; sourceTree = "<group>"; };
 		21C849D223619BF30028AC95 /* IJKSDLAudioUnitController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IJKSDLAudioUnitController.m; path = ../../ios/IJKMediaPlayer/IJKMediaPlayer/ijkmedia/ijksdl/ios/IJKSDLAudioUnitController.m; sourceTree = "<group>"; };
 		21C849D323619BF30028AC95 /* ijksdl_vout_ios_gles2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ijksdl_vout_ios_gles2.m; path = ../../ios/IJKMediaPlayer/IJKMediaPlayer/ijkmedia/ijksdl/ios/ijksdl_vout_ios_gles2.m; sourceTree = "<group>"; };
+		D0C458C22AB8562800B8A133 /* ff_ffplay_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ff_ffplay_impl.h; path = ../../ijkmedia/ijkplayer/ff_ffplay_impl.h; sourceTree = "<group>"; };
+		D0C458C32AB8562800B8A133 /* ff_ffplay_impl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ff_ffplay_impl.c; path = ../../ijkmedia/ijkplayer/ff_ffplay_impl.c; sourceTree = "<group>"; };
+		D0C458C62AB8569000B8A133 /* libyuv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libyuv.a; path = ../contrib/build/universal/lib/libyuv.a; sourceTree = "<group>"; };
+		D0C458C82AB8570B00B8A133 /* ijksdl_log.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ijksdl_log.c; path = ../../ijkmedia/ijksdl/ijksdl_log.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -373,6 +381,7 @@
 				21414EFE236B35BA00F60AE3 /* libswresample.a in Frameworks */,
 				21414EFD236B35BA00F60AE3 /* libavfilter.a in Frameworks */,
 				21414F00236B35BA00F60AE3 /* libavcodec.a in Frameworks */,
+				D0C458C72AB8569000B8A133 /* libyuv.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -542,6 +551,7 @@
 		21414EF6236B35A000F60AE3 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				D0C458C62AB8569000B8A133 /* libyuv.a */,
 				21414EFA236B35BA00F60AE3 /* libavcodec.a */,
 				21414EF7236B35BA00F60AE3 /* libavfilter.a */,
 				21414EF9236B35BA00F60AE3 /* libavformat.a */,
@@ -591,6 +601,7 @@
 				21C8494B23619A800028AC95 /* ijksdl_fourcc.h */,
 				21C8494623619A800028AC95 /* ijksdl_gles2.h */,
 				21C8494323619A800028AC95 /* ijksdl_inc_internal.h */,
+				D0C458C82AB8570B00B8A133 /* ijksdl_log.c */,
 				21C8494123619A800028AC95 /* ijksdl_log.h */,
 				21C8494F23619A800028AC95 /* ijksdl_misc.h */,
 				21C8494923619A800028AC95 /* ijksdl_mutex.c */,
@@ -631,6 +642,8 @@
 				21414E6B236B325B00F60AE3 /* ff_ffplay_debug.h */,
 				21414E6C236B325B00F60AE3 /* ff_ffplay_def.h */,
 				21414E69236B325B00F60AE3 /* ff_ffplay_options.h */,
+				D0C458C32AB8562800B8A133 /* ff_ffplay_impl.c */,
+				D0C458C22AB8562800B8A133 /* ff_ffplay_impl.h */,
 				21414E63236B325B00F60AE3 /* ff_ffplay.c */,
 				21414E5F236B325B00F60AE3 /* ff_ffplay.h */,
 				21414E80236B326500F60AE3 /* ijkmeta.c */,
@@ -768,6 +781,7 @@
 				21414EA7236B327200F60AE3 /* ijkioapplication.h in Headers */,
 				21414E76236B325B00F60AE3 /* ff_ffpipenode.h in Headers */,
 				21C849E123619BF30028AC95 /* IJKSDLAudioQueueController.h in Headers */,
+				D0C458C42AB8562800B8A133 /* ff_ffplay_impl.h in Headers */,
 				21414ED3236B328600F60AE3 /* ffpipenode_ffplay_vdec.h in Headers */,
 				21414EC0236B327C00F60AE3 /* ijktree.h in Headers */,
 				21414EC1236B327C00F60AE3 /* ijkutils.h in Headers */,
@@ -933,10 +947,12 @@
 				21287EDD22E8A971008BF595 /* IJKMediaUtils.m in Sources */,
 				21C849D923619BF30028AC95 /* ijksdl_aout_ios_audiounit.m in Sources */,
 				21414EE8236B32E400F60AE3 /* IJKVideoToolBoxSync.m in Sources */,
+				D0C458C92AB8570B00B8A133 /* ijksdl_log.c in Sources */,
 				21C849E723619BF30028AC95 /* IJKSDLAudioUnitController.m in Sources */,
 				21C8496D23619A810028AC95 /* ijksdl_egl.c in Sources */,
 				21C8497623619A810028AC95 /* ijksdl_timer.c in Sources */,
 				21414E9F236B327200F60AE3 /* ijkioprotocol.c in Sources */,
+				D0C458C52AB8562800B8A133 /* ff_ffplay_impl.c in Sources */,
 				21414EA1236B327200F60AE3 /* ijkiocache.c in Sources */,
 				21414ED0236B328600F60AE3 /* ffpipeline_ffplay.c in Sources */,
 				21C849DF23619BF30028AC95 /* IJKSDLHudViewCell.m in Sources */,
@@ -1032,6 +1048,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"IJK_DESKTOP_UNI=1",
 					"DEBUG=1",
 					"$(inherited)",
 				);
@@ -1112,6 +1129,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 7SUQ9UM9P2;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1121,12 +1139,13 @@
 				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"IJK_OSX=1",
+					"IJK_DESKTOP_UNI=1",
 					"DEBUG=1",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/ijkmedia",
 					"$(PROJECT_DIR)/../../ijkmedia",
-					"$(PROJECT_DIR)/../contrib/build/ffmpeg-x86_64/output/include",
+					"$(PROJECT_DIR)/../contrib/build/universal/include",
 				);
 				INFOPLIST_FILE = IJKMediaPlayer/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1135,10 +1154,10 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../contrib/build/ffmpeg-x86_64/output/lib";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../contrib/build/universal/lib";
 				MACH_O_TYPE = mh_dylib;
+				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = (
-					"-L/usr/local/opt/openssl/lib",
 					"-lssl",
 					"-lcrypto",
 					"-lz",
@@ -1155,6 +1174,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 7SUQ9UM9P2;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1162,11 +1182,14 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
 				GCC_C_LANGUAGE_STANDARD = c11;
-				GCC_PREPROCESSOR_DEFINITIONS = "IJK_OSX=1";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"IJK_OSX=1",
+					"IJK_DESKTOP_UNI=1",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/ijkmedia",
 					"$(PROJECT_DIR)/../../ijkmedia",
-					"$(PROJECT_DIR)/../contrib/build/ffmpeg-x86_64/output/include",
+					"$(PROJECT_DIR)/../contrib/build/universal/include",
 				);
 				INFOPLIST_FILE = IJKMediaPlayer/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1175,10 +1198,9 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../contrib/build/ffmpeg-x86_64/output/lib";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../contrib/build/universal/lib";
 				MACH_O_TYPE = mh_dylib;
 				OTHER_LDFLAGS = (
-					"-L/usr/local/opt/openssl/lib",
 					"-lssl",
 					"-lcrypto",
 					"-lz",

@@ -27,7 +27,12 @@ FF_PLATFORM=$2
 FF_TARGET=$3
 FF_TARGET_EXTRA=$4
 
-FF_ALL_ARCHS="x86_64 armv7 arm64"
+case "$FF_PLATFORM" in
+    osx)        FF_ALL_ARCHS="x86_64 arm64";;
+    ios)        FF_ALL_ARCHS="armv7 x86_64 arm64";;
+    android)    FF_ALL_ARCHS="armv7 x86_64 arm64";;
+    *)          FF_ALL_ARCHS="armv7 x86_64 arm64";;
+esac
 FF_TOOLS=${BASEDIR}/tools
 UNI_BUILD_ROOT=${BASEDIR}/$FF_PLATFORM/contrib
 
@@ -44,7 +49,7 @@ print_usage() {
     for ARCH in $FF_ALL_ARCHS; do
         echo "Usage: $CMDLINE $ARCH"
     done
-    echo "Usage: $CMDLINE lipo|all|clean"
+    echo "Usage: $CMDLINE lipo|all|clean|distclean"
 }
 
 if [ $# -lt 3 ]; then
@@ -107,6 +112,10 @@ do_clean() {
     echo "clean build $FF_NAME"
     echo "================="
     rm -rf $UNI_BUILD_ROOT/build/$FF_NAME-*
+}
+
+do_distclean() {
+    do_clean
     rm -rf $UNI_BUILD_ROOT/build/universal
 }
 
@@ -128,6 +137,9 @@ case $FF_TARGET in
     ;;
     clean)
         do_clean
+    ;;
+    distclean)
+        do_distclean
     ;;
     *)
         print_usage

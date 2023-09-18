@@ -75,8 +75,6 @@ FF_CFG_FLAGS="$FF_CFG_FLAGS --target-os=$IJK_TARGET_OS"
 
 #extra options
 if [ "$FF_PLATFORM" = "ios" -o "$FF_PLATFORM" = "osx" ]; then
-    FF_CFLAGS="-arch $FF_ARCH $FF_CFLAGS"
-
     FF_CFG_FLAGS="$FF_CFG_FLAGS --enable-cross-compile"
     if [ "$FF_PLATFORM" = "ios" ]; then
         if [ "$FF_ARCH" = "x86_64" ]; then
@@ -139,7 +137,7 @@ if [ -f "${FF_DEP_LIBSRT}/lib/libsrt.a" ]; then
     echo "detect libsrt"
     FF_CFG_FLAGS="$FF_CFG_FLAGS --enable-libsrt"
     FF_CFLAGS="$FF_CFLAGS -I${FF_DEP_LIBSRT}/include"
-    FF_DEP_LIBS="$FF_CFLAGS -L${FF_DEP_LIBSRT}/lib -lsrt"
+    FF_DEP_LIBS="$FF_DEP_LIBS -L${FF_DEP_LIBSRT}/lib -lsrt"
 fi
 
 echo "\n[*] check libsoxr"
@@ -166,7 +164,7 @@ if [ -f "${FF_DEP_OPENSSL}/lib/libssl.a" ]; then
     FF_CFG_FLAGS="$FF_CFG_FLAGS --enable-protocol=crypto"
     FF_CFG_FLAGS="$FF_CFG_FLAGS --enable-protocol=https"
     FF_CFLAGS="$FF_CFLAGS -I${FF_DEP_OPENSSL}/include"
-    FF_DEP_LIBS="$FF_CFLAGS -L${FF_DEP_OPENSSL}/lib -lssl -lcrypto"
+    FF_DEP_LIBS="$FF_DEP_LIBS -L${FF_DEP_OPENSSL}/lib -lssl -lcrypto"
 fi
 
 

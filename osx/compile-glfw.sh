@@ -20,5 +20,5 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BASEDIR=$(dirname "$DIR")
 FF_TOOLS=${BASEDIR}/tools
-sh $FF_TOOLS/compile-library.sh "ffmpeg" "osx" $1 $2
+sh $FF_TOOLS/compile-library.sh "glfw" "osx" $1 $2
 

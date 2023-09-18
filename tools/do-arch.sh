@@ -117,8 +117,12 @@ if [ "$_PLATFORM" = "ios" -o "$_PLATFORM" = "osx" ]; then
             exit 1
         fi
     fi
+    # set cflags/ldflags
+    IJK_CFLAGS="$IJK_CFLAGS -arch $_ARCH"
     IJK_CFLAGS="$IJK_CFLAGS $_XCRUN_OSVERSION"
     IJK_CFLAGS="$IJK_CFLAGS $_XCODE_BITCODE"
+    IJK_LDFLAGS="$IJK_LDFLAGS -arch $_ARCH"
+    IJK_LDFLAGS="$IJK_LDFLAGS $_XCRUN_OSVERSION"
 
     # check xcrun
     _XCRUN_SDK=`echo $_XCRUN_SDK | tr '[:upper:]' '[:lower:]'`
@@ -127,8 +131,8 @@ if [ "$_PLATFORM" = "ios" -o "$_PLATFORM" = "osx" ]; then
     IJK_CROSS_TOP="$_XCRUN_SDK_PLATFORM_PATH/Developer"
     IJK_CROSS_SDK=`echo ${_XCRUN_SDK_PATH/#$IJK_CROSS_TOP\/SDKs\//}`
 
-    IJK_CC="xcrun -sdk $_XCRUN_SDK clang $_XCRUN_OSVERSION"
-    IJK_CXX="xcrun -sdk $_XCRUN_SDK clang++ $_XCRUN_OSVERSION"
+    IJK_CC="xcrun -sdk $_XCRUN_SDK clang $_XCRUN_OSVERSION -arch $_ARCH"
+    IJK_CXX="xcrun -sdk $_XCRUN_SDK clang++ $_XCRUN_OSVERSION -arch $_ARCH"
     IJK_LIPO="lipo"
 
     if [ -d "$_EXTRA_ROOT/gas-preprocessor" ]; then
@@ -203,7 +207,6 @@ elif [ "$_PLATFORM" = "android" ]; then
     IJK_LIPO=$(ndk-which lipo)
     [ ! -f "$IJK_LIPO" ] && IJK_LIPO=""
 fi
-IJK_LDFLAGS="$IJK_CFLAGS"
 
 export IJK_TARGET_OS
 export IJK_ARCH
