@@ -25,9 +25,9 @@ if [ $# -ne 2 ]; then
 fi
 
 # IJK_FFMPEG_UPSTREAM=git://git.videolan.org/ffmpeg.git
-IJK_FFMPEG_UPSTREAM=https://github.com/befovy/FFmpeg.git
-IJK_FFMPEG_FORK=https://github.com/befovy/FFmpeg.git
-IJK_FFMPEG_COMMIT=ff4.0--ijk0.8.8--20211030--926
+IJK_FFMPEG_UPSTREAM=https://github.com/PeterXu/FFmpeg.git
+IJK_FFMPEG_FORK=https://github.com/PeterXu/FFmpeg.git
+IJK_FFMPEG_COMMIT=92e2682cb #befovy-ff4.0--ijk0.8.8--20211030--926
 
 $BASEDIR/init/init-repo.sh $IJK_FFMPEG_UPSTREAM $IJK_FFMPEG_FORK $IJK_FFMPEG_COMMIT $1 $2
 

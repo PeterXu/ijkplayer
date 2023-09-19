@@ -19,8 +19,8 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BASEDIR=$(dirname "$DIR")
 
-PORTAUDIO_UPSTREAM=https://git.assembla.com/portaudio.git
-PORTAUDIO_FORK=https://git.assembla.com/portaudio.git
+PORTAUDIO_UPSTREAM=https://github.com/PeterXu/portaudio.git
+PORTAUDIO_FORK=https://github.com/PeterXu/portaudio.git
 PORTAUDIO_COMMIT=396fe4b6699ae #pa_stable_v190600_20161030
 
 $BASEDIR/init/init-repo.sh $PORTAUDIO_UPSTREAM $PORTAUDIO_FORK $PORTAUDIO_COMMIT "any" "common" "ijkmedia/portaudio"

@@ -19,8 +19,8 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BASEDIR=$(dirname "$DIR")
 
-IJK_GAS_UPSTREAM=https://github.com/Bilibili/gas-preprocessor.git
-IJK_GAS_FORK=https://github.com/Bilibili/gas-preprocessor.git
+IJK_GAS_UPSTREAM=https://github.com/PeterXu/gas-preprocessor.git
+IJK_GAS_FORK=https://github.com/PeterXu/gas-preprocessor.git
 IJK_GAS_COMMIT=dd811e7a8403e #master
 
 $BASEDIR/init/init-repo.sh $IJK_GAS_UPSTREAM $IJK_GAS_FORK $IJK_GAS_COMMIT "any" "none"

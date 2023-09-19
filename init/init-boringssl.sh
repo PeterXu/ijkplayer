@@ -24,8 +24,8 @@ if [ $# -ne 2 ]; then
     exit 1
 fi
 
-IJK_OPENSSL_UPSTREAM=https://boringssl.googlesource.com/boringssl
-IJK_OPENSSL_FORK=https://boringssl.googlesource.com/boringssl
+IJK_OPENSSL_UPSTREAM=https://github.com/PeterXu/boringssl.git
+IJK_OPENSSL_FORK=https://github.com/PeterXu/boringssl.git
 IJK_OPENSSL_COMMIT=7f02881e9 #fips-android-20191020  #tag: OpenSSL_1_0_2r
 
 $BASEDIR/init/init-repo.sh $IJK_OPENSSL_UPSTREAM $IJK_OPENSSL_FORK $IJK_OPENSSL_COMMIT $1 $2

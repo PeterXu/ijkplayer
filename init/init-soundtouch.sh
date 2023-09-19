@@ -19,8 +19,8 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BASEDIR=$(dirname "$DIR")
 
-IJK_ST_UPSTREAM=https://github.com/Bilibili/soundtouch.git
-IJK_ST_FORK=https://github.com/Bilibili/soundtouch.git
+IJK_ST_UPSTREAM=https://github.com/PeterXu/soundtouch.git
+IJK_ST_FORK=https://github.com/PeterXu/soundtouch.git
 IJK_ST_COMMIT=6bf39cd3bf6b0c1 #ijk-r0.1.2-dev
 
 $BASEDIR/init/init-repo.sh $IJK_ST_UPSTREAM $IJK_ST_FORK $IJK_ST_COMMIT "any" "common" "ijkmedia/ijksoundtouch"

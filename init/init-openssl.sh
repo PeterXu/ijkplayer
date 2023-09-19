@@ -24,14 +24,9 @@ if [ $# -ne 2 ]; then
     exit 1
 fi
 
-#IJK_OPENSSL_UPSTREAM=https://github.com/openssl/openssl.git
-#IJK_OPENSSL_UPSTREAM=https://github.com/Bilibili/openssl.git
-#IJK_OPENSSL_FORK=https://github.com/Bilibili/openssl.git
-#IJK_OPENSSL_COMMIT=b34cf4eb61  #tag: OpenSSL_1_0_2r
-
 IJK_OPENSSL_UPSTREAM=https://github.com/PeterXu/openssl.git
 IJK_OPENSSL_FORK=https://github.com/PeterXu/openssl.git
-IJK_OPENSSL_COMMIT=f82419a27bd  #tag: OpenSSL_1_0_2r
+IJK_OPENSSL_COMMIT=f82419a27bd  #tag: dev based-on OpenSSL_1_0_2r
 
 $BASEDIR/init/init-repo.sh $IJK_OPENSSL_UPSTREAM $IJK_OPENSSL_FORK $IJK_OPENSSL_COMMIT $1 $2
 
