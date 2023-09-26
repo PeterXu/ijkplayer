@@ -27,19 +27,70 @@
 
 #include <stdbool.h>
 #include <assert.h>
+
+//#define HAVE_AV_CONFIG_H
+#include "libavutil/config.h"
+#include "libavutil/config_components.h"
+
+// FIXME: merge filter related code and enable it
+// remove these lines to enable avfilter
+#ifdef CONFIG_AVFILTER
+#undef CONFIG_AVFILTER
+#endif
+#define CONFIG_AVFILTER 0
+
+#ifndef FFMPEG_LOG_TAG
+#define FFMPEG_LOG_TAG "IJKFFMPEG"
+#endif
+
+
+#include "libavutil/attributes.h"
+#include "libavutil/avassert.h"
 #include "libavutil/avstring.h"
-#include "libavutil/time.h"
-#include "libavformat/avformat.h"
-#include "libavcodec/avfft.h"
-#include "libswscale/swscale.h"
-#include "libavutil/application.h"
 #include "libavutil/base64.h"
+#include "libavutil/bprint.h"
+#include "libavutil/dict.h"
+#include "libavutil/display.h"
 #include "libavutil/error.h"
+#include "libavutil/eval.h"
+#include "libavutil/fifo.h"
+#include "libavutil/frame.h"
+#include "libavutil/imgutils.h"
+#include "libavutil/log.h"
+#include "libavutil/mathematics.h"
 #include "libavutil/opt.h"
+#include "libavutil/parseutils.h"
+#include "libavutil/pixdesc.h"
+#include "libavutil/pixfmt.h"
+#include "libavutil/samplefmt.h"
+#include "libavutil/thread.h"
+#include "libavutil/time.h"
 #include "libavutil/version.h"
+
+#include "libavutil/common.h"
+#include "libavutil/application.h"
+
+#if CONFIG_AVDEVICE
+#include "libavdevice/avdevice.h"
+#endif
+
+#if CONFIG_AVFILTER
+# include "libavfilter/avfilter.h"
+# include "libavfilter/buffersink.h"
+# include "libavfilter/buffersrc.h"
+#endif
+
+#include "libavcodec/avcodec.h"
+#include "libavcodec/avfft.h"
+#include "libavcodec/bsf.h"
+#include "libavformat/avformat.h"
+#include "libavformat/avc.h"
+#include "libavformat/url.h"
+#include "libavformat/version.h"
+#include "libavformat/internal.h"
+#include "libswscale/swscale.h"
 #include "libswresample/swresample.h"
 
-#include "ijksdl/ijksdl.h"
 
 typedef int (*ijk_inject_callback)(void *opaque, int type, void *data, size_t data_size);
 

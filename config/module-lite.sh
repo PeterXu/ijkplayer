@@ -44,7 +44,7 @@ export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-swresample"
 export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-swscale"
 export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-postproc"
 export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-avfilter"
-export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-avresample"
+# export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-avresample"
 # export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-pthreads"
 # export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-w32threads"
 # export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-os2threads"
@@ -73,10 +73,10 @@ done
 
 # ./configure --list-decoders
 export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-decoders"
-decoders="aac* ac3* amrnb amrwb ape ass cook"
+decoders="aac* ac3* amr* ape ass av1 av1_mediacodec cook"
 decoders="$decoders dvaudio dvbsub dvdsub dvvideo eac3* flac flashsv* flv gif gsm*"
 decoders="$decoders h261 h263 h263i h263p h264 h264_mediacodec hevc hevc_mediacodec"
-decoders="$decoders mjpeg movtext mp1* mp2* mp3* mpc7 mpc8"
+decoders="$decoders ilbc* mjpeg movtext mp1* mp2* mp3* mpc7 mpc8"
 decoders="$decoders mpeg1video mpeg2video mpeg2_mediacodec mpeg4 mpeg4_mediacodec mpegvideo"
 decoders="$decoders msmpeg4v1 msmpeg4v2 msmpeg4v3"
 decoders="$decoders opus pcm_alaw* pcm_mulaw* pgssub"
@@ -101,10 +101,12 @@ export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-hwaccels"
 # ./configure --list-demuxers
 export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-demuxers"
 demuxers="aac ac3 ape asf* ass avi caf cavsvideo concat dash data dv dvbsub dvbtxt"
-demuxers="$demuxers eac3 ffmetadata flac flv gif gsm h264 hevc hls live_flv loas lrc"
-demuxers="$demuxers m4v matroska mjpeg mov mp3 mpc* mpegps mpegts mpegvideo"
-demuxers="$demuxers ogg rawvideo realtext rm rtp rtsp sami sdp srt swf"
-demuxers="$demuxers wav webm_dash_manifest webvtt"
+demuxers="$demuxers eac3 ffmetadata flac flv gif gsm h264 hevc hls"
+demuxers="$demuxers ijklivehook ijkswitch ijkdash ijklivedash ijkioproxy ijkofflinehook ijklas"
+demuxers="$demuxers live_flv loas lrc "
+demuxers="$demuxers m4v matroska mjpeg mov mp3 mpc* mpegps mpegts mpegtsraw mpegvideo mpjpeg"
+demuxers="$demuxers ogg rawvideo realtext rm rtp rtsp sami scc sdp srt swf truehd vc1 vobsub"
+demuxers="$demuxers wav webm_dash_manifest webvtt yuv4mpegpipe"
 for i in $demuxers; do
   export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-demuxer=$i"
 done
@@ -125,8 +127,9 @@ for i in $parsers; do
 done
 
 # ./configure --list-protocols
+# crypto/https should autodetect which depends on openssl
 export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-protocols"
-protocols="async concat crypto data ffrtmphttp file ftp hls http httpproxy https"
+protocols="async concat data ffrtmphttp file ftp hls http httpproxy"
 protocols="$protocols ijkfilehook ijkhttphook ijkio ijklongurl ijkmediadatasource ijksegment ijktcphook"
 protocols="$protocols pipe rtmp rtmpt rtp tcp udp"
 for i in $protocols; do
@@ -145,14 +148,18 @@ done
 export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-devices"
 
 # ./configure --list-filters
-export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-filters"
+export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-filters"
+filters1="derain dnn_classify dnn_detect dnn_processing sr"
+for i in $filters1; do
+  export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-filter=$i"
+done
 
 
 #================================
 #================================
 
-# Others
-others="pic"
+# Others, should add ijk if having ijk-demuxers/protocols
+others="ijk pic"
 for i in $others; do
   export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-$i"
 done

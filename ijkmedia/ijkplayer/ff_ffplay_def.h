@@ -28,43 +28,20 @@
  * simple media player based on the FFmpeg libraries
  */
 
-#include "config.h"
 #include <inttypes.h>
 #include <math.h>
 #include <limits.h>
 #include <signal.h>
 #include <stdint.h>
-
-#include "libavutil/avstring.h"
-#include "libavutil/eval.h"
-#include "libavutil/mathematics.h"
-#include "libavutil/pixdesc.h"
-#include "libavutil/imgutils.h"
-#include "libavutil/dict.h"
-#include "libavutil/parseutils.h"
-#include "libavutil/samplefmt.h"
-#include "libavutil/avassert.h"
-#include "libavutil/time.h"
-#include "libavformat/avformat.h"
-// FFP_MERGE: #include "libavdevice/avdevice.h"
-#include "libswscale/swscale.h"
-#include "libavutil/opt.h"
-#include "libavcodec/avfft.h"
-#include "libswresample/swresample.h"
-
-#if CONFIG_AVFILTER
-# include "libavfilter/avfilter.h"
-# include "libavfilter/buffersink.h"
-# include "libavfilter/buffersrc.h"
-#endif
-
 #include <stdbool.h>
+
+#include "ff_ffinc.h"
 #include "ijkavformat/ijkiomanager.h"
 #include "ijkavformat/ijkioapplication.h"
-#include "ff_ffinc.h"
 #include "ff_ffmsg_queue.h"
 #include "ff_ffpipenode.h"
 #include "ijkmeta.h"
+#include "ijksdl/ijksdl.h"
 
 #define DEFAULT_HIGH_WATER_MARK_IN_BYTES        (256 * 1024)
 
@@ -85,23 +62,23 @@
 #define NOTIFY_KEY_MSG_PER_MILLISECONDS         (100)
 
 #define MAX_QUEUE_SIZE (15 * 1024 * 1024)
-#define MAX_ACCURATE_SEEK_TIMEOUT (5000)
-#ifdef FFP_MERGE
 #define MIN_FRAMES 25
-#endif
+#define EXTERNAL_CLOCK_MIN_FRAMES 2
+#define EXTERNAL_CLOCK_MAX_FRAMES 10
+
+#define MAX_ACCURATE_SEEK_TIMEOUT (5000)
 #define DEFAULT_MIN_FRAMES  50000
 #define MIN_MIN_FRAMES      2
 #define MAX_MIN_FRAMES      50000
-#define MIN_FRAMES (ffp->dcc.min_frames)
-#define EXTERNAL_CLOCK_MIN_FRAMES 2
-#define EXTERNAL_CLOCK_MAX_FRAMES 10
+
 
 /* Minimum SDL audio buffer size, in samples. */
 #define SDL_AUDIO_MIN_BUFFER_SIZE 512
 /* Calculate actual buffer size keeping in mind not cause too frequent audio callbacks */
 #define SDL_AUDIO_MAX_CALLBACKS_PER_SEC 30
 
-/* Step size for volume control */
+/* Step size for volume control in dB */
+//#define SDL_VOLUME_STEP (0.75)
 #define SDL_VOLUME_STEP (SDL_MIX_MAXVOLUME / 50)
 
 /* no AV sync correction is done if below the minimum AV sync threshold */
@@ -132,15 +109,6 @@
 #define SAMPLE_ARRAY_SIZE (8 * 65536)
 
 #define MIN_PKT_DURATION 15
-
-#ifdef FFP_MERGE
-#define CURSOR_HIDE_DELAY 1000000
-
-#define USE_ONEPASS_SUBTITLE_RENDER 1
-
-static unsigned sws_flags = SWS_BICUBIC;
-#endif
-
 #define HD_IMAGE 2  // 640*360
 #define SD_IMAGE 1  // 320*180
 #define LD_IMAGE 0  // 160*90
@@ -161,13 +129,12 @@ typedef struct GetImgInfo {
 
 
 typedef struct MyAVPacketList {
-    AVPacket pkt;
-    struct MyAVPacketList *next;
+    AVPacket *pkt;
     int serial;
 } MyAVPacketList;
 
 typedef struct PacketQueue {
-    MyAVPacketList *first_pkt, *last_pkt;
+    AVFifo *pkt_list;
     int nb_packets;
     int size;
     int64_t duration;
@@ -176,27 +143,23 @@ typedef struct PacketQueue {
     SDL_mutex *mutex;
     SDL_cond *cond;
 
-    MyAVPacketList *recycle_pkt;
-    int recycle_count;
-    int alloc_count;
-
+    //ijk
     int is_buffer_indicator;
 } PacketQueue;
 
-//#define VIDEO_PICTURE_QUEUE_SIZE 3
 #define VIDEO_PICTURE_QUEUE_SIZE_MIN        (3)
 #define VIDEO_PICTURE_QUEUE_SIZE_MAX        (16)
 #define VIDEO_PICTURE_QUEUE_SIZE_DEFAULT    (VIDEO_PICTURE_QUEUE_SIZE_MIN)
+#define VIDEO_MAX_FPS_DEFAULT 30
+
+#define VIDEO_PICTURE_QUEUE_SIZE 3
 #define SUBPICTURE_QUEUE_SIZE 16
 #define SAMPLE_QUEUE_SIZE 9
 #define FRAME_QUEUE_SIZE FFMAX(SAMPLE_QUEUE_SIZE, FFMAX(VIDEO_PICTURE_QUEUE_SIZE_MAX, SUBPICTURE_QUEUE_SIZE))
 
-#define VIDEO_MAX_FPS_DEFAULT 30
-
 typedef struct AudioParams {
     int freq;
-    int channels;
-    int64_t channel_layout;
+    AVChannelLayout ch_layout;
     enum AVSampleFormat fmt;
     int frame_size;
     int bytes_per_sec;
@@ -227,12 +190,10 @@ typedef struct Frame {
     int uploaded;
     int flip_v;
 
+    // ijk
     int allocated;
-#ifdef FFP_MERGE
-    SDL_Texture *bmp;
-#else
     SDL_VoutOverlay *bmp;
-#endif
+    //SDL_Texture *bmp;
 } Frame;
 
 typedef struct FrameQueue {
@@ -255,7 +216,7 @@ enum {
 };
 
 typedef struct Decoder {
-    AVPacket pkt;
+    AVPacket *pkt;
     PacketQueue *queue;
     AVCodecContext *avctx;
     int pkt_serial;
@@ -268,6 +229,7 @@ typedef struct Decoder {
     AVRational next_pts_tb;
     SDL_Thread *decoder_tid;
 
+    // ijk
     AVPacket pkt_temp;
     int bfsc_ret;
     uint8_t *bfsc_data;
@@ -284,7 +246,7 @@ typedef enum ShowMode {
 
 typedef struct VideoState {
     SDL_Thread *read_tid;
-    AVInputFormat *iformat;
+    const AVInputFormat *iformat;
     int abort_request;
     int force_refresh;
     int paused;
@@ -294,9 +256,7 @@ typedef struct VideoState {
     int seek_flags;
     int64_t seek_pos;
     int64_t seek_rel;
-#ifdef FFP_MERGE
     int read_pause_return;
-#endif
     AVFormatContext *ic;
     int realtime;
 
@@ -342,22 +302,22 @@ typedef struct VideoState {
     int frame_drops_early;
     int frame_drops_late;
 
-    ShowMode show_mode;
+    enum ShowMode show_mode;
     int16_t sample_array[SAMPLE_ARRAY_SIZE];
     int sample_array_index;
     int last_i_start;
-#ifdef FFP_MERGE
+    /** ijk: skip
     RDFTContext *rdft;
     int rdft_bits;
     FFTSample *rdft_data;
     int xpos;
-#endif
+    */
     double last_vis_time;
-#ifdef FFP_MERGE
+    /** ijk: skip
     SDL_Texture *vis_texture;
     SDL_Texture *sub_texture;
     SDL_Texture *vid_texture;
-#endif
+    */
 
     int subtitle_stream;
     AVStream *subtitle_st;
@@ -371,9 +331,7 @@ typedef struct VideoState {
     PacketQueue videoq;
     double max_frame_duration;      // maximum duration of a frame - above this, we consider the jump a timestamp discontinuity
     struct SwsContext *img_convert_ctx;
-#ifdef FFP_SUB
     struct SwsContext *sub_convert_ctx;
-#endif
     int eof;
 
     char *filename;
@@ -433,62 +391,7 @@ typedef struct VideoState {
 } VideoState;
 
 /* options specified by the user */
-#ifdef FFP_MERGE
-static AVInputFormat *file_iformat;
-static const char *input_filename;
-static const char *window_title;
-static int default_width  = 640;
-static int default_height = 480;
-static int screen_width  = 0;
-static int screen_height = 0;
-static int audio_disable;
-static int video_disable;
-static int subtitle_disable;
-static const char* wanted_stream_spec[AVMEDIA_TYPE_NB] = {0};
-static int seek_by_bytes = -1;
-static int display_disable;
-static int show_status = 1;
-static int av_sync_type = AV_SYNC_AUDIO_MASTER;
-static int64_t start_time = AV_NOPTS_VALUE;
-static int64_t duration = AV_NOPTS_VALUE;
-static int fast = 0;
-static int genpts = 0;
-static int lowres = 0;
-static int decoder_reorder_pts = -1;
-static int autoexit;
-static int exit_on_keydown;
-static int exit_on_mousedown;
-static int loop = 1;
-static int framedrop = -1;
-static int infinite_buffer = -1;
-static enum ShowMode show_mode = SHOW_MODE_NONE;
-static const char *audio_codec_name;
-static const char *subtitle_codec_name;
-static const char *video_codec_name;
-double rdftspeed = 0.02;
-static int64_t cursor_last_shown;
-static int cursor_hidden = 0;
-#if CONFIG_AVFILTER
-static const char **vfilters_list = NULL;
-static int nb_vfilters = 0;
-static char *afilters = NULL;
-#endif
-static int autorotate = 1;
-static int find_stream_info = 1;
-
-/* current context */
-static int is_full_screen;
-static int64_t audio_callback_time;
-
-static AVPacket flush_pkt;
-
-#define FF_QUIT_EVENT    (SDL_USEREVENT + 2)
-
-static SDL_Window *window;
-static SDL_Renderer *renderer;
-static SDL_RendererInfo renderer_info = {0};
-static SDL_AudioDeviceID audio_dev;
-#endif /* FFP_MERGE */
+/* discard something */
 
 
 typedef struct FFTrackCacheStatistic
@@ -576,7 +479,7 @@ typedef struct FFPlayer {
     AVDictionary *swr_opts;
     AVDictionary *swr_preset_opts;
     AVFormatContext *m_ofmt_ctx;        // 用于输出的AVFormatContext结构体
-    AVOutputFormat *m_ofmt;
+    const AVOutputFormat *m_ofmt;
     pthread_mutex_t record_mutex;       // 锁
     int is_record;                      // 是否在录制
     int record_error;
@@ -586,19 +489,15 @@ typedef struct FFPlayer {
     int64_t start_dts;                  // 开始录制dts
 
 
-    /* Copy from line 330 in ffplay.c */
+    /* Copy some from in ffplay.c */
     /* ffplay options specified by the user */
-#ifdef FFP_MERGE
     AVInputFormat *file_iformat;
-#endif
     char *input_filename;
-#ifdef FFP_MERGE
     const char *window_title;
     int default_width;
     int default_height;
     int screen_width;
     int screen_height;
-#endif
     int audio_disable;
     int video_disable;
     int subtitle_disable;
@@ -616,10 +515,8 @@ typedef struct FFPlayer {
     int lowres;
     int decoder_reorder_pts;
     int autoexit;
-#ifdef FFP_MERGE
     int exit_on_keydown;
     int exit_on_mousedown;
-#endif
     int loop;
     int framedrop;
     int64_t seek_at_start;
@@ -630,10 +527,8 @@ typedef struct FFPlayer {
     char *subtitle_codec_name;
     char *video_codec_name;
     double rdftspeed;
-#ifdef FFP_MERGE
     int64_t cursor_last_shown;
     int cursor_hidden;
-#endif
 #if CONFIG_AVFILTER
     const char **vfilters_list;
     int nb_vfilters;
@@ -643,11 +538,8 @@ typedef struct FFPlayer {
     int find_stream_info;
 
     /* current context */
-#ifdef FFP_MERGE
     int is_full_screen;
-#endif
     int64_t audio_callback_time;
-
 
     /* extra fields */
     int fs_screen_width;
@@ -659,9 +551,7 @@ typedef struct FFPlayer {
     char *vfilter0;
 #endif
     unsigned sws_flags;
-#ifdef FFP_MERGE
-    SDL_Surface *screen;
-#endif
+    //SDL_Surface *screen;
 
     /* extra fields */
     SDL_Aout *aout;
@@ -808,6 +698,7 @@ inline static void ffp_reset_internal(FFPlayer *ffp)
     ffp->autorotate             = 1;
     ffp->find_stream_info       = 1;
 
+    //ffp->sws_flags              = SWS_BICUBIC;
     ffp->sws_flags              = SWS_FAST_BILINEAR;
 
     /* current context */

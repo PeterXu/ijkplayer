@@ -27,5 +27,5 @@
 @class IJKSDLGLView;
 @protocol IJKSDLGLViewProtocol;
 
-SDL_Vout *SDL_VoutIos_CreateForGLES2();
+SDL_Vout *SDL_VoutIos_CreateForGLES2(void);
 void SDL_VoutIos_SetGLView(SDL_Vout *vout, id<IJKSDLGLViewProtocol> view);

@@ -63,6 +63,7 @@
 // stream: audio
 #define IJKM_KEY_SAMPLE_RATE    "sample_rate"
 #define IJKM_KEY_CHANNEL_LAYOUT "channel_layout"
+#define IJKM_KEY_CHANNEL_NUMBER "channel_number"
 
 // reserved for user
 #define IJKM_KEY_STREAMS        "streams"
@@ -70,7 +71,7 @@
 struct AVFormatContext;
 typedef struct IjkMediaMeta IjkMediaMeta;
 
-IjkMediaMeta *ijkmeta_create();
+IjkMediaMeta *ijkmeta_create(void);
 void ijkmeta_reset(IjkMediaMeta *meta);
 void ijkmeta_destroy(IjkMediaMeta *meta);
 void ijkmeta_destroy_p(IjkMediaMeta **meta);

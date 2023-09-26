@@ -47,6 +47,10 @@
 
 @synthesize numberOfBytesTransferred = _numberOfBytesTransferred;
 
+@synthesize isSeekBuffering = _isSeekBuffering;
+@synthesize isAudioSync = _isAudioSync;
+@synthesize isVideoSync = _isVideoSync;
+
 - (id)initWithContentURL:(NSURL *)aUrl
 {
     self = [super initWithContentURL:aUrl];

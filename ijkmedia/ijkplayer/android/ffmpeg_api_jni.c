@@ -83,7 +83,7 @@ int FFmpegApi_global_init(JNIEnv *env)
     int ret = 0;
 
     IJK_FIND_JAVA_CLASS(env, g_clazz.clazz, JNI_CLASS_FFMPEG_API);
-    (*env)->RegisterNatives(env, g_clazz.clazz, g_methods, NELEM(g_methods));
+    (*env)->RegisterNatives(env, g_clazz.clazz, g_methods, FF_ARRAY_ELEMS(g_methods));
 
     return ret;
 }

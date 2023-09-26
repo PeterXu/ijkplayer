@@ -20,7 +20,7 @@
  */
 
 #include "ijkthreadpool.h"
-#include "libavutil/log.h"
+#include "ff_ffinc.h"
 
 #include <stdlib.h>
 #ifndef WIN32

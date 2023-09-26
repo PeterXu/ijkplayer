@@ -21,46 +21,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#include "libavformat/avformat.h"
-#include "libavformat/url.h"
-#include "libavformat/version.h"
+#include "ff_ffinc.h"
 
 #define IJK_REGISTER_DEMUXER(x)                                         \
     {                                                                   \
-        extern AVInputFormat ijkff_##x##_demuxer;                       \
-        ijkav_register_input_format(&ijkff_##x##_demuxer);              \
+        extern AVInputFormat ijkimp_ff_##x##_demuxer;                       \
+        int ijkav_register_##x##_demuxer(AVInputFormat *demuxer, int demuxer_size);     \
+        ijkav_register_##x##_demuxer(&ijkimp_ff_##x##_demuxer, sizeof(AVInputFormat));      \
     }
 
 #define IJK_REGISTER_PROTOCOL(x)                                        \
     {                                                                   \
-        extern URLProtocol ijkimp_ff_##x##_protocol;                        \
-        int ijkav_register_##x##_protocol(URLProtocol *protocol, int protocol_size);\
+        extern URLProtocol ijkimp_ff_##x##_protocol;                    \
+        int ijkav_register_##x##_protocol(URLProtocol *protocol, int protocol_size);    \
         ijkav_register_##x##_protocol(&ijkimp_ff_##x##_protocol, sizeof(URLProtocol));  \
     }
-
-static struct AVInputFormat *ijkav_find_input_format(const char *iformat_name)
-{
-    AVInputFormat *fmt = NULL;
-    if (!iformat_name)
-        return NULL;
-    while ((fmt = av_iformat_next(fmt))) {
-        if (!fmt->name)
-            continue;
-        if (!strcmp(iformat_name, fmt->name))
-            return fmt;
-    }
-    return NULL;
-}
-
-static void ijkav_register_input_format(AVInputFormat *iformat)
-{
-    if (ijkav_find_input_format(iformat->name)) {
-        av_log(NULL, AV_LOG_WARNING, "skip     demuxer : %s (duplicated)\n", iformat->name);
-    } else {
-        av_log(NULL, AV_LOG_INFO,    "register demuxer : %s\n", iformat->name);
-        av_register_input_format(iformat);
-    }
-}
 
 
 void ijkav_register_all(void)
@@ -71,10 +46,9 @@ void ijkav_register_all(void)
         return;
     initialized = 1;
 
-    av_register_all();
+    av_log(NULL, AV_LOG_INFO, "===== custom modules begin =====\n");
 
     /* protocols */
-    av_log(NULL, AV_LOG_INFO, "===== custom modules begin =====\n");
 #ifdef __ANDROID__
     IJK_REGISTER_PROTOCOL(ijkmediadatasource);
 #endif
@@ -84,7 +58,15 @@ void ijkav_register_all(void)
     IJK_REGISTER_PROTOCOL(ijktcphook);
     IJK_REGISTER_PROTOCOL(ijkhttphook);
     IJK_REGISTER_PROTOCOL(ijksegment);
+    //IJK_REGISTER_PROTOCOL(ijkfilehook);
+
     /* demuxers */
     IJK_REGISTER_DEMUXER(ijklivehook);
+    //IJK_REGISTER_DEMUXER(ijkswitch);
+    //IJK_REGISTER_DEMUXER(ijkdash);
+    //IJK_REGISTER_DEMUXER(ijklivedash);
+    //IJK_REGISTER_DEMUXER(ijkioproxy);
+    //IJK_REGISTER_DEMUXER(ijkofflinehook);
+    //IJK_REGISTER_DEMUXER(ijklas);
     av_log(NULL, AV_LOG_INFO, "===== custom modules end =====\n");
 }

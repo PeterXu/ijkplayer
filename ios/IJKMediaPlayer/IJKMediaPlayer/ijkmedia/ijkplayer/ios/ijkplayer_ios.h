@@ -24,7 +24,7 @@
 #include "ijkplayer/ijkplayer.h"
 #import "IJKSDLGLView.h"
 
-#if IJK_IOS
+#if TARGET_OS_IPHONE
 #import "IJKSDLFboGLView.h"
 #endif
 // ref_count is 1 after open

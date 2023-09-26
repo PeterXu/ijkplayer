@@ -166,7 +166,11 @@ elif [ "$_PLATFORM" = "android" ]; then
         ;;
     esac
 
-    IJK_TARGET_OS="linux"
+    IJK_CFLAGS=""
+    IJK_LDFLAGS=""
+
+    #IJK_TARGET_OS="linux"
+    IJK_TARGET_OS="android"
     IJK_ARCH="$_ARCH"
     IJK_NDK_API=21
     IJK_NDK_NINJA=$(find $ANDROID_HOME/ | grep "bin/ninja" | head -1)

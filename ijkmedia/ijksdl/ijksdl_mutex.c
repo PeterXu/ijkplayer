@@ -32,7 +32,7 @@
 #include <winsock2.h>
 #endif // !WIN32
 
-#include "libavutil/time.h"
+#include "ff_ffinc.h"
 
 #include "ijksdl_inc_internal.h"
 

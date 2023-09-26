@@ -19,15 +19,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#include "libavformat/avformat.h"
-#include "libavformat/url.h"
-#include "libavutil/avstring.h"
-#include "libavutil/opt.h"
+#include "ff_ffinc.h"
 
 #include "ijkplayer/ijkavutil/opt.h"
-
 #include "ijkavformat.h"
-#include "libavutil/application.h"
 
 typedef struct {
     AVClass         *class;
@@ -72,7 +67,7 @@ fail:
     return ret;
 }
 
-static int ijklivehook_probe(AVProbeData *probe)
+static int ijklivehook_probe(const AVProbeData *probe)
 {
     if (av_strstart(probe->filename, "ijklivehook:", NULL))
         return AVPROBE_SCORE_MAX;
@@ -192,7 +187,7 @@ static int ijklivehook_read_header(AVFormatContext *avf, AVDictionary **options)
     int         ret         = -1;
 
     c->app_ctx = (AVApplicationContext *)(intptr_t)c->app_ctx_intptr;
-    av_strstart(avf->filename, "ijklivehook:", &inner_url);
+    av_strstart(avf->url, "ijklivehook:", &inner_url);
 
     c->io_control.size = sizeof(c->io_control);
     av_strlcpy(c->io_control.url, inner_url, sizeof(c->io_control.url));
@@ -306,7 +301,7 @@ static const AVClass ijklivehook_class = {
     .version    = LIBAVUTIL_VERSION_INT,
 };
 
-AVInputFormat ijkff_ijklivehook_demuxer = {
+AVInputFormat ijkimp_ff_ijklivehook_demuxer = {
     .name           = "ijklivehook",
     .long_name      = "Live Hook Controller",
     .flags          = AVFMT_NOFILE | AVFMT_TS_DISCONT,

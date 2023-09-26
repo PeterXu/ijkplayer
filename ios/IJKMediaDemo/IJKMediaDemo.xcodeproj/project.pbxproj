@@ -51,33 +51,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		21B5D5AF22D8A5E500A1D26D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E6D74F2918A5F94B00165BFD /* IJKMediaPlayer.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 5450B0431E63EA4300568494;
-			remoteInfo = IJKMediaFrameworkWithSSL;
-		};
 		21B5D5B122D8A5E500A1D26D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E6D74F2918A5F94B00165BFD /* IJKMediaPlayer.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 21E6F50322C39D0500611D3D;
 			remoteInfo = FIJKPlayer;
-		};
-		E654EAD61B6B28B100B0F2D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E6D74F2918A5F94B00165BFD /* IJKMediaPlayer.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E654EA8A1B6B27E600B0F2D0;
-			remoteInfo = IJKMediaFramework;
-		};
-		E654EAD81B6B28B100B0F2D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E6D74F2918A5F94B00165BFD /* IJKMediaPlayer.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E654EA941B6B27E600B0F2D0;
-			remoteInfo = IJKMediaFrameworkTests;
 		};
 		F3E8248D24B0C7F300F2B1C5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -302,9 +281,6 @@
 		E6D74F2A18A5F94B00165BFD /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E654EAD71B6B28B100B0F2D0 /* IJKMediaFramework.framework */,
-				21B5D5B022D8A5E500A1D26D /* IJKMediaFrameworkWithSSL.framework */,
-				E654EAD91B6B28B100B0F2D0 /* IJKMediaFrameworkTests.xctest */,
 				21B5D5B222D8A5E500A1D26D /* IJKMediaPlayer.framework */,
 			);
 			name = Products;
@@ -372,32 +348,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		21B5D5B022D8A5E500A1D26D /* IJKMediaFrameworkWithSSL.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = IJKMediaFrameworkWithSSL.framework;
-			remoteRef = 21B5D5AF22D8A5E500A1D26D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		21B5D5B222D8A5E500A1D26D /* IJKMediaPlayer.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = IJKMediaPlayer.framework;
 			remoteRef = 21B5D5B122D8A5E500A1D26D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		E654EAD71B6B28B100B0F2D0 /* IJKMediaFramework.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = IJKMediaFramework.framework;
-			remoteRef = E654EAD61B6B28B100B0F2D0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		E654EAD91B6B28B100B0F2D0 /* IJKMediaFrameworkTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = IJKMediaFrameworkTests.xctest;
-			remoteRef = E654EAD81B6B28B100B0F2D0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -539,7 +494,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
-					"IJK_IOS=1",
 				);
 				INFOPLIST_FILE = "IJKMediaDemo/IJKMediaDemo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -563,7 +517,6 @@
 				DEVELOPMENT_TEAM = 7SUQ9UM9P2;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "IJKMediaDemo/IJKMediaDemo-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = "IJK_IOS=1";
 				INFOPLIST_FILE = "IJKMediaDemo/IJKMediaDemo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

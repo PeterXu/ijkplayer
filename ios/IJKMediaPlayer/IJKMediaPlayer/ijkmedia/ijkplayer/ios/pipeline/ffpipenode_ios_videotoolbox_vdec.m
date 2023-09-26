@@ -28,7 +28,7 @@
 #include "ijkplayer/ff_ffplay.h"
 #include "ijksdl_mutex.h"
 #include "ijksdl_vout_ios_gles2.h"
-#if IJK_IOS
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 #else
 #import <AppKit/AppKit.h>
@@ -101,7 +101,7 @@ IJKFF_Pipenode *ffpipenode_create_video_decoder_from_ios_videotoolbox(FFPlayer *
 {
     if (!ffp || !ffp->is)
         return NULL;
-#if IJK_IOS
+#if TARGET_OS_IPHONE
     if ([[[UIDevice currentDevice] systemVersion] floatValue]  < 8.0){
         return NULL;
     }
@@ -130,7 +130,7 @@ IJKFF_Pipenode *ffpipenode_create_video_decoder_from_ios_videotoolbox(FFPlayer *
         goto fail;
     }
     if (opaque->context == NULL) {
-        ALOGE("could not init video tool box decoder !!!");
+        ALOGE("could not init video tool box decoder !!!\n");
         goto fail;
     }
     return node;

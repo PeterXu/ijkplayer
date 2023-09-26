@@ -20,11 +20,7 @@
  */
 
 #include <assert.h>
-#include "libavformat/avformat.h"
-#include "libavformat/url.h"
-#include "libavutil/avstring.h"
-#include "libavutil/log.h"
-#include "libavutil/opt.h"
+#include "ff_ffinc.h"
 
 #include "ijkiomanager.h"
 #include "ijkplayer/ijkavutil/ijkdict.h"

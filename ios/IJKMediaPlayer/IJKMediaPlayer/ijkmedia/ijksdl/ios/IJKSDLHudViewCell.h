@@ -6,7 +6,7 @@
 //  Copyright © 2015年 bilibili. All rights reserved.
 //
 
-#ifndef IJK_OSX
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 
 @interface IJKSDLHudViewCell : UITableViewCell

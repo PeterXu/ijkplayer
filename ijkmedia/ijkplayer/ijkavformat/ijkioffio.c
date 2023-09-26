@@ -18,8 +18,8 @@
  * License along with ijkPlayer; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-#include "libavformat/url.h"
-#include "libavutil/avstring.h"
+
+#include "ff_ffinc.h"
 #include "ijkplayer/ijkavutil/ijkutils.h"
 #include "ijkiourl.h"
 

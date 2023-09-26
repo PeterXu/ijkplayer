@@ -176,6 +176,7 @@ endif()
 
 #include ffmpeg header files
 target_include_directories(${IJKSDL_LIB_NAME} PRIVATE ${IJK_FFMPAG_BUILD_DIR}/include)
+target_include_directories(${IJKSDL_LIB_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../ijkplayer)
 
 target_compile_options(${IJKSDL_LIB_NAME} PUBLIC "-Werror")
 if (ANDROID)

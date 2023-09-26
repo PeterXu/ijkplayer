@@ -25,6 +25,7 @@
 #ifndef IJKSDL__IJKSDL_VOUT_H
 #define IJKSDL__IJKSDL_VOUT_H
 
+#include "ff_ffinc.h"
 #include "ijksdl_gles2.h"
 #include "ijksdl_stdinc.h"
 #include "ijksdl_class.h"

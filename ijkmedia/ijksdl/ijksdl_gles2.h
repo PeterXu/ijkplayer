@@ -76,7 +76,7 @@ void      IJK_GLES2_Renderer_free(IJK_GLES2_Renderer *renderer);
 void      IJK_GLES2_Renderer_freeP(IJK_GLES2_Renderer **renderer);
 void      IJK_GLES2_Renderer_setFlip(IJK_GLES2_Renderer *renderer, IJK_SDL_GLES2_flip flip);
 
-GLboolean IJK_GLES2_Renderer_setupGLES();
+GLboolean IJK_GLES2_Renderer_setupGLES(void);
 GLboolean IJK_GLES2_Renderer_isValid(IJK_GLES2_Renderer *renderer);
 GLboolean IJK_GLES2_Renderer_isFormat(IJK_GLES2_Renderer *renderer, int format);
 GLboolean IJK_GLES2_Renderer_use(IJK_GLES2_Renderer *renderer);

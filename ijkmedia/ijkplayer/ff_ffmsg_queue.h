@@ -27,13 +27,15 @@
 
 #include "ff_ffinc.h"
 #include "ff_ffmsg.h"
+#include "ijksdl/ijksdl.h"
 
+// #define FFP_MSG_NOT_RECYCLE
 // #define FFP_SHOW_MSG_RECYCLE
 
 typedef struct AVMessage {
     int what;
-    int arg1;
-    int arg2;
+    long arg1;
+    long arg2;
     void *obj;
     size_t len;
     void (*free_l)(void *obj);
@@ -68,7 +70,7 @@ inline static int msg_queue_put_private(MessageQueue *q, AVMessage *msg)
     if (q->abort_request)
         return -1;
 
-#ifdef FFP_MERGE
+#ifdef FFP_MSG_NOT_RECYCLE
     msg1 = av_malloc(sizeof(AVMessage));
 #else
     msg1 = q->recycle_msg;
@@ -123,7 +125,7 @@ inline static void msg_obj_free_l(void *obj)
     av_free(obj);
 }
 
-inline static void msg_queue_put_simple(MessageQueue *q, int what, int arg1, int arg2, void *obj, size_t len, void (*free_l)(void *))
+inline static void msg_queue_put_internal(MessageQueue *q, int what, long arg1, long arg2, void *obj, size_t len, void (*free_l)(void *))
 {
     AVMessage msg;
     msg_init_msg(&msg);
@@ -146,15 +148,15 @@ inline static void msg_queue_put_simple(MessageQueue *q, int what, int arg1, int
 }
 
 #define msg_queue_put_simple5(q, what, arg1, arg2, obj, len, free_l) \
-    msg_queue_put_simple(q, what, arg1, arg2, obj, len, free_l)
+    msg_queue_put_internal(q, what, arg1, arg2, obj, len, free_l)
 #define msg_queue_put_simple4(q, what, arg1, arg2, obj, len) \
-    msg_queue_put_simple(q, what, arg1, arg2, obj, len, NULL)
+    msg_queue_put_internal(q, what, arg1, arg2, obj, len, NULL)
 #define msg_queue_put_simple3(q, what, arg1, arg2) \
-    msg_queue_put_simple(q, what, arg1, arg2, NULL, 0, NULL)
+    msg_queue_put_internal(q, what, arg1, arg2, NULL, 0, NULL)
 #define msg_queue_put_simple2(q, what, arg1) \
-    msg_queue_put_simple(q, what, arg1, 0, NULL, 0, NULL)
+    msg_queue_put_internal(q, what, arg1, 0, NULL, 0, NULL)
 #define msg_queue_put_simple1(q, what) \
-    msg_queue_put_simple(q, what, 0, 0, NULL, 0, NULL)
+    msg_queue_put_internal(q, what, 0, 0, NULL, 0, NULL)
 
 
 inline static void msg_queue_init(MessageQueue *q)
@@ -172,7 +174,7 @@ inline static void msg_queue_flush(MessageQueue *q)
     SDL_LockMutex(q->mutex);
     for (msg = q->first_msg; msg != NULL; msg = msg1) {
         msg1 = msg->next;
-#ifdef FFP_MERGE
+#ifdef FFP_MSG_NOT_RECYCLE
         av_freep(&msg);
 #else
         msg->next = q->recycle_msg;
@@ -248,8 +250,8 @@ inline static int msg_queue_get(MessageQueue *q, AVMessage *msg, int block)
             q->nb_messages--;
             *msg = *msg1;
             msg1->obj = NULL;
-#ifdef FFP_MERGE
-            av_free(msg1);
+#ifdef FFP_MSG_NOT_RECYCLE
+            av_freep(&msg1);
 #else
             msg1->next = q->recycle_msg;
             q->recycle_msg = msg1;
@@ -281,8 +283,8 @@ inline static void msg_queue_remove(MessageQueue *q, int what)
 
             if (msg->what == what) {
                 *p_msg = msg->next;
-#ifdef FFP_MERGE
-                av_free(msg);
+#ifdef FFP_MSG_NOT_RECYCLE
+                av_freep(&msg);
 #else
                 msg_free_res(msg);
                 msg->next = q->recycle_msg;

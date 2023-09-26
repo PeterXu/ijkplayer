@@ -25,7 +25,6 @@
 #include "ijksdl_vout_overlay_videotoolbox.h"
 #include "ffpipeline_ios.h"
 #include <mach/mach_time.h>
-#include "libavformat/avc.h"
 #include "ijksdl_vout_ios_gles2.h"
 #include "h264_sps_parser.h"
 #include "ijkplayer/ff_ffplay_debug.h"
@@ -240,7 +239,7 @@ static void QueuePicture(Ijk_VideoToolBox_Opaque* ctx) {
 
         SortQueuePop(ctx);
     } else {
-        ALOGI("Get Picture failure!!!\n");
+        ALOGI("VTB-SYNC: Get Picture failure!!!\n");
     }
 }
 
@@ -266,7 +265,7 @@ static void VTDecoderCallback(void *decompressionOutputRefCon,
 
         newFrame = (sort_queue *)mallocz(sizeof(sort_queue));
         if (!newFrame) {
-            ALOGE("VTB: create new frame fail: out of memory\n");
+            ALOGE("VTB-SYNC: create new frame fail: out of memory\n");
             goto failed;
         }
 
@@ -288,7 +287,7 @@ static void VTDecoderCallback(void *decompressionOutputRefCon,
             goto failed;
 
         if (status != 0) {
-            ALOGE("decode callback %d %s\n", (int)status, vtb_get_error_string(status));
+            ALOGE("VTB-SYNC: decode callback %d %s\n", (int)status, vtb_get_error_string(status));
             goto failed;
         }
 
@@ -301,7 +300,7 @@ static void VTDecoderCallback(void *decompressionOutputRefCon,
         }
 
         if (imageBuffer == NULL) {
-            ALOGI("imageBuffer null\n");
+            ALOGI("VTB-SYNC: imageBuffer null\n");
             goto failed;
         }
 
@@ -312,16 +311,16 @@ static void VTDecoderCallback(void *decompressionOutputRefCon,
 
         OSType format_type = CVPixelBufferGetPixelFormatType(imageBuffer);
         if (format_type != ctx->required_format_type) {
-            ALOGI("format_type error \n");
+            ALOGI("VTB-SYNC: format_type error \n");
             goto failed;
         }
         if (kVTDecodeInfo_FrameDropped & infoFlags) {
-            ALOGI("droped\n");
+            ALOGI("VTB-SYNC: droped\n");
             goto failed;
         }
 
         if (ctx->new_seg_flag) {
-            ALOGI("new seg process!!!!");
+            ALOGI("VTB-SYNC: new seg process!!!!\n");
             while (ctx->m_queue_depth > 0) {
                 QueuePicture(ctx);
             }
@@ -429,7 +428,7 @@ static VTDecompressionSessionRef vtbsession_create(Ijk_VideoToolBox_Opaque* cont
         height = height * w_scaler;
     }
 
-    ALOGI("after scale width %d height %d \n", width, height);
+    ALOGI("VTB-SYNC: after scale width %d height %d \n", width, height);
 
     destinationPixelBufferAttributes = CFDictionaryCreateMutable(
                                                                  NULL,
@@ -438,7 +437,7 @@ static VTDecompressionSessionRef vtbsession_create(Ijk_VideoToolBox_Opaque* cont
                                                                  &kCFTypeDictionaryValueCallBacks);
     if (ffp->overlay_format == SDL_FCC_BGRA) {
         CFDictionarySetSInt32(destinationPixelBufferAttributes,
-                          kCVPixelBufferPixelFormatTypeKey, kCVPixelFormatType_32BGRA);
+                              kCVPixelBufferPixelFormatTypeKey, kCVPixelFormatType_32BGRA);
         context->required_format_type = kCVPixelFormatType_32BGRA;
     } else if (ffp->overlay_format == SDL_FCC_RGBA) {
         CFDictionarySetSInt32(destinationPixelBufferAttributes,
@@ -446,14 +445,14 @@ static VTDecompressionSessionRef vtbsession_create(Ijk_VideoToolBox_Opaque* cont
         context->required_format_type = kCVPixelFormatType_32RGBA;
     } else {
         CFDictionarySetSInt32(destinationPixelBufferAttributes,
-                          kCVPixelBufferPixelFormatTypeKey, kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange);
+                              kCVPixelBufferPixelFormatTypeKey, kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange);
         context->required_format_type = kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange;
     }
     CFDictionarySetSInt32(destinationPixelBufferAttributes,
                           kCVPixelBufferWidthKey, width);
     CFDictionarySetSInt32(destinationPixelBufferAttributes,
                           kCVPixelBufferHeightKey, height);
-#if IJK_IOS
+#if TARGET_OS_IPHONE
     CFDictionarySetBoolean(destinationPixelBufferAttributes,
                           kCVPixelBufferOpenGLESCompatibilityKey, YES);
 #else
@@ -473,7 +472,7 @@ static VTDecompressionSessionRef vtbsession_create(Ijk_VideoToolBox_Opaque* cont
     if (status != noErr) {
         NSError* error = [NSError errorWithDomain:NSOSStatusErrorDomain code:status userInfo:nil];
         NSLog(@"Error %@", [error description]);
-        ALOGI("%s - failed with status = (%d)", __FUNCTION__, (int)status);
+        ALOGI("VTB-SYNC: %s - failed with status = (%d)\n", __FUNCTION__, (int)status);
     }
     CFRelease(destinationPixelBufferAttributes);
 
@@ -505,7 +504,7 @@ static int decode_video_internal(Ijk_VideoToolBox_Opaque* context, AVCodecContex
 
     if (context->refresh_session) {
         decoder_flags |= kVTDecodeFrame_DoNotOutputFrame;
-        // ALOGI("flag :%d flag %d \n", decoderFlags,avpkt->flags);
+        // ALOGI("VTB-SYNC: flag :%d flag %d \n", decoderFlags,avpkt->flags);
     }
 
     if (context->refresh_request) {
@@ -527,19 +526,19 @@ static int decode_video_internal(Ijk_VideoToolBox_Opaque* context, AVCodecContex
     }
 
     if (context->fmt_desc.convert_bytestream) {
-        // ALOGI("the buffer should m_convert_byte\n");
+        // ALOGI("VTB-SYNC: the buffer should m_convert_byte\n");
         if(avio_open_dyn_buf(&pb) < 0) {
             goto failed;
         }
         ff_avc_parse_nal_units(pb, pData, iSize);
         demux_size = avio_close_dyn_buf(pb, &demux_buff);
-        // ALOGI("demux_size:%d\n", demux_size);
+        // ALOGI("VTB-SYNC: demux_size:%d\n", demux_size);
         if (demux_size == 0) {
             goto failed;
         }
         sample_buff = CreateSampleBufferFrom(context->fmt_desc.fmt_desc, demux_buff, demux_size);
     } else if (context->fmt_desc.convert_3byteTo4byteNALSize) {
-        // ALOGI("3byteto4byte\n");
+        // ALOGI("VTB-SYNC: 3byteto4byte\n");
         if (avio_open_dyn_buf(&pb) < 0) {
             goto failed;
         }
@@ -563,7 +562,7 @@ static int decode_video_internal(Ijk_VideoToolBox_Opaque* context, AVCodecContex
         if (demux_size) {
             av_free(demux_buff);
         }
-        ALOGI("%s - CreateSampleBufferFrom failed", __FUNCTION__);
+        ALOGI("VTB-SYNC: %s - CreateSampleBufferFrom failed\n", __FUNCTION__);
         goto failed;
     }
 
@@ -573,7 +572,7 @@ static int decode_video_internal(Ijk_VideoToolBox_Opaque* context, AVCodecContex
 
     sample_info = &context->sample_info;
     if (!sample_info) {
-        ALOGE("%s, failed to peek frame_info\n", __FUNCTION__);
+        ALOGE("VTB-SYNC: %s, failed to peek frame_info\n", __FUNCTION__);
         goto failed;
     }
 
@@ -591,7 +590,7 @@ static int decode_video_internal(Ijk_VideoToolBox_Opaque* context, AVCodecContex
 
     if (status != 0) {
 
-        ALOGE("decodeFrame %d %s\n", (int)status, vtb_get_error_string(status));
+        ALOGE("VTB-SYNC: decodeFrame %d %s\n", (int)status, vtb_get_error_string(status));
 
         if (status == kVTInvalidSessionErr) {
             context->refresh_session = true;
@@ -639,7 +638,7 @@ static inline void DuplicatePkt(Ijk_VideoToolBox_Opaque* context, const AVPacket
         ResetPktBuffer(context);
     }
     AVPacket* avpkt = &context->m_buffer_packet[context->m_buffer_deep];
-    av_copy_packet(avpkt, pkt);
+    av_packet_ref(avpkt, pkt);
     context->m_buffer_deep++;
 }
 
@@ -649,7 +648,7 @@ static int decode_video(Ijk_VideoToolBox_Opaque* context, AVCodecContext *avctx,
 {
     int      ret            = 0;
     uint8_t *size_data      = NULL;
-    int      size_data_size = 0;
+    size_t   size_data_size = 0;
 
     if (!avpkt || !avpkt->data) {
         return 0;
@@ -660,7 +659,6 @@ static int decode_video(Ijk_VideoToolBox_Opaque* context, AVCodecContext *avctx,
         size_data = av_packet_get_side_data(avpkt, AV_PKT_DATA_NEW_EXTRADATA, &size_data_size);
         // minimum avcC(sps,pps) = 7
         if (size_data && size_data_size > 7) {
-            int             got_picture = 0;
             AVFrame        *frame      = av_frame_alloc();
             AVDictionary   *codec_opts = NULL;
             AVCodecContext *new_avctx  = avcodec_alloc_context3(avctx->codec);
@@ -673,7 +671,7 @@ static int decode_video(Ijk_VideoToolBox_Opaque* context, AVCodecContext *avctx,
             if (!new_avctx->extradata)
                 return AVERROR(ENOMEM);
             memcpy(new_avctx->extradata, size_data, size_data_size);
-            new_avctx->extradata_size = size_data_size;
+            new_avctx->extradata_size = (int)size_data_size;
 
             av_dict_set(&codec_opts, "threads", "1", 0);
             ret = avcodec_open2(new_avctx, avctx->codec, &codec_opts);
@@ -683,7 +681,12 @@ static int decode_video(Ijk_VideoToolBox_Opaque* context, AVCodecContext *avctx,
                 return ret;
             }
 
-            ret = avcodec_decode_video2(new_avctx, frame, &got_picture, avpkt);
+            //ret = avcodec_decode_video2(new_avctx, frame, &got_picture, avpkt);
+            ret = avcodec_send_packet(new_avctx, avpkt);
+            if (!(ret < 0 && ret != AVERROR_EOF)) {
+                ret = avcodec_receive_frame(new_avctx, frame);
+            }
+
             if (ret < 0) {
                 avcodec_free_context(&new_avctx);
                 return ret;
@@ -732,7 +735,7 @@ static int decode_video(Ijk_VideoToolBox_Opaque* context, AVCodecContext *avctx,
         } else {
             context->recovery_drop_packet = true;
             ret = -1;
-            ALOGE("recovery error!!!!\n");
+            ALOGE("VTB-SYNC: recovery error!!!!\n");
         }
         context->refresh_session = false;
         return ret;
@@ -854,27 +857,28 @@ int videotoolbox_sync_decode_frame(Ijk_VideoToolBox_Opaque* context)
 
         if (!d->packet_pending || d->queue->serial != d->pkt_serial) {
             AVPacket pkt;
+            int old_serial;
             do {
                 if (d->queue->nb_packets == 0)
                     SDL_CondSignal(d->empty_queue_cond);
                 ffp_video_statistic_l(ffp);
+                old_serial = d->pkt_serial;
                 if (ffp_packet_queue_get_or_buffering(ffp, d->queue, &pkt, &d->pkt_serial, &d->finished) < 0)
                     return -1;
-                if (ffp_is_flush_packet(&pkt)) {
+                if (old_serial != d->pkt_serial) {
                     avcodec_flush_buffers(d->avctx);
                     context->refresh_request = true;
                     context->serial += 1;
                     d->finished = 0;
-                    ALOGI("flushed last keyframe pts %lld \n",d->pkt.pts);
+                    ALOGI("VTB-SYNC: flushed last keyframe pts %lld\n",d->pkt->pts);
                     d->next_pts = d->start_pts;
                     d->next_pts_tb = d->start_pts_tb;
                 }
-            } while (ffp_is_flush_packet(&pkt) || d->queue->serial != d->pkt_serial);
+            } while (old_serial != d->pkt_serial || d->queue->serial != d->pkt_serial);
 
-            av_packet_split_side_data(&pkt);
-
-            av_packet_unref(&d->pkt);
-            d->pkt_temp = d->pkt = pkt;
+            av_packet_unref(d->pkt);
+            av_packet_move_ref(d->pkt, &pkt);
+            d->pkt_temp = *(d->pkt);
             d->packet_pending = 1;
         }
 
@@ -948,7 +952,7 @@ static int vtbformat_init(VTBFormatDesc *fmt_desc, AVCodecParameters *codecpar)
     }
 
     if (extrasize < 7 || extradata == NULL) {
-        ALOGI("%s - avcC or hvcC atom data too small or missing", __FUNCTION__);
+        ALOGI("VTB-SYNC: %s - avcC or hvcC atom data too small or missing\n", __FUNCTION__);
         goto fail;
     }
 
@@ -975,48 +979,48 @@ static int vtbformat_init(VTBFormatDesc *fmt_desc, AVCodecParameters *codecpar)
     }
     
     if (extradata[0] == 1) {
-//                if (!validate_avcC_spc(extradata, extrasize, &fmt_desc->max_ref_frames, &sps_level, &sps_profile)) {
-            //goto failed;
-//                }
+        //if (!validate_avcC_spc(extradata, extrasize, &fmt_desc->max_ref_frames, &sps_level, &sps_profile)) {
+        //goto failed;
+        //}
         if (level == 0 && sps_level > 0)
             level = sps_level;
 
-                if (profile == 0 && sps_profile > 0)
-                    profile = sps_profile;
-                if (profile == FF_PROFILE_H264_MAIN && level == 32 && fmt_desc->max_ref_frames > 4) {
-                    ALOGE("%s - Main@L3.2 detected, VTB cannot decode with %d ref frames", __FUNCTION__, fmt_desc->max_ref_frames);
-                    goto fail;
-                }
+        if (profile == 0 && sps_profile > 0)
+            profile = sps_profile;
+        if (profile == FF_PROFILE_H264_MAIN && level == 32 && fmt_desc->max_ref_frames > 4) {
+            ALOGE("VTB-SYNC: %s - Main@L3.2 detected, VTB cannot decode with %d ref frames\n", __FUNCTION__, fmt_desc->max_ref_frames);
+            goto fail;
+        }
 
-                if (extradata[4] == 0xFE) {
-                    extradata[4] = 0xFF;
-                    fmt_desc->convert_3byteTo4byteNALSize = true;
-                }
+        if (extradata[4] == 0xFE) {
+            extradata[4] = 0xFF;
+            fmt_desc->convert_3byteTo4byteNALSize = true;
+        }
 
         fmt_desc->fmt_desc = CreateFormatDescriptionFromCodecData(format_id, width, height, extradata, extrasize,  IJK_VTB_FCC_AVCC);
         if (fmt_desc->fmt_desc == NULL) {
             goto fail;
         }
 
-                ALOGI("%s - using avcC atom of size(%d), ref_frames(%d)", __FUNCTION__, extrasize, fmt_desc->max_ref_frames);
-            } else {
-                if ((extradata[0] == 0 && extradata[1] == 0 && extradata[2] == 0 && extradata[3] == 1) ||
-                    (extradata[0] == 0 && extradata[1] == 0 && extradata[2] == 1)) {
-                    AVIOContext *pb;
-                    if (avio_open_dyn_buf(&pb) < 0) {
-                        goto fail;
-                    }
+        ALOGI("VTB-SYNC: %s - using avcC atom of size(%d), ref_frames(%d)\n", __FUNCTION__, extrasize, fmt_desc->max_ref_frames);
+    } else {
+        if ((extradata[0] == 0 && extradata[1] == 0 && extradata[2] == 0 && extradata[3] == 1) ||
+                (extradata[0] == 0 && extradata[1] == 0 && extradata[2] == 1)) {
+            AVIOContext *pb;
+            if (avio_open_dyn_buf(&pb) < 0) {
+                goto fail;
+            }
 
-                    fmt_desc->convert_bytestream = true;
-                    ff_isom_write_avcc(pb, extradata, extrasize);
-                    extradata = NULL;
+            fmt_desc->convert_bytestream = true;
+            ff_isom_write_avcc(pb, extradata, extrasize);
+            extradata = NULL;
 
-                    extrasize = avio_close_dyn_buf(pb, &extradata);
+            extrasize = avio_close_dyn_buf(pb, &extradata);
 
-                    if (!validate_avcC_spc(extradata, extrasize, &fmt_desc->max_ref_frames, &sps_level, &sps_profile)) {
-                        av_free(extradata);
-                        goto fail;
-                    }
+            if (!validate_avcC_spc(extradata, extrasize, &fmt_desc->max_ref_frames, &sps_level, &sps_profile)) {
+                av_free(extradata);
+                goto fail;
+            }
 
             fmt_desc->fmt_desc = CreateFormatDescriptionFromCodecData(format_id, width, height, extradata, extrasize, IJK_VTB_FCC_AVCC);
             if (fmt_desc->fmt_desc == NULL) {
@@ -1025,7 +1029,7 @@ static int vtbformat_init(VTBFormatDesc *fmt_desc, AVCodecParameters *codecpar)
 
             av_free(extradata);
         } else {
-            ALOGI("%s - invalid avcC atom data", __FUNCTION__);
+            ALOGI("VTB-SYNC: %s - invalid avcC atom data\n", __FUNCTION__);
             goto fail;
         }
     }
@@ -1033,7 +1037,7 @@ static int vtbformat_init(VTBFormatDesc *fmt_desc, AVCodecParameters *codecpar)
     fmt_desc->max_ref_frames = FFMAX(fmt_desc->max_ref_frames, 2);
     fmt_desc->max_ref_frames = FFMIN(fmt_desc->max_ref_frames, 5);
 
-    ALOGI("m_max_ref_frames %d \n", fmt_desc->max_ref_frames);
+    ALOGI("VTB-SYNC: m_max_ref_frames %d \n", fmt_desc->max_ref_frames);
 
     return 0;
 fail:
@@ -1046,7 +1050,7 @@ Ijk_VideoToolBox_Opaque* videotoolbox_sync_create(FFPlayer* ffp, AVCodecContext*
     int ret = 0;
 
     if (ret) {
-        ALOGW("%s - videotoolbox can not exists twice at the same time", __FUNCTION__);
+        ALOGW("VTB-SYNC: %s - videotoolbox can not exists twice at the same time\n", __FUNCTION__);
         return NULL;
     }
 

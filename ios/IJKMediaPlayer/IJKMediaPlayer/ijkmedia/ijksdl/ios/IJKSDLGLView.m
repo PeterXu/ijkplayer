@@ -23,7 +23,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#if IJK_IOS
+#if TARGET_OS_IPHONE
 
 #import "IJKSDLGLView.h"
 #include "ijksdl/ijksdl_timer.h"

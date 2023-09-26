@@ -22,7 +22,7 @@
 
 #include <limits.h>
 #include <stdint.h>
-#include "libavcodec/avcodec.h"
+#include "ff_ffinc.h"
 
 static void restore_mpeg4_esds(AVCodecParameters *codecpar,
                                  uint8_t *p_buf, size_t i_buf_size,

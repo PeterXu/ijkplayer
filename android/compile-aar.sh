@@ -52,6 +52,10 @@ do_build_all() {
     do_build_full $ACTION
     do_build_aar exo $ACTION
     do_build_aar example $ACTION
+    if [ "$ACTION" = "clean" ]; then
+        rm -rf "$UNI_BUILD_ROOT/ijkplayer/fijkplayer-full/build"
+        rm -rf "$UNI_BUILD_ROOT/ijkplayer/fijkplayer-full/.cxx"
+    fi
 }
 
 #----------

@@ -30,7 +30,7 @@
 #include <unistd.h>
 #include <sys/time.h>
 #else
-#include "libavutil/time.h"
+#include "ff_ffinc.h"
 #endif // !WIN32
 
 

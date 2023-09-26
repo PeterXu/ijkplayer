@@ -24,6 +24,7 @@
 #include "ijkmeta.h"
 #include "ff_ffinc.h"
 #include "ijksdl/ijksdl_misc.h"
+#include "ijksdl/ijksdl.h"
 
 #define IJK_META_INIT_CAPACITY 13
 
@@ -157,22 +158,30 @@ static int64_t get_bit_rate(AVCodecParameters *codecpar)
     int bits_per_sample;
 
     switch (codecpar->codec_type) {
-        case AVMEDIA_TYPE_VIDEO:
-        case AVMEDIA_TYPE_DATA:
-        case AVMEDIA_TYPE_SUBTITLE:
-        case AVMEDIA_TYPE_ATTACHMENT:
+    case AVMEDIA_TYPE_VIDEO:
+    case AVMEDIA_TYPE_DATA:
+    case AVMEDIA_TYPE_SUBTITLE:
+    case AVMEDIA_TYPE_ATTACHMENT:
+        bit_rate = codecpar->bit_rate;
+        break;
+    case AVMEDIA_TYPE_AUDIO:
+        bits_per_sample = av_get_bits_per_sample(codecpar->codec_id);
+        if (bits_per_sample) {
+            bit_rate = codecpar->sample_rate * (int64_t)codecpar->ch_layout.nb_channels;
+            if (bit_rate > INT64_MAX / bits_per_sample) {
+                bit_rate = 0;
+            } else
+                bit_rate *= bits_per_sample;
+        } else
             bit_rate = codecpar->bit_rate;
-            break;
-        case AVMEDIA_TYPE_AUDIO:
-            bits_per_sample = av_get_bits_per_sample(codecpar->codec_id);
-            bit_rate = bits_per_sample ? codecpar->sample_rate * codecpar->channels * bits_per_sample : codecpar->bit_rate;
-            break;
-        default:
-            bit_rate = 0;
-            break;
+        break;
+    default:
+        bit_rate = 0;
+        break;
     }
     return bit_rate;
 }
+
 
 void ijkmeta_set_avformat_context_l(IjkMediaMeta *meta, AVFormatContext *ic)
 {
@@ -256,8 +265,9 @@ void ijkmeta_set_avformat_context_l(IjkMediaMeta *meta, AVFormatContext *ic)
 
                 if (codecpar->sample_rate)
                     ijkmeta_set_int64_l(stream_meta, IJKM_KEY_SAMPLE_RATE, codecpar->sample_rate);
-                if (codecpar->channel_layout)
-                    ijkmeta_set_int64_l(stream_meta, IJKM_KEY_CHANNEL_LAYOUT, codecpar->channel_layout);
+                if (codecpar->ch_layout.order != AV_CHANNEL_ORDER_CUSTOM)
+                    ijkmeta_set_int64_l(stream_meta, IJKM_KEY_CHANNEL_LAYOUT, codecpar->ch_layout.u.mask);
+                ijkmeta_set_int64_l(stream_meta, IJKM_KEY_CHANNEL_NUMBER, codecpar->ch_layout.nb_channels);
                 break;
             }
             case AVMEDIA_TYPE_SUBTITLE: {

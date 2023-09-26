@@ -9,6 +9,7 @@ ijkmedia/ijkyuv/
 ijkmedia/ijksoundtouch/
 ijkmedia/portaudio/
 ijkprof/android-ndk-profiler/
+IJKFFmpegVersion.h
 
 
 # built application files

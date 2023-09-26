@@ -25,13 +25,7 @@
 #ifndef IJKSDL__FFMPEG__IJKSDL_FFINC_H
 #define IJKSDL__FFMPEG__IJKSDL_FFINC_H
 
-#include "libavutil/imgutils.h"
-#include "libavutil/pixfmt.h"
-#include "libavutil/frame.h"
-#include "libavutil/common.h"
-#include "libavcodec/avcodec.h"
-#include "libswscale/swscale.h"
-
+#include "ff_ffinc.h"
 #include "../ijksdl_inc_internal.h"
 
 #endif

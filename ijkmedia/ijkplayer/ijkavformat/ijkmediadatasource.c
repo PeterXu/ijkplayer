@@ -22,11 +22,7 @@
 #ifdef __ANDROID__
 
 #include <assert.h>
-#include "libavformat/avformat.h"
-#include "libavformat/url.h"
-#include "libavutil/avstring.h"
-#include "libavutil/log.h"
-#include "libavutil/opt.h"
+#include "ff_ffinc.h"
 
 #include "ijkavformat/ijkavformat.h"
 #include "ijkplayer/ijkavutil/opt.h"

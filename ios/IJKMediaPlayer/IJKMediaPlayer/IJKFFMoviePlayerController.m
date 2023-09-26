@@ -23,13 +23,13 @@
 
 #import "IJKFFMoviePlayerController.h"
 
-#if IJK_OSX
-#import <AppKit/AppKit.h>
-#else
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
+#else
+#import <AppKit/AppKit.h>
 #endif
 
-#if IJK_IOS
+#if TARGET_OS_IPHONE
 #import "ijksdl/ios/IJKSDLHudViewController.h"
 #endif
 #import "IJKFFMoviePlayerDef.h"
@@ -38,11 +38,12 @@
 #import "IJKSDLGLViewProtocol.h"
 #import "IJKAudioKit.h"
 #import "IJKNotificationManager.h"
+#import "IJKFFmpegVersion.h"
 #import "NSString+IJKMedia.h"
 #import "ijkplayer/ijkavformat/ijkioapplication.h"
 #include "string.h"
 
-static const char *kIJKFFRequiredFFmpegVersion = "ff4.0--ijk0.8.8--20211030--926";
+//static const char *kIJKFFRequiredFFmpegVersion = "ff4.0--ijk0.8.8--20211030--926";
 
 // It means you didn't call shutdown if you found this object leaked.
 @interface IJKWeakHolder : NSObject
@@ -1033,7 +1034,7 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
         case FFP_MSG_FLUSH:
             break;
         case FFP_MSG_ERROR: {
-            NSLog(@"FFP_MSG_ERROR: %d\n", avmsg->arg1);
+            NSLog(@"FFP_MSG_ERROR: %ld\n", avmsg->arg1);
 
             [self setScreenOn:NO];
 
@@ -1172,7 +1173,7 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
             break;
         }
         case FFP_MSG_VIDEO_SIZE_CHANGED:
-            NSLog(@"FFP_MSG_VIDEO_SIZE_CHANGED: %d, %d\n", avmsg->arg1, avmsg->arg2);
+            NSLog(@"FFP_MSG_VIDEO_SIZE_CHANGED: %ld, %ld\n", avmsg->arg1, avmsg->arg2);
             if (avmsg->arg1 > 0)
                 _videoWidth = avmsg->arg1;
             if (avmsg->arg2 > 0)
@@ -1180,7 +1181,7 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
             [self changeNaturalSize];
             break;
         case FFP_MSG_SAR_CHANGED:
-            NSLog(@"FFP_MSG_SAR_CHANGED: %d, %d\n", avmsg->arg1, avmsg->arg2);
+            NSLog(@"FFP_MSG_SAR_CHANGED: %ld, %ld\n", avmsg->arg1, avmsg->arg2);
             if (avmsg->arg1 > 0)
                 _sampleAspectRatioNumerator = avmsg->arg1;
             if (avmsg->arg2 > 0)

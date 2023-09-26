@@ -23,7 +23,7 @@ using namespace std;
 
 typedef map<int64_t, void *> IjkMap;
 
-extern "C" void* ijk_map_create();
+extern "C" void* ijk_map_create(void);
 extern "C" void ijk_map_put(void *data, int64_t key, void *value);
 extern "C" void* ijk_map_get(void *data, int64_t key);
 extern "C" int ijk_map_remove(void *data, int64_t key);
@@ -35,7 +35,7 @@ extern "C" void ijk_map_clear(void *data);
 extern "C" void ijk_map_destroy(void *data);
 extern "C" void ijk_map_traversal_handle(void *data, void *parm, int (*enu)(void *parm, int64_t key, void *elem));
 
-void* ijk_map_create() {
+void* ijk_map_create(void) {
     IjkMap *data = new IjkMap();
     return data;
 }

@@ -24,10 +24,10 @@
 #ifndef IJKSDLGLViewProtocol_h
 #define IJKSDLGLViewProtocol_h
 
-#if IJK_OSX
-#import <AppKit/AppKit.h>
-#else
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
+#else
+#import <AppKit/AppKit.h>
 #endif
 
 typedef struct IJKOverlay IJKOverlay;
@@ -45,12 +45,12 @@ struct IJKOverlay {
 
 @protocol IJKSDLGLViewProtocol <NSObject>
 
-#if IJK_OSX
-@optional
-- (NSImage*) snapshot;
-#else
+#if TARGET_OS_IPHONE
 @optional
 - (UIImage*) snapshot;
+#else
+@optional
+- (NSImage*) snapshot;
 #endif
 
 @property(nonatomic, readonly) CGFloat  fps;

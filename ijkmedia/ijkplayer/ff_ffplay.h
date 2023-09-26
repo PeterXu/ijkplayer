@@ -29,23 +29,23 @@
 #include "ff_fferror.h"
 #include "ff_ffmsg.h"
 
-void      ffp_global_init();
-void      ffp_global_uninit();
+void      ffp_global_init(void);
+void      ffp_global_uninit(void);
 void      ffp_global_set_log_report(int use_report);
 void      ffp_global_set_log_level(int log_level);
 void      ffp_global_set_inject_callback(ijk_inject_callback cb);
+
 void      ffp_io_stat_register(void (*cb)(const char *url, int type, int bytes));
 void      ffp_io_stat_complete_register(void (*cb)(const char *url,
                                                    int64_t read_bytes, int64_t total_size,
                                                    int64_t elpased_time, int64_t total_duration));
 
-FFPlayer *ffp_create();
+FFPlayer *ffp_create(void);
 void      ffp_destroy(FFPlayer *ffp);
 void      ffp_destroy_p(FFPlayer **pffp);
 void      ffp_reset(FFPlayer *ffp);
 
 /* set options before ffp_prepare_async_l() */
-
 void     ffp_set_frame_at_time(FFPlayer *ffp, const char *path, int64_t start_time, int64_t end_time, int num, int definition);
 void     *ffp_set_inject_opaque(FFPlayer *ffp, void *opaque);
 void     *ffp_set_ijkio_inject_opaque(FFPlayer *ffp, void *opaque);
@@ -63,7 +63,6 @@ int       ffp_pause_l(FFPlayer *ffp);
 int       ffp_is_paused_l(FFPlayer *ffp);
 int       ffp_stop_l(FFPlayer *ffp);
 int       ffp_wait_stop_l(FFPlayer *ffp);
-
 void      ffp_take_snapshot(FFPlayer *ffp);
 
 /* all in milliseconds */
@@ -74,19 +73,7 @@ long      ffp_get_playable_duration_l(FFPlayer *ffp);
 void      ffp_set_loop(FFPlayer *ffp, int loop);
 int       ffp_get_loop(FFPlayer *ffp);
 
-/* for internal usage */
-int       ffp_packet_queue_init(PacketQueue *q);
-void      ffp_packet_queue_destroy(PacketQueue *q);
-void      ffp_packet_queue_abort(PacketQueue *q);
-void      ffp_packet_queue_start(PacketQueue *q);
-void      ffp_packet_queue_flush(PacketQueue *q);
-int       ffp_packet_queue_get(PacketQueue *q, AVPacket *pkt, int block, int *serial);
 int       ffp_packet_queue_get_or_buffering(FFPlayer *ffp, PacketQueue *q, AVPacket *pkt, int *serial, int *finished);
-int       ffp_packet_queue_put(PacketQueue *q, AVPacket *pkt);
-bool      ffp_is_flush_packet(AVPacket *pkt);
-
-Frame    *ffp_frame_queue_peek_writable(FrameQueue *f);
-void      ffp_frame_queue_push(FrameQueue *f);
 
 int       ffp_queue_picture(FFPlayer *ffp, AVFrame *src_frame, double pts, double duration, int64_t pos, int serial);
 

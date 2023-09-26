@@ -24,11 +24,12 @@
 #include "ijkplayer/ijkavutil/ijkutils.h"
 #include "ijkplayer/ijkavutil/ijktree.h"
 #include "ijkplayer/ijkavutil/ijkstl.h"
-#include "libavutil/log.h"
+#include "ff_ffinc.h"
 
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <inttypes.h>
 #ifndef WIN32
 #include <unistd.h>
 #else

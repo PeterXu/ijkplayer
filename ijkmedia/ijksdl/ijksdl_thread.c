@@ -33,7 +33,7 @@
 #include "ijksdl/android/ijksdl_android_jni.h"
 #endif
 
-#include "libavutil/avstring.h"
+#include "ff_ffinc.h"
 
 #if !defined(__APPLE__)
 // using ios implement for autorelease

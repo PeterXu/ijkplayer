@@ -60,6 +60,7 @@ fi
 #----------
 
 do_lipo_all() {
+    [ "$FF_PLATFORM" = "android" ] && return 0
     source $FF_TOOLS/do-arch.sh $FF_PLATFORM arm64
     if [ "$IJK_LIPO" = "" ]; then
         echo "WARN: no lipo found!!!"

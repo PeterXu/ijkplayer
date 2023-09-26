@@ -34,5 +34,5 @@ public interface IjkEventListener {
 
 
 
-    void onEvent(IjkMediaPlayer mp, int what, int arg1, int arg2, Object extra);
+    void onEvent(IjkMediaPlayer mp, int what, long arg1, long arg2, Object extra);
 }

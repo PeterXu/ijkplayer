@@ -19,12 +19,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
+#include "ff_ffinc.h"
 #include <assert.h>
-#include "libavformat/avformat.h"
-#include "libavformat/url.h"
-#include "libavutil/avstring.h"
-#include "libavutil/log.h"
-#include "libavutil/opt.h"
 
 typedef struct Context {
     AVClass        *class;

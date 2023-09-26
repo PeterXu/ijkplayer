@@ -608,8 +608,7 @@ int ijkmp_seek_to_l(IjkMediaPlayer *mp, long msec)
     mp->seek_req = 1;
     mp->seek_msec = msec;
     ffp_remove_msg(mp->ffplayer, FFP_REQ_SEEK);
-    ffp_notify_msg2(mp->ffplayer, FFP_REQ_SEEK, (int)msec);
-    // TODO: 9 64-bit long?
+    ffp_notify_msg2(mp->ffplayer, FFP_REQ_SEEK, msec);
 
     return 0;
 }
@@ -821,7 +820,7 @@ int ijkmp_get_msg(IjkMediaPlayer *mp, AVMessage *msg, int block)
             if (0 == ikjmp_chkst_seek_l(mp->mp_state)) {
                 mp->restart_from_beginning = 0;
                 if (0 == ffp_seek_to_l(mp->ffplayer, msg->arg1)) {
-                    av_log(mp->ffplayer, AV_LOG_DEBUG, "ijkmp_get_msg: FFP_REQ_SEEK: seek to %d\n", (int)msg->arg1);
+                    av_log(mp->ffplayer, AV_LOG_DEBUG, "ijkmp_get_msg: FFP_REQ_SEEK: seek to %ld\n", msg->arg1);
                 }
             }
             pthread_mutex_unlock(&mp->mutex);

@@ -111,12 +111,12 @@ void J4AC_tv_danmaku_ijk_media_player_IjkMediaPlayer__mNativeAndroidIO__set__cat
     J4A_ExceptionCheck__catchAll(env);
 }
 
-void J4AC_tv_danmaku_ijk_media_player_IjkMediaPlayer__postEventFromNative(JNIEnv *env, jobject weakThiz, jint what, jint arg1, jint arg2, jobject obj)
+void J4AC_tv_danmaku_ijk_media_player_IjkMediaPlayer__postEventFromNative(JNIEnv *env, jobject weakThiz, jint what, jlong arg1, jlong arg2, jobject obj)
 {
     (*env)->CallStaticVoidMethod(env, class_J4AC_tv_danmaku_ijk_media_player_IjkMediaPlayer.id, class_J4AC_tv_danmaku_ijk_media_player_IjkMediaPlayer.method_postEventFromNative, weakThiz, what, arg1, arg2, obj);
 }
 
-void J4AC_tv_danmaku_ijk_media_player_IjkMediaPlayer__postEventFromNative__catchAll(JNIEnv *env, jobject weakThiz, jint what, jint arg1, jint arg2, jobject obj)
+void J4AC_tv_danmaku_ijk_media_player_IjkMediaPlayer__postEventFromNative__catchAll(JNIEnv *env, jobject weakThiz, jint what, jlong arg1, jlong arg2, jobject obj)
 {
     J4AC_tv_danmaku_ijk_media_player_IjkMediaPlayer__postEventFromNative(env, weakThiz, what, arg1, arg2, obj);
     J4A_ExceptionCheck__catchAll(env);
@@ -363,7 +363,7 @@ int J4A_loadClass__J4AC_tv_danmaku_ijk_media_player_IjkMediaPlayer(JNIEnv *env)
 
     class_id = class_J4AC_tv_danmaku_ijk_media_player_IjkMediaPlayer.id;
     name     = "postEventFromNative";
-    sign     = "(Ljava/lang/Object;IIILjava/lang/Object;)V";
+    sign     = "(Ljava/lang/Object;IJJLjava/lang/Object;)V";
     class_J4AC_tv_danmaku_ijk_media_player_IjkMediaPlayer.method_postEventFromNative = J4A_GetStaticMethodID__catchAll(env, class_id, name, sign);
     if (class_J4AC_tv_danmaku_ijk_media_player_IjkMediaPlayer.method_postEventFromNative == NULL)
         goto fail;

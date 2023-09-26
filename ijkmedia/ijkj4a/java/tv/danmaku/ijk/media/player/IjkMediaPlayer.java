@@ -8,7 +8,7 @@ public class IjkMediaPlayer {
     private long mNativeMediaDataSource;
     private long mNativeAndroidIO;
 
-    private static void postEventFromNative(Object weakThiz, int what, int arg1, int arg2, Object obj);
+    private static void postEventFromNative(Object weakThiz, int what, long arg1, long arg2, Object obj);
     private static String onSelectCodec(Object weakThiz, String mimeType, int profile, int level);
     private static boolean onNativeInvoke(Object weakThiz, int what, Bundle args);
 }

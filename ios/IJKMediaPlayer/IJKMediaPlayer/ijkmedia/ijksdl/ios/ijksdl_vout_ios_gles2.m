@@ -37,7 +37,7 @@ typedef struct SDL_VoutSurface_Opaque {
 
 struct SDL_Vout_Opaque {
     id<IJKSDLGLViewProtocol> gl_viewp;
-#if IJK_IOS
+#if TARGET_OS_IPHONE
     IJKSDLGLView *gl_view;
     IJKSDLFboGLView *fbo_viewl;
 #endif
@@ -76,7 +76,7 @@ static void vout_free_l(SDL_Vout *vout)
             [opaque->gl_viewp release];
             opaque->gl_viewp = nil;
         }
-#if IJK_IOS
+#if TARGET_OS_IPHONE
         opaque->gl_view = nil;
 #endif
     }
@@ -127,7 +127,7 @@ static int vout_display_overlay_l(SDL_Vout *vout, SDL_VoutOverlay *overlay)
              [gl_viewp display_pixels:&ijk_overlay];
         }
     }
-#if IJK_IOS
+#if TARGET_OS_IPHONE
     if (!opaque->third_part) {
         if (opaque->gl_view){
             [opaque->gl_view display:overlay];
@@ -185,7 +185,7 @@ static void SDL_VoutIos_SetGLView_l(SDL_Vout *vout, id<IJKSDLGLViewProtocol> vie
         opaque->third_part = view.isThirdGLView;
         if ([opaque->gl_viewp respondsToSelector:@selector(display_pixels:)])
             opaque->response_display_pixels = YES;
-#if IJK_IOS
+#if TARGET_OS_IPHONE
         if ([opaque->gl_viewp isKindOfClass:[IJKSDLGLView class] ]){
             opaque->gl_view = (IJKSDLGLView *)opaque->gl_viewp;
         } else if ([opaque->gl_viewp isKindOfClass:[IJKSDLFboGLView class] ]) {

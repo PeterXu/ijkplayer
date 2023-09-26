@@ -35,7 +35,7 @@ const char *SDL_GetError(void)
 }
 #endif
 
-void ijksdl_global_init()
+void ijksdl_global_init(void)
 {
 #if USE_SDL2
     SDL_Init(SDL_INIT_AUDIO);

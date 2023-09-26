@@ -131,6 +131,15 @@ FF_CFG_FLAGS="$FF_CFG_FLAGS --disable-stripping"
 FF_CFG_FLAGS="$FF_CFG_FLAGS --enable-static"
 FF_CFG_FLAGS="$FF_CFG_FLAGS --disable-shared"
 
+if [ "$FF_PLATFORM" = "android" ]; then
+    #FF_CFG_FLAGS="$FF_CFG_FLAGS --enable-jni --enable-mediacodec"
+    #FF_LDFLAGS="$FF_LDFLAGS -landroid"
+    echo
+elif [ "$FF_PLATFORM" = "win32" ]; then
+    #FF_CFG_FLAGS="$FF_CFG_FLAGS --enable-mediafoundation"
+    echo
+fi
+
 echo "\n[*] check libsrt"
 FF_DEP_LIBSRT=${FF_BUILD_ROOT}/build/libsrt-$FF_ARCH/output
 if [ -f "${FF_DEP_LIBSRT}/lib/libsrt.a" ]; then
@@ -210,11 +219,25 @@ echo "\n--------------------"
 echo "[*] compile ffmpeg"
 echo "--------------------"
 
-cp config.* $FF_BUILD_OUTPUT
+cp -f config.h $FF_BUILD_OUTPUT
 make -j3
 make install
-mkdir -p $FF_BUILD_OUTPUT/include/libffmpeg
-cp -f config.h $FF_BUILD_OUTPUT/include/libffmpeg/config.h
+
+config_headers=
+config_headers="$config_headers config.h config_components.h"
+for item in $config_headers; do
+    cp -f $item $FF_BUILD_OUTPUT/include/libavutil/$item
+    cp -f $item $FF_BUILD_OUTPUT/include/libavformat/$item
+    cp -f $item $FF_BUILD_OUTPUT/include/libavcodec/$item
+done
+
+extra_headers=
+extra_headers="$extra_headers libavutil/application.h libavutil/thread.h"
+extra_headers="$extra_headers libavformat/avc.h libavformat/internal.h libavformat/url.h libavformat/os_support.h"
+extra_headers="$extra_headers libavcodec/packet_internal.h"
+for item in $extra_headers; do
+    cp -f $item $FF_BUILD_OUTPUT/include/$item
+done
 
 
 # link *.o to so for android

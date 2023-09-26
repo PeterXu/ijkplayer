@@ -1205,7 +1205,7 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
      */
     @CalledByNative
     private static void postEventFromNative(Object weakThiz, int what,
-            int arg1, int arg2, Object obj) {
+            long arg1, long arg2, Object obj) {
         if (weakThiz == null)
             return;
 
@@ -1219,9 +1219,9 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
             ByteBuffer byteBuffer = (ByteBuffer) obj;
             Matrix matrix = new Matrix();
             matrix.postScale(1, -1, arg1/2f, arg2/2f);
-            Bitmap bitmap = Bitmap.createBitmap(arg1, arg2, Bitmap.Config.ARGB_8888);
+            Bitmap bitmap = Bitmap.createBitmap((int)arg1, (int)arg2, Bitmap.Config.ARGB_8888);
             bitmap.copyPixelsFromBuffer(byteBuffer);
-            bitmap =  Bitmap.createBitmap(bitmap, 0, 0, arg1, arg2, matrix, true);
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, (int)arg1, (int)arg2, matrix, true);
             obj = bitmap;
         }
         // native ijkplayer never post this message
@@ -1231,7 +1231,7 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
         //     mp.start();
         // }
         if (mp.mEventHandler != null) {
-            Message m = mp.mEventHandler.obtainMessage(what, arg1, arg2, obj);
+            Message m = mp.mEventHandler.obtainMessage(what, (int)arg1, (int)arg2, obj);
             mp.mEventHandler.sendMessage(m);
         }
     }

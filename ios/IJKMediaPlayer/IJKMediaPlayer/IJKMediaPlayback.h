@@ -22,7 +22,7 @@
  */
 
 #import <Foundation/Foundation.h>
-#if IJK_IOS
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 #endif
 
@@ -77,7 +77,7 @@ typedef NS_ENUM(NSInteger, IJKMPMovieTimeOption) {
 - (void)shutdown;
 - (void)setPauseInBackground:(BOOL)pause;
 
-#if IJK_IOS
+#if TARGET_OS_IPHONE
 @property(nonatomic, readonly)  UIView *view;
 #endif
 @property(nonatomic)            NSTimeInterval currentPlaybackTime;
@@ -88,9 +88,9 @@ typedef NS_ENUM(NSInteger, IJKMPMovieTimeOption) {
 @property(nonatomic, readonly)  BOOL isPreparedToPlay;
 @property(nonatomic, readonly)  IJKMPMoviePlaybackState playbackState;
 @property(nonatomic, readonly)  IJKMPMovieLoadState loadState;
-@property(nonatomic, readonly) int isSeekBuffering;
-@property(nonatomic, readonly) int isAudioSync;
-@property(nonatomic, readonly) int isVideoSync;
+@property(nonatomic, readonly) long isSeekBuffering;
+@property(nonatomic, readonly) long isAudioSync;
+@property(nonatomic, readonly) long isVideoSync;
 
 @property(nonatomic, readonly) int64_t numberOfBytesTransferred;
 
@@ -105,7 +105,7 @@ typedef NS_ENUM(NSInteger, IJKMPMovieTimeOption) {
 @property (nonatomic) float playbackRate;
 @property (nonatomic) float playbackVolume;
 
-#if IJK_IOS
+#if TARGET_OS_IPHONE
 - (UIImage *)thumbnailImageAtCurrentTime;
 #endif
 

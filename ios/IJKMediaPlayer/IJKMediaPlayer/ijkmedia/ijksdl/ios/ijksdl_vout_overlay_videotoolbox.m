@@ -162,7 +162,7 @@ SDL_VoutOverlay *SDL_VoutVideoToolBox_CreateOverlay(int width, int height, SDL_V
              width, height, display);
     SDL_VoutOverlay *overlay = SDL_VoutOverlay_CreateInternal(sizeof(SDL_VoutOverlay_Opaque));
     if (!overlay) {
-        ALOGE("overlay allocation failed");
+        ALOGE("overlay allocation failed\n");
         return NULL;
     }
     SDL_VoutOverlay_Opaque *opaque = overlay->opaque;

@@ -59,7 +59,7 @@
 
         AudioComponent auComponent = AudioComponentFindNext(NULL, &desc);
         if (auComponent == NULL) {
-            ALOGE("AudioUnit: AudioComponentFindNext failed");
+            ALOGE("AudioUnit: AudioComponentFindNext failed\n");
             self = nil;
             return nil;
         }
@@ -67,7 +67,7 @@
         AudioUnit auUnit;
         OSStatus status = AudioComponentInstanceNew(auComponent, &auUnit);
         if (status != noErr) {
-            ALOGE("AudioUnit: AudioComponentInstanceNew failed");
+            ALOGE("AudioUnit: AudioComponentInstanceNew failed\n");
             self = nil;
             return nil;
         }
@@ -80,7 +80,7 @@
                                       &flag,
                                       sizeof(flag));
         if (status != noErr) {
-            ALOGE("AudioUnit: failed to set IO mode (%d)", (int)status);
+            ALOGE("AudioUnit: failed to set IO mode (%d)\n", (int)status);
         }
 
         /* Get the current format */
@@ -98,7 +98,7 @@
                                       &streamDescription,
                                       i_param_size);
         if (status != noErr) {
-            ALOGE("AudioUnit: failed to set stream format (%d)", (int)status);
+            ALOGE("AudioUnit: failed to set stream format (%d)\n", (int)status);
             self = nil;
             return nil;
         }
@@ -153,7 +153,7 @@
         return;
 
     _isPaused = NO;
-#if IJK_IOS
+#if TARGET_OS_IPHONE
     NSError *error = nil;
     if (NO == [[AVAudioSession sharedInstance] setActive:YES error:&error]) {
         NSLog(@"AudioUnit: AVAudioSession.setActive(YES) failed: %@\n", error ? [error localizedDescription] : @"nil");
@@ -191,7 +191,7 @@
 
     OSStatus status = AudioOutputUnitStop(_auUnit);
     if (status != noErr)
-        ALOGE("AudioUnit: failed to stop AudioUnit (%d)", (int)status);
+        ALOGE("AudioUnit: failed to stop AudioUnit (%d)\n", (int)status);
 }
 
 - (void)close

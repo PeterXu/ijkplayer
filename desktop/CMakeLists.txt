@@ -48,23 +48,20 @@ endif ()
 
 
 # check depends: $CMAKE_SYSTEM_NAME
-set(IJK_DESKTOP_CONTRIB_PATH ${IJKROOT_PATH}/desktop/contrib)
-
 if (APPLE)
     set(IJK_FFMPAG_BUILD_DIR ${IJKROOT_PATH}/osx/contrib/build/ffmpeg-${CMAKE_HOST_SYSTEM_PROCESSOR}/output/)
     set(IJK_OPENSSL_BUILD_DIR ${IJKROOT_PATH}/osx/contrib/build/openssl-${CMAKE_HOST_SYSTEM_PROCESSOR}/output/)
 endif ()
 if (WIN32)
-    set(IJK_FFMPAG_BUILD_DIR ${IJK_DESKTOP_CONTRIB_PATH}/ffmpeg/${CMAKE_HOST_SYSTEM_PROCESSOR})
-    set(IJK_DESKTOP_PTHREAD_BUILD_DIR ${IJK_DESKTOP_CONTRIB_PATH}/pthreads/lib/${CMAKE_HOST_SYSTEM_PROCESSOR})
+    set(IJK_FFMPAG_BUILD_DIR ${IJKROOT_PATH}/win32/contrib/build/ffmpeg-${CMAKE_HOST_SYSTEM_PROCESSOR}/output/)
+    set(IJK_OPENSSL_BUILD_DIR ${IJKROOT_PATH}/win32/contrib/build/openssl-${CMAKE_HOST_SYSTEM_PROCESSOR}/output/)
+    set(IJK_PTHREAD_BUILD_DIR ${IJKROOT_PATH}/win32/pthreads/lib/${CMAKE_HOST_SYSTEM_PROCESSOR})
     add_definitions(-DHAVE_STRUCT_TIMESPEC)
 endif ()
 cmake_print_variables(IJK_FFMPAG_BUILD_DIR)
 
 if (NOT DEFINED IJK_FFMPAG_BUILD_DIR)
     message(FATAL_ERROR "Can not find ffmpeg build output: ${IJK_FFMPAG_BUILD_DIR}")
-else ()
-    message(STATUS "IJK_FFMPAG_BUILD_DIR:${IJK_FFMPAG_BUILD_DIR}")
 endif ()
 
 find_package(SDL2 REQUIRED)
@@ -90,8 +87,11 @@ add_library(IjkPlayer SHARED ${FIJKPLAYER_SOURCE})
 add_subdirectory(../ijkmedia ijkmedia)
 
 target_include_directories(IjkPlayer PRIVATE ${IJKROOT_PATH}/ijkmedia)
+target_include_directories(IjkPlayer PRIVATE ${IJKROOT_PATH}/ijkmedia/ijkplayer)
 target_include_directories(IjkPlayer PRIVATE ${IJK_FFMPAG_BUILD_DIR}/include)
-target_include_directories(IjkPlayer PRIVATE "${IJK_DESKTOP_PTHREAD_BUILD_DIR}/../../include")
+if (WIN32)
+target_include_directories(IjkPlayer PRIVATE "${IJK_PTHREAD_BUILD_DIR}/../../include")
+endif ()
 
 target_include_directories(IjkPlayer PRIVATE glfw/deps)
 target_include_directories(IjkPlayer PRIVATE glfw/include)
@@ -99,35 +99,27 @@ target_include_directories(IjkPlayer PRIVATE glfw/include)
 target_link_libraries(IjkPlayer ijksdl_static ijkplayer_static yuv)
 
 
+find_package(PkgConfig REQUIRED QUIET)
+set(ENV{PKG_CONFIG_PATH} "${IJK_FFMPAG_BUILD_DIR}/lib/pkgconfig:$ENV{PKG_CONFIG_PATH}")
+pkg_check_modules(FFMPEG_STATIC REQUIRED libavcodec libavformat libavutil libswresample libswscale)
+target_link_libraries(IjkPlayer ${SDL2_LIBRARIES})
+
 if (WIN32)
     target_compile_options(ijksdl_static PRIVATE /W3 /we4013)
     target_compile_options(ijkplayer_static PRIVATE /W3 /we4013)
     target_compile_options(IjkPlayer PRIVATE /W3 /we4013)
-endif ()
 
-if (APPLE)
-    find_package(PkgConfig REQUIRED QUIET)
-    set(ENV{PKG_CONFIG_PATH} "${IJK_FFMPAG_BUILD_DIR}/lib/pkgconfig:$ENV{PKG_CONFIG_PATH}")
-    pkg_check_modules(FFMPEG_STATIC REQUIRED libavcodec libavformat libavutil libswresample libswscale)
-
-    cmake_print_variables(FFMPEG_STATIC_INCLUDE_DIRS)
-    cmake_print_variables(FFMPEG_STATIC_LIBRARIES)
-
-    target_link_libraries(IjkPlayer ${SDL2_LIBRARIES})
-endif ()
-
-if (WIN32)
     add_library(pthread STATIC IMPORTED)
-    set_target_properties(pthread PROPERTIES IMPORTED_LOCATION ${IJK_DESKTOP_PTHREAD_BUILD_DIR}/pthreadVC2.lib)
+    set_target_properties(pthread PROPERTIES IMPORTED_LOCATION ${IJK_PTHREAD_BUILD_DIR}/pthreadVC2.lib)
     target_link_libraries(IjkPlayer pthread)
 endif ()
-
-message(STATUS "ffmpeg libs:${FFMPEG_STATIC_LIBRARIES}")
 
 list(REMOVE_ITEM FFMPEG_STATIC_LIBRARIES "ssl")
 list(REMOVE_ITEM FFMPEG_STATIC_LIBRARIES "crypto")
 
+cmake_print_variables(FFMPEG_STATIC_INCLUDE_DIRS)
 cmake_print_variables(FFMPEG_STATIC_LIBRARIES)
+cmake_print_variables(FFMPEG_STATIC_LIBRARY_DIRS)
 
 target_link_libraries(IjkPlayer ${FFMPEG_STATIC_LIBRARIES})
 target_link_directories(IjkPlayer PUBLIC ${FFMPEG_STATIC_LIBRARY_DIRS})
@@ -145,6 +137,9 @@ endif()
 target_compile_definitions(IjkPlayer PRIVATE -DBUILDING_IJK=1)
 
 if (WIN32)
+    set(OPENSSL_ROOT_DIR ${IJK_OPENSSL_BUILD_DIR})
+    find_package(OpenSSL REQUIRED)
+    target_link_libraries(IjkPlayer ${OPENSSL_LIBRARIES})
     target_link_libraries(IjkPlayer ws2_32 secur32 avrt shlwapi advapi32 shell32 kernel32 user32)
 elseif (APPLE)
     set(OPENSSL_ROOT_DIR ${IJK_OPENSSL_BUILD_DIR})

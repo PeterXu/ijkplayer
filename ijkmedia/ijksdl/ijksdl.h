@@ -39,6 +39,6 @@
 
 #include "ffmpeg/ijksdl_vout_overlay_ffmpeg.h"
 
-void ijksdl_global_init();
+void ijksdl_global_init(void);
 
 #endif

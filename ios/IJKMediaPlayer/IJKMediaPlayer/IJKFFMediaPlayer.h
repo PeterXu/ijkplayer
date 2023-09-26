@@ -48,7 +48,7 @@ typedef NS_ENUM(NSInteger, IJKMPErrorCode){
 };
 
 
-#if IJK_IOS
+#if TARGET_OS_IPHONE
 typedef void(^OnSnapshotBlock) (UIImage* __nullable image , NSError* __nullable error );
 #else
 typedef void(^OnSnapshotBlock) (CIImage* __nullable image , NSError* __nullable error );
@@ -59,7 +59,7 @@ typedef void(^OnSnapshotBlock) (CIImage* __nullable image , NSError* __nullable 
 @protocol IJKMPEventHandler <NSObject>
 
 @required
-- (void) onEvent4Player:(IJKFFMediaPlayer *)player withType:(int)waht andArg1:(int)arg1 andArg2:(int)arg2 andExtra:(void *)extra;
+- (void) onEvent4Player:(IJKFFMediaPlayer *)player withType:(int)what andArg1:(long)arg1 andArg2:(long)arg2 andExtra:(void *)extra;
 
 @end
 

@@ -134,7 +134,7 @@ int ffc_media_player_msg_loop(void* arg)
                 for (IJKFFEventCbWrapper *cbw in eventCbs) {
                     cbw.cb(cbw.userdata, avmsg->what, avmsg->arg1, avmsg->arg2, avmsg->obj);
                 }
-                printf("msg pool: %d %d %d\n", msg->_msg.what, msg->_msg.arg1, msg->_msg.arg2);
+                printf("msg pool: %d %ld %ld\n", msg->_msg.what, msg->_msg.arg1, msg->_msg.arg2);
             }
         }
         

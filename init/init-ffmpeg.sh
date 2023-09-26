@@ -27,11 +27,16 @@ fi
 # IJK_FFMPEG_UPSTREAM=git://git.videolan.org/ffmpeg.git
 IJK_FFMPEG_UPSTREAM=https://github.com/PeterXu/FFmpeg.git
 IJK_FFMPEG_FORK=https://github.com/PeterXu/FFmpeg.git
-IJK_FFMPEG_COMMIT=92e2682cb #befovy-ff4.0--ijk0.8.8--20211030--926
+IJK_FFMPEG_COMMIT=9dd03f29c8 #befovy-ff4.0--ijk0.8.8--20211030--926
 
 $BASEDIR/init/init-repo.sh $IJK_FFMPEG_UPSTREAM $IJK_FFMPEG_FORK $IJK_FFMPEG_COMMIT $1 $2
 
 if test x"$1" = x"ios"; then
-    sed -i '' "s/static const char \*kIJKFFRequiredFFmpegVersion\ \=\ .*/static const char *kIJKFFRequiredFFmpegVersion = \"${IJK_FFMPEG_COMMIT}\";/g" ios/IJKMediaPlayer/IJKMediaPlayer/IJKFFMoviePlayerController.m
+    cat > $BASEDIR/ios/IJKMediaPlayer/IJKMediaPlayer/IJKFFmpegVersion.h <<EOF
+#ifndef _IJK_FFMPEG_VERSION_H_
+#define _IJK_FFMPEG_VERSION_H_
+#define kIJKFFRequiredFFmpegVersion "$IJK_FFMPEG_COMMIT"
+#endif
+EOF
 fi
 

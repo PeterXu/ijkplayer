@@ -21,10 +21,6 @@
  */
 
 #import "IJKFFMediaPlayer.h"
-#if IJK_IOS
-#import "IJKMediaFramework.h"
-#endif
-
 #import "IJKFFMoviePlayerDef.h"
 #import "IJKAudioKit.h"
 #import "IJKFFOptions.h"
@@ -56,7 +52,7 @@ typedef NS_ENUM(NSInteger, IJKSDLFFPlayrRenderType) {
     CFDictionaryRef _optionsDictionary;
     CVPixelBufferRef _pixelBuffer;
 
-#if IJK_IOS
+#if TARGET_OS_IPHONE
     IJKSDLFboGLView* _fboView;
 #endif
     id<IJKCVPBViewProtocol> _cvPBView;
@@ -283,7 +279,7 @@ int ff_media_player_msg_loop(void* arg)
         buffer = nil;
     }
     _cvPBView = nil;
-#if IJK_IOS
+#if TARGET_OS_IPHONE
     _fboView = nil;
 #endif
 }
@@ -321,7 +317,7 @@ int ff_media_player_msg_loop(void* arg)
     [_eventHandlers removeObject:handler];
 }
 
-#if IJK_IOS
+#if TARGET_OS_IPHONE
 - (UIImage *)snapshot {
     return nil;
 }
@@ -336,13 +332,13 @@ int ff_media_player_msg_loop(void* arg)
     _cvPBView = cvPBView;
     
     if (_renderType == IJKSDLFFPlayrRenderTypeFboView) {
-#if IJK_IOS
+#if TARGET_OS_IPHONE
         _fboView = [[IJKSDLFboGLView alloc] initWithIJKCVPBViewProtocol:self];
         ijkmp_ios_set_glview(_nativeMediaPlayer, _fboView);
 #endif
     } else if (_renderType == IJKSDLFFPlayrRenderTypeGlView) {
         const void *keys[] = {
-#if IJK_IOS
+#if TARGET_OS_IPHONE
             kCVPixelBufferOpenGLESCompatibilityKey,
 #else
             kCVPixelBufferOpenGLCompatibilityKey,
@@ -450,7 +446,7 @@ int ff_media_player_msg_loop(void* arg)
                                                         CVPixelBufferGetWidth(snapshot),
                                                         CVPixelBufferGetHeight(snapshot))];
 
-#if IJK_IOS
+#if TARGET_OS_IPHONE
             UIImage *uiImage = [UIImage imageWithCGImage:imageRef];
 #else
             CIImage *uiImage = [CIImage imageWithCGImage:imageRef];

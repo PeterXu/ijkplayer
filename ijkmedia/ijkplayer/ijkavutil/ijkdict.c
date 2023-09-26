@@ -27,7 +27,7 @@
 #include <ctype.h>
 #include <inttypes.h>
 
-#include "libavutil/avstring.h"
+#include "ff_ffinc.h"
 
 struct IjkAVDictionary {
     int count;

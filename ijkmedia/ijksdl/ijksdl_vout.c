@@ -96,7 +96,7 @@ int SDL_Vout_TakeSnapShot(SDL_Vout *vout, void *opaque, SDL_Vout_funcGetSnapShot
     if (!renderer)
         return -1;
 
-#if IJK_IOS
+#if TARGET_OS_IPHONE
     return IJK_GLES2_Renderer_takeSnapShot(renderer, opaque, get_snap_shot) ? 0 : -1;
 #else
     return -1;

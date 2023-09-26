@@ -164,6 +164,11 @@ static void *KVO_AVPlayerItem_playbackBufferEmpty       = &KVO_AVPlayerItem_play
 @synthesize shouldAutoplay              = _shouldAutoplay;
 @synthesize isDanmakuMediaAirPlay       = _isDanmakuMediaAirPlay;
 
+@synthesize isSeekBuffering = _isSeekBuffering;
+@synthesize isAudioSync = _isAudioSync;
+@synthesize isVideoSync = _isVideoSync;
+
+
 static IJKAVMoviePlayerController* instance;
 
 - (id)initWithContentURL:(NSURL *)aUrl

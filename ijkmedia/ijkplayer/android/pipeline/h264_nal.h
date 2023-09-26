@@ -23,7 +23,7 @@
  */
 
 #include <limits.h>
-#include "libavcodec/avcodec.h"
+#include "ff_ffinc.h"
 #include "ijksdl/ijksdl_log.h"
 #if 1
 /* Parse the SPS/PPS Metadata and convert it to annex b format */

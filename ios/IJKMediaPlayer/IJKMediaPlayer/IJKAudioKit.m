@@ -41,7 +41,7 @@
 
 - (void)setupAudioSession
 {
-#if IJK_IOS
+#if TARGET_OS_IPHONE
     if (!_audioSessionInitialized) {
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(handleInterruption:)
@@ -55,7 +55,7 @@
 
 - (void)setupAudioSessionWithoutInterruptHandler
 {
-#if IJK_IOS
+#if TARGET_OS_IPHONE
     /* Set audio session to mediaplayback */
     NSError *error = nil;
     if (NO == [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&error]) {
@@ -68,7 +68,7 @@
 
 - (BOOL)setActive:(BOOL)active
 {
-#if IJK_IOS
+#if TARGET_OS_IPHONE
     NSError *error = nil;
     BOOL succeed = NO;
     @try {
@@ -89,7 +89,7 @@
 
 - (void)handleInterruption:(NSNotification *)notification
 {
-#if IJK_IOS
+#if TARGET_OS_IPHONE
     int reason = [[[notification userInfo] valueForKey:AVAudioSessionInterruptionTypeKey] intValue];
     switch (reason) {
         case AVAudioSessionInterruptionTypeBegan: {

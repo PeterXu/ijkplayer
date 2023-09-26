@@ -133,7 +133,7 @@ typedef struct IjkFFOverlay {
 
 typedef void(*ijkff_overlay_cb)(void *userdata, IjkFFOverlay *overlay);
 
-typedef void(*ijkff_event_cb)(void *userdata, int what, int arg1, int arg2, void *extra);
+typedef void(*ijkff_event_cb)(void *userdata, int what, long arg1, long arg2, void *extra);
 
 /**
  * Create player with different vout

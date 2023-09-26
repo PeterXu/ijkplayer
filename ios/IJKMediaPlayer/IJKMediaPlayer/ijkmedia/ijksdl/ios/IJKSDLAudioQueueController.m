@@ -141,7 +141,7 @@
     @synchronized(_lock) {
         _isPaused = NO;
         NSError *error = nil;
-#if IJK_IOS
+#if TARGET_OS_IPHONE
         if (NO == [[AVAudioSession sharedInstance] setActive:YES error:&error]) {
             NSLog(@"AudioQueue: AVAudioSession.setActive(YES) failed: %@\n", error ? [error localizedDescription] : @"nil");
         }

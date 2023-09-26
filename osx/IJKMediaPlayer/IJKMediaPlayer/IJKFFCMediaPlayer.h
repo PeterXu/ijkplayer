@@ -62,7 +62,7 @@ void ijkcmp_set_option(IJKFFCMediaPlayer *mp, const char *value, const char *key
 void ijkcmp_set_int_option(IJKFFCMediaPlayer *mp, int64_t value, const char *key, int category);
 
 
-typedef void (*IJKFFEventCb) (void *userdata, int what, int arg1, int arg2, void *extra);
+typedef void (*IJKFFEventCb) (void *userdata, int what, long arg1, long arg2, void *extra);
 
 void ijkcmp_add_event_listener(IJKFFCMediaPlayer *mp, void *userdata, IJKFFEventCb cb);
 void ijkcmp_remove_event_listener(IJKFFCMediaPlayer *mp, void *userdata, IJKFFEventCb cb);

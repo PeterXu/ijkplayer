@@ -85,10 +85,10 @@
     CVReturn err = noErr;
     if (_textureCache == nil) {
         err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, _context, NULL, &_textureCache);
-        ALOGD("%s ret %d", __func__, (int)err);
+        ALOGD("%s ret %d\n", __func__, (int)err);
     }
     if (err != noErr) {
-        ALOGE("Error at CVOpenGLESTextureCacheCreate %d", err);
+        ALOGE("Error at CVOpenGLESTextureCacheCreate %d\n", err);
         return NO;
     }
     return YES;

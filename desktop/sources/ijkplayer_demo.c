@@ -55,8 +55,8 @@ typedef struct IjkDemoInfo {
     int64_t duration;
 } IjkDemoInfo;
 
-void demo_event_cb(void *userdata, int what, int arg1, int arg2, void *extra) {
-    printf("demo event cb what %5d:(%5d %5d)\n", what, arg1, arg2);
+void demo_event_cb(void *userdata, int what, long arg1, long arg2, void *extra) {
+    printf("demo event cb what %5d:(%5ld %5ld)\n", what, arg1, arg2);
 
     IjkDemoInfo *info = userdata;
     switch (what) {

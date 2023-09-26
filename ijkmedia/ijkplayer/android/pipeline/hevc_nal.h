@@ -21,7 +21,7 @@
  */
 
 #include <limits.h>
-#include "libavcodec/avcodec.h"
+#include "ff_ffinc.h"
 #include "ijksdl/ijksdl_log.h"
 
 /* Inspired by libavcodec/hevc.c */

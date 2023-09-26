@@ -935,14 +935,14 @@ fail:
     return found_codec_name;
 }
 
-inline static void post_event(JNIEnv *env, jobject weak_this, int what, int arg1, int arg2)
+inline static void post_event(JNIEnv *env, jobject weak_this, int what, long arg1, long arg2)
 {
     // MPTRACE("post_event(%p, %p, %d, %d, %d)", (void*)env, (void*) weak_this, what, arg1, arg2);
     J4AC_IjkMediaPlayer__postEventFromNative(env, weak_this, what, arg1, arg2, NULL);
     // MPTRACE("post_event()=void");
 }
 
-inline static void post_event2(JNIEnv *env, jobject weak_this, int what, int arg1, int arg2, jobject obj)
+inline static void post_event2(JNIEnv *env, jobject weak_this, int what, long arg1, long arg2, jobject obj)
 {
     // MPTRACE("post_event2(%p, %p, %d, %d, %d, %p)", (void*)env, (void*) weak_this, what, arg1, arg2, (void*)obj);
     J4AC_IjkMediaPlayer__postEventFromNative(env, weak_this, what, arg1, arg2, obj);
